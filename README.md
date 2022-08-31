@@ -9,10 +9,18 @@ https://osf.io/3gyur?view_only=27038964954d4485a2d418dd3a469838
 
 # Notes
 
-State variable in hbrutt file, variable name: bula_h
-Religion variable: https://paneldata.org/soep-core/datasets/pl/pli0098_v2
-pli0098_v2
-Personality variable: [https://paneldata.org/soep-core/instruments/soep-core-2019-pe2/164](https://paneldata.org/soep-core/instruments/soep-core-2019-pe2/164)
+## State variable in hbrutt file, variable name: bula_h
+- Not available in my data files (restricted)
+
+## Religion variable: 
+- [https://paneldata.org/soep-core/datasets/pl/pli0098_v2](https://paneldata.org/soep-core/datasets/pl/pli0098_v2)
+- pli0098_v2
+- pli0098_h
+
+## Personality variables: 
+- [https://paneldata.org/soep-core/instruments/soep-core-2019-pe2/164](https://paneldata.org/soep-core/instruments/soep-core-2019-pe2/164)
+
+### Items:
 plh0212
 plh0213
 plh0214

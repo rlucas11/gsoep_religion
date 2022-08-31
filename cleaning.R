@@ -25,7 +25,7 @@ yearsWaves <- data.frame(
 ## Set path to data
 rawPath <- file.path("/home","rich","data","GSOEP","GSOEP37")
 ## Get info about variables
-varInfo <- read_csv("data/variables.csv")
+varInfo <- read_csv("info/variables.csv")
 
 
 ################################################################################
@@ -100,6 +100,11 @@ for (i in 1:(nrow(varInfo) - 1)) {
     }
 }
 
+
+## Check religion variable version
+## This is the right version, but need to fix for inconsisten response options
+data <- getVar("pli0098_h", "pl")
+
 ################################################################################
 ## Create Final Data file
 ################################################################################
@@ -115,8 +120,12 @@ for (f in varFiles) {
     if (f %in% paste0(varNames[reverse], "_w.csv")) {
         varStem <- strsplit(f, "_w")[[1]][1]
         varList <- paste0(varStem, c("_2005", "_2009", "_2013", "_2017"))
-        ## Finish this; add recodes for reveres scoring
+        for (i in varList) {
+            data <- data %>%
+                mutate({{ i }} := 8 - .data[[i]])
         }
+        names(data)[5:8] <- paste(names(data)[5:8], "r", sep = "_")
+    }
     ifelse(!exists("combo"),
         combo <- data,
         combo <- full_join(combo,
