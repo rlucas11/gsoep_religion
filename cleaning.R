@@ -84,7 +84,7 @@ recode7 <- function(data, varName) {
 ## Extract Data
 ################################################################################
 
-for (i in 1:(nrow(varInfo) - 1)) {
+for (i in 1:(nrow(varInfo))) {
     varName <- varInfo[[i, 2]]
     varFile <- varInfo[[i, 1]]
     if (!file.exists(paste0("data/", varName, "_l.csv"))) {
@@ -164,9 +164,41 @@ names(combo) <- c(
         rep("03", 15),
         c(rep("", 4), rep("r", 4), rep("", 4), rep("", 4), rep("r", 4))
     ),
-    paste0("relig", c("05", "09", "13", "17")),
-    paste0("pli0098_v2_", c("2005", "2009", "2013", "2017"))
+    paste0("relig", c("05", "09", "13", "17"))
 )
+
+
+################################################################################
+## Create Scale Scores
+################################################################################
+
+combo <- combo %>%
+    mutate(
+        cns05 = rowMeans(.[, c("cns0501", "cns0502r", "cns0503")], na.rm = TRUE),
+        cns09 = rowMeans(.[, c("cns0901", "cns0902r", "cns0903")], na.rm = TRUE),
+        cns13 = rowMeans(.[, c("cns1301", "cns1302r", "cns1303")], na.rm = TRUE),
+        cns17 = rowMeans(.[, c("cns1701", "cns1702r", "cns1703")], na.rm = TRUE),
+        ##
+        ext05 = rowMeans(.[, c("ext0501", "ext0502", "ext0503r")], na.rm = TRUE),
+        ext09 = rowMeans(.[, c("ext0901", "ext0902", "ext0903r")], na.rm = TRUE),
+        ext13 = rowMeans(.[, c("ext1301", "ext1302", "ext1303r")], na.rm = TRUE),
+        ext17 = rowMeans(.[, c("ext1701", "ext1702", "ext1703r")], na.rm = TRUE),
+        ##
+        agr05 = rowMeans(.[, c("agr0501r", "agr0502", "agr0503")], na.rm = TRUE),
+        agr09 = rowMeans(.[, c("agr0901r", "agr0902", "agr0903")], na.rm = TRUE),
+        agr13 = rowMeans(.[, c("agr1301r", "agr1302", "agr1303")], na.rm = TRUE),
+        agr17 = rowMeans(.[, c("agr1701r", "agr1702", "agr1703")], na.rm = TRUE),
+        ##
+        neu05 = rowMeans(.[, c("neu0501", "neu0502", "neu0503r")], na.rm = TRUE),
+        neu09 = rowMeans(.[, c("neu0901", "neu0902", "neu0903r")], na.rm = TRUE),
+        neu13 = rowMeans(.[, c("neu1301", "neu1302", "neu1303r")], na.rm = TRUE),
+        neu17 = rowMeans(.[, c("neu1701", "neu1702", "neu1703r")], na.rm = TRUE),
+        ##
+        opn05 = rowMeans(.[, c("opn0501", "opn0502", "opn0503")], na.rm = TRUE),
+        opn09 = rowMeans(.[, c("opn0901", "opn0902", "opn0903")], na.rm = TRUE),
+        opn13 = rowMeans(.[, c("opn1301", "opn1302", "opn1303")], na.rm = TRUE),
+        opn17 = rowMeans(.[, c("opn1701", "opn1702", "opn1703")], na.rm = TRUE)
+    )
 
 write_csv(combo, "data/final.csv")
 
