@@ -5,7 +5,7 @@ Applying the RI-CLEM to the data used by Entringer et al. to examine mutual lagg
 - Entringer, T. M., Gebauer, J. E., & Kroeger, H. (in press). Big Five Personality and Religiosity: Bidirectional Cross-Lagged Effects and their Moderation by Culture. Journal of Personality. http://dx.doi.org/10.1111/jopy.12770
 
 ## OSF Site With Code
-https://osf.io/3gyur?view_only=27038964954d4485a2d418dd3a469838
+[https://osf.io/3gyur?view_only=27038964954d4485a2d418dd3a469838](https://osf.io/3gyur?view_only=27038964954d4485a2d418dd3a469838)
 
 # Notes
 

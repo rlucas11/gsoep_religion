@@ -101,16 +101,24 @@ for (i in 1:(nrow(varInfo) - 1)) {
 }
 
 
-## Check religion variable version
+
 ## This is the right version, but need to fix for inconsisten response options
 data <- getVar("pli0098_h", "pl")
+wide <- soepStartsData(data, "pli0098_h")
+
+## Recode '1' in 2013 and 2017 due to different scales
+religion <- read_csv("data/pli0098_h_w.csv")
+religion[which(religion$pli0098_h_2013 == 1), "pli0098_h_2013"] <- 2
+religion[which(religion$pli0098_h_2017 == 1), "pli0098_h_2017"] <- 2
+write_csv(religion, "data/pli0098_h_w.csv")
+
 
 ################################################################################
 ## Create Final Data file
 ################################################################################
 varFiles <- list.files(path = "data", pattern = "pl[[:print:]]*_w.csv")
 varNames <- sapply(strsplit(varFiles, "_w"), "[[", 1)
-reverse <- c(3, 6, 10, 14)
+reverse <- c(3, 7, 12, 15)
 varNames[reverse]
 
 
@@ -136,3 +144,49 @@ for (f in varFiles) {
 }
 
 
+names(combo) <- c(
+    c("pid", "sex", "gebjahr", "psample"), 
+    paste0(
+        c(rep("cns", 4), rep("ext", 4), rep("agr", 4), rep("opn", 4), rep("neu", 4)),
+        rep(c("05", "09", "13", "17"), 4),
+        rep("01", 15),
+        c(rep("", 4), rep("", 4), rep("r", 4), rep("", 4), rep("", 4))
+    ),
+    paste0(
+        c(rep("agr", 4), rep("cns", 4), rep("ext", 4), rep("opn", 4), rep("neu", 4)),
+        rep(c("05", "09", "13", "17"), 4),
+        rep("02", 15),
+        c(rep("", 4), rep("r", 4), rep("", 4), rep("", 4), rep("", 4))
+    ),
+    paste0(
+        c(rep("cns", 4), rep("ext", 4), rep("agr", 4), rep("opn", 4), rep("neu", 4)),
+        rep(c("05", "09", "13", "17"), 4),
+        rep("03", 15),
+        c(rep("", 4), rep("r", 4), rep("", 4), rep("", 4), rep("r", 4))
+    ),
+    paste0("relig", c("05", "09", "13", "17")),
+    paste0("pli0098_v2_", c("2005", "2009", "2013", "2017"))
+)
+
+write_csv(combo, "data/final.csv")
+
+
+combo %>%
+    select(starts_with("ext")) %>%
+    cor(use = "pair")
+combo %>%
+    select(starts_with("agr")) %>%
+    cor(use = "pair")
+combo %>%
+    select(starts_with("cns")) %>%
+    cor(use = "pair")
+combo %>%
+    select(starts_with("neu")) %>%
+    cor(use = "pair")
+combo %>%
+    select(starts_with("opn")) %>%
+    cor(use = "pair")
+
+combo %>%
+    select(contains("05")) %>%
+    cor(use = "pair")
