@@ -102,14 +102,19 @@ for (i in 1:(nrow(varInfo))) {
 
 
 
-## This is the right version, but need to fix for inconsisten response options
-data <- getVar("pli0098_h", "pl")
-wide <- soepStartsData(data, "pli0098_h")
-
+## Additional cleaning for religion variable
 ## Recode '1' in 2013 and 2017 due to different scales
 religion <- read_csv("data/pli0098_h_w.csv")
 religion[which(religion$pli0098_h_2013 == 1), "pli0098_h_2013"] <- 2
 religion[which(religion$pli0098_h_2017 == 1), "pli0098_h_2017"] <- 2
+## Reverse Score
+religion <- religion %>%
+    mutate(
+        pli0098_h_2005r = 6 - pli0098_h_2005,
+        pli0098_h_2009r = 6 - pli0098_h_2009,
+        pli0098_h_2013r = 6 - pli0098_h_2013,
+        pli0098_h_2017r = 6 - pli0098_h_2017
+    )
 write_csv(religion, "data/pli0098_h_w.csv")
 
 
@@ -145,7 +150,7 @@ for (f in varFiles) {
 
 
 names(combo) <- c(
-    c("pid", "sex", "gebjahr", "psample"), 
+    c("pid", "sex", "gebjahr", "psample"),
     paste0(
         c(rep("cns", 4), rep("ext", 4), rep("agr", 4), rep("opn", 4), rep("neu", 4)),
         rep(c("05", "09", "13", "17"), 4),
@@ -164,8 +169,10 @@ names(combo) <- c(
         rep("03", 15),
         c(rep("", 4), rep("r", 4), rep("", 4), rep("", 4), rep("r", 4))
     ),
-    paste0("relig", c("05", "09", "13", "17"))
+    paste0("relig", c("05", "09", "13", "17")),
+    paste0("relig", c("05", "09", "13", "17"), "r")
 )
+
 
 
 ################################################################################
