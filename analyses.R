@@ -6,6 +6,8 @@ library(tidyverse)
 source("model.R")
 source("scripts/clpmUni.R")
 source("scripts/riclpmUni.R")
+source("scripts/gclpm.R")
+source("scripts/fullRiclpm.R")
 
 ## Read Data
 data <- read_csv("data/final.csv")
@@ -17,7 +19,11 @@ names(data)[65:72] <- c(paste0(rep("relig", 4),
                          paste0(rep("relig", 4),
                                 c("05", "09", "13", "17")))
 
+
+################################################################################
 ## Reproduce original
+################################################################################
+
 model1 <- sem(model1_main, missing = "FIML", estimator = "MLR", data = data)
 ## Save to file because it takes so long to run
 sink(file = "info/originalModel.txt", append = TRUE)
@@ -27,6 +33,16 @@ standardizedSolution(model1,
     pvalue = TRUE, ci = TRUE, level = .95, output = "text"
     )
 sink(file = NULL)
+
+modelRiclpm <- sem(model1_riclpm, missing = "FIML", estimator = "MLR", data = data)
+sink(file = "info/fullRiclpmModel.txt", append = TRUE)
+summary(modelRiclpm)
+standardizedSolution(modelRiclpm,
+    type = "std.all", se = TRUE, zstat = TRUE,
+    pvalue = TRUE, ci = TRUE, level = .95, output = "text"
+    )
+sink(file = NULL)
+
 
 
 ################################################################################
@@ -53,6 +69,9 @@ agrRiclpm <- sem(riclpmUni, data = agr, missing = "FIML", estimator = "MLR")
 summary(agrRiclpm)
 standardizedSolution(agrRiclpm)
 
+agrGclpm <- sem(gclpmUni, data = agr, missing = "FIML", estimator = "MLR")
+summary(agrGclpm)
+standardizedSolution(agrGclpm)
 
 ## Conscientiousness
 cns <- data %>%
