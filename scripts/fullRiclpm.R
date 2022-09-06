@@ -260,7 +260,7 @@ a05o ~~ 0*a05o
 c05o ~~ 0*c05o
 e05o ~~ 0*e05o
 n05o ~~ 0*n05o
-o05o ~~ 0*o05
+o05o ~~ 0*o05o
 
 a09o ~~ 0*a09o
 c09o ~~ 0*c09o
@@ -301,5 +301,51 @@ ri_n ~~ ri_o
 ri_n ~~ ri_r
 
 ri_o ~~ ri_r
+
+## Constrained to 0
+
+ri_a ~~ 0*a05
+ri_a ~~ 0*c05
+ri_a ~~ 0*e05
+ri_a ~~ 0*n05
+ri_a ~~ 0*o05
+ri_a ~~ 0*relig05w
+
+ri_c ~~ 0*a05
+ri_c ~~ 0*c05
+ri_c ~~ 0*e05
+ri_c ~~ 0*n05
+ri_c ~~ 0*o05
+ri_c ~~ 0*relig05w
+
+ri_e ~~ 0*a05
+ri_e ~~ 0*c05
+ri_e ~~ 0*e05
+ri_e ~~ 0*n05
+ri_e ~~ 0*o05
+ri_e ~~ 0*relig05w
+
+ri_n ~~ 0*a05
+ri_n ~~ 0*c05
+ri_n ~~ 0*e05
+ri_n ~~ 0*n05
+ri_n ~~ 0*o05
+ri_n ~~ 0*relig05w
+
+ri_o ~~ 0*a05
+ri_o ~~ 0*c05
+ri_o ~~ 0*e05
+ri_o ~~ 0*n05
+ri_o ~~ 0*o05
+ri_o ~~ 0*o05
+
+ri_r ~~ 0*a05
+ri_r ~~ 0*c05
+ri_r ~~ 0*e05
+ri_r ~~ 0*n05
+ri_r ~~ 0*o05
+ri_r ~~ 0*relig05w
+
+
 
 '
