@@ -22,9 +22,10 @@ names(data)[65:72] <- c(paste0(rep("relig", 4),
 
 
 ################################################################################
-## Reproduce original
+## Reproduce original Model
 ################################################################################
 
+## Full Sample
 model1 <- sem(model1_main, missing = "FIML", estimator = "MLR", data = data)
 ## Save to file because it takes so long to run
 sink(file = "info/originalModel.txt", append = TRUE)
@@ -62,7 +63,7 @@ standardizedSolution(model.all.observed,
 
 
 ################################################################################
-## Single Trait Models
+## Single Trait Models, Latent Traits
 ################################################################################
 
 ## Each block pulls trait-specific variables and renames to work with the

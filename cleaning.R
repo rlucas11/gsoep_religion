@@ -11,7 +11,7 @@ library(psych)
 ## Set Basic Info
 ################################################################################
 
-## Match waves, years, and files
+## Create list of waves, years, and files
 soepVersion <- 37
 yearsWaves <- data.frame(
   years = c(1984:((1984 + (soepVersion - 1)))),
@@ -22,7 +22,8 @@ yearsWaves <- data.frame(
   numericWave = 1:soepVersion
 )
 
-## Set path to data
+## Set path to data to keep confidential data separate from code repository
+## Set this to wherever your data are stored
 rawPath <- file.path("/home","rich","data","GSOEP","GSOEP37")
 ## Get info about variables
 varInfo <- read_csv("info/variables.csv")
@@ -32,7 +33,7 @@ varInfo <- read_csv("info/variables.csv")
 ## Define Functions
 ################################################################################
 
-## Get variable
+## Get variable, along with sample, sex, and age (from ppath file)
 getVar <- function(varName, fileName) {
   fileName <- paste0(fileName, ".dta")
   path <- file.path(rawPath, "Stata", fileName)
@@ -52,13 +53,6 @@ replaceMissing <- function(data, varName) {
     ))
 }
 
-## ## Replace Missing, names each variable 'x'
-## replaceMissing <- function(data, varName) {    
-##   mutate(data, x = as.numeric(replace(
-##     .data[[varName]],
-##     which(.data[[varName]] < 0), NA
-##   )))
-## }
 
 ## Transform to wide
 soepStartsData <- function(data, varName) {
@@ -126,8 +120,7 @@ varNames <- sapply(strsplit(varFiles, "_w"), "[[", 1)
 reverse <- c(3, 7, 12, 15)
 varNames[reverse]
 
-
-rm(combo)
+## Combine files; Reverse score personality items
 for (f in varFiles) {
     data <- read_csv(paste0("data/", f))
     if (f %in% paste0(varNames[reverse], "_w.csv")) {
@@ -209,7 +202,7 @@ combo <- combo %>%
 
 write_csv(combo, "data/final.csv")
 
-
+## Check correlations for big five items
 combo %>%
     select(starts_with("ext")) %>%
     cor(use = "pair")
@@ -226,6 +219,7 @@ combo %>%
     select(starts_with("opn")) %>%
     cor(use = "pair")
 
+## Check one set of cross-sectional correlationsji
 combo %>%
     select(contains("05")) %>%
     cor(use = "pair")
