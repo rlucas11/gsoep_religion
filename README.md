@@ -10,6 +10,7 @@ Entringer et al. (in press) examined the reciprocal associations between the Big
 
 - Within each waves
 - Aggregating across waves
+- For full sample and separately by state
 
 ### Replicate original analysis
 

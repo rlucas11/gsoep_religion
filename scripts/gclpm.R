@@ -28,10 +28,14 @@ tr093 ~~ tr173
 tr133 ~~ tr173
 
 ## Random Intercepts
+## In GCLPM this is an accumulating factor; difference from RI-CLPM
+
 ri_tr =~ 1*wtr05 + 1*wtr09 + 1*wtr13 + 1*wtr17
 ri_r =~ 1*wr05 + 1*wr09 + 1*wr13 + 1*wr17
 
-## Within-person centered variables
+## Within-person centered variables (from RI-CLPM)
+## These are not technically centered anymore, but kept this code to simplify
+## change from RI-CLPM
 
 wtr05 =~ 1*tr05
 wtr09 =~ 1*tr09

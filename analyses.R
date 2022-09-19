@@ -3,11 +3,12 @@ library(lavaan)
 library(tidyverse)
 
 ## Source model files
-source("model.R")
+source("scripts/originalModel.R")
 source("scripts/clpmUni.R")
 source("scripts/riclpmUni.R")
 source("scripts/gclpm.R")
 source("scripts/fullRiclpm.R")
+source("scripts/riclpmObserved.R")
 
 ## Read Data
 data <- read_csv("data/final.csv")
@@ -44,10 +45,28 @@ standardizedSolution(modelRiclpm,
 sink(file = NULL)
 
 
+################################################################################
+## All Traits, Observed Variables
+################################################################################
+
+model.all.observed <- sem(riclpm_observed,
+                          missing="FIML",
+                          estimator="MLR",
+                          data=data)
+summary(model.all.observed)
+standardizedSolution(model.all.observed,
+                     type = "std.all", se = TRUE, zstat = TRUE,
+                     pvalue = TRUE, ci = TRUE, level = .95, output = "text"
+    )
+
+
 
 ################################################################################
 ## Single Trait Models
 ################################################################################
+
+## Each block pulls trait-specific variables and renames to work with the
+## generic syntax in the model code.
 
 ## Agreeableness
 agr <- data %>%
