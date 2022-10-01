@@ -22,10 +22,10 @@ names(data)[65:72] <- c(paste0(rep("relig", 4),
 
 
 ################################################################################
-## Reproduce original Model
+## Reproduce original with full sample
 ################################################################################
+## This takes a long time to run
 
-## Full Sample
 model1 <- sem(model1_main, missing = "FIML", estimator = "MLR", data = data)
 ## Save to file because it takes so long to run
 sink(file = "info/originalModel.txt", append = TRUE)
@@ -47,7 +47,7 @@ sink(file = NULL)
 
 
 ################################################################################
-## All Traits, Observed Variables
+## All Traits, Observed Variables, full sample
 ################################################################################
 
 model.all.observed <- sem(riclpm_observed,
@@ -55,6 +55,8 @@ model.all.observed <- sem(riclpm_observed,
                           estimator="MLR",
                           data=data)
 summary(model.all.observed)
+fitMeasures(model.all.observed)
+
 standardizedSolution(model.all.observed,
                      type = "std.all", se = TRUE, zstat = TRUE,
                      pvalue = TRUE, ci = TRUE, level = .95, output = "text"
@@ -63,7 +65,7 @@ standardizedSolution(model.all.observed,
 
 
 ################################################################################
-## Single Trait Models, Latent Traits
+## Single Trait Models
 ################################################################################
 
 ## Each block pulls trait-specific variables and renames to work with the
@@ -101,6 +103,7 @@ names(cns) <- c(
     "tr052", "tr092", "tr132", "tr172",
     "tr053", "tr093", "tr133", "tr173",
     "trMean05", "trMean09", "trMean13", "trMean17",
+    "relig05_orig", "relig09_orig", "relig13_orig", "relig17_orig",
     "relig05", "relig09", "relig13", "relig17"
 )
 
@@ -112,6 +115,46 @@ cnsRiclpm <- sem(riclpmUni, data = cns, missing = "FIML")
 summary(cnsRiclpm)
 
 
+## Extraversion
+ext <- data %>%
+    select(contains("ext"), contains("relig"))
+names(ext) <- c(
+    "tr051", "tr091", "tr131", "tr171",
+    "tr052", "tr092", "tr132", "tr172",
+    "tr053", "tr093", "tr133", "tr173",
+    "trMean05", "trMean09", "trMean13", "trMean17",
+    "relig05_orig", "relig09_orig", "relig13_orig", "relig17_orig",
+    "relig05", "relig09", "relig13", "relig17"
+)
+
+extClpm <- sem(clpmUni, data = ext, missing = "FIML")
+summary(extClpm)
+standardizedSolution(extClpm)
+
+extRiclpm <- sem(riclpmUni, data = ext, missing = "FIML")
+summary(extRiclpm)
+
+
+## Neuroticism
+neu <- data %>%
+    select(contains("neu"), contains("relig"))
+names(neu) <- c(
+    "tr051", "tr091", "tr131", "tr171",
+    "tr052", "tr092", "tr132", "tr172",
+    "tr053", "tr093", "tr133", "tr173",
+    "trMean05", "trMean09", "trMean13", "trMean17",
+    "relig05_orig", "relig09_orig", "relig13_orig", "relig17_orig",
+    "relig05", "relig09", "relig13", "relig17"
+)
+
+neuClpm <- sem(clpmUni, data = neu, missing = "FIML")
+summary(neuClpm)
+standardizedSolution(neuClpm)
+
+neuRiclpm <- sem(riclpmUni, data = neu, missing = "FIML")
+summary(neuRiclpm)
+
+
 ## Openness
 opn <- data %>%
     select(contains("opn"), contains("relig"))
@@ -120,6 +163,7 @@ names(opn) <- c(
     "tr052", "tr092", "tr132", "tr172",
     "tr053", "tr093", "tr133", "tr173",
     "trMean05", "trMean09", "trMean13", "trMean17",
+    "relig05_orig", "relig09_orig", "relig13_orig", "relig17_orig",
     "relig05", "relig09", "relig13", "relig17"
 )
 
