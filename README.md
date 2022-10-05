@@ -43,6 +43,9 @@ Entringer et al. (in press) examined the reciprocal associations between the Big
 ## Notes
 
 - OSF Site With Code: 
+[https://osf.io/gn8xa/?view_only=27038964954d4485a2d418dd3a469838](https://osf.io/gn8xa/?view_only=27038964954d4485a2d418dd3a469838)
+
+- Main Model:
 [https://osf.io/3gyur?view_only=27038964954d4485a2d418dd3a469838](https://osf.io/3gyur?view_only=27038964954d4485a2d418dd3a469838)
 
 ### Variables
