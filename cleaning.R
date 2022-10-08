@@ -223,3 +223,24 @@ combo %>%
 combo %>%
     select(contains("05")) %>%
     cor(use = "pair")
+
+################################################################################
+## hbrutt file for federal state
+################################################################################
+
+hbrutt <- read_dta(file.path(rawPath, "Stata", "hbrutt.dta"),
+                   col_select = c("hid", "cid", "syear", "bula_h"))
+
+test <- hbrutt %>%
+    arrange(hid, syear) %>%
+    filter(syear == 2005 | syear == 2009 | syear == 2013 | syear == 2017) %>%
+    replaceMissing("bula_h") %>%
+    filter(!is.na("bula_h")) %>%
+    pivot_wider(
+      names_from = syear,
+      id_cols = c(hid, cid),
+      names_prefix = paste0("bula_h", "_"),
+      names_sep = "_",
+      values_from = bula_h,
+      names_sort = TRUE
+    )

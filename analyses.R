@@ -9,6 +9,7 @@ source("scripts/riclpmUni.R")
 source("scripts/gclpm.R")
 source("scripts/fullRiclpm.R")
 source("scripts/riclpmObserved.R")
+source("scripts/clpmObserved.R")
 
 ## Read Data
 data <- read_csv("data/final.csv")
@@ -51,16 +52,30 @@ sink(file = NULL)
 ################################################################################
 
 model.all.observed <- sem(riclpm_observed,
-                          missing="FIML",
-                          estimator="MLR",
-                          data=data)
+    missing = "FIML",
+    estimator = "MLR",
+    data = data
+)
 summary(model.all.observed)
 fitMeasures(model.all.observed)
 
 standardizedSolution(model.all.observed,
                      type = "std.all", se = TRUE, zstat = TRUE,
                      pvalue = TRUE, ci = TRUE, level = .95, output = "text"
+                     )
+
+
+model.all.observed.clpm <- sem(clpm_observed,
+    missing = "FIML",
+    estimator = "MLR",
+    data = data
     )
+summary(model.all.observed.clpm)
+fitMeasures(model.all.observed.clpm)
+standardizedSolution(model.all.observed.clpm,
+                     type = "std.all", se = TRUE, zstat = TRUE,
+                     pvalue = TRUE, ci = TRUE, level = .95, output = "text"
+                     )
 
 
 

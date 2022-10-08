@@ -48,6 +48,12 @@ Entringer et al. (in press) examined the reciprocal associations between the Big
 - Main Model:
 [https://osf.io/3gyur?view_only=27038964954d4485a2d418dd3a469838](https://osf.io/3gyur?view_only=27038964954d4485a2d418dd3a469838)
 
+- Main Analysis:
+[https://osf.io/zrp6h?view_only=27038964954d4485a2d418dd3a469838](https://osf.io/zrp6h?view_only=27038964954d4485a2d418dd3a469838)
+
+- Meta-Analysis: 
+[https://osf.io/5ht8n?view_only=27038964954d4485a2d418dd3a469838](https://osf.io/5ht8n?view_only=27038964954d4485a2d418dd3a469838)
+
 ### Variables
 
 - State variable in hbrutt file, variable name: bula_h
