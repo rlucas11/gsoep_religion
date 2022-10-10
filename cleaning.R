@@ -225,22 +225,43 @@ combo %>%
     cor(use = "pair")
 
 ################################################################################
-## hbrutt file for federal state
+## hbrutto file for federal state
 ################################################################################
 
-hbrutt <- read_dta(file.path(rawPath, "Stata", "hbrutt.dta"),
-                   col_select = c("hid", "cid", "syear", "bula_h"))
+## Pull State info
+hbrutto <- read_dta(file.path(rawPath, "Stata", "hbrutto.dta"),
+    col_select = c("hid", "syear", "bula_h")
+)
 
-test <- hbrutt %>%
-    arrange(hid, syear) %>%
-    filter(syear == 2005 | syear == 2009 | syear == 2013 | syear == 2017) %>%
-    replaceMissing("bula_h") %>%
+## Pull pids and hids for matching
+hids <- read_dta(file.path(rawPath, "Stata", "pl.dta"),
+    col_select = c("pid", "hid", "syear")
+)
+hids <- arrange(hids, syear, pid)
+
+## Merge state info with pids by hid
+bula <- full_join(hids, hbrutto, by = c("hid", "syear"))
+
+## Save long version of bula
+write_csv(bula, "data/bula.csv")
+
+## Create wide version
+bula_w <- bula %>%
+    arrange(pid, syear) %>%
+    ##    replaceMissing("bula_h") %>%
     filter(!is.na("bula_h")) %>%
     pivot_wider(
-      names_from = syear,
-      id_cols = c(hid, cid),
-      names_prefix = paste0("bula_h", "_"),
-      names_sep = "_",
-      values_from = bula_h,
-      names_sort = TRUE
+        names_from = syear,
+        id_cols = c(pid, hid),
+        names_prefix = paste0("bula_h", "_"),
+        names_sep = "_",
+        values_from = bula_h,
+        names_sort = TRUE
     )
+
+## Check whether respondent changes state (1 = no move)
+## In original, about 2% changed state
+bula_w$no_move <- apply(bula_w[, 3:39], 1, function(a) length(unique(a[!is.na(a)])))
+
+write_csv(bula_w, "data/bula_w.csv")
+

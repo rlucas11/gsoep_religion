@@ -100,7 +100,14 @@ names(agr) <- c(
 
 agrClpm <- sem(clpmUni, data = agr, missing = "FIML")
 summary(agrClpm)
-standardizedSolution(agrClpm)
+
+standardizedSolution(agrClpm,
+                     type = "std.all",
+                     se = TRUE,
+                     zstat = TRUE,
+                     pvalue = TRUE,
+                     ci = TRUE,
+                     level = .95)
 
 agrRiclpm <- sem(riclpmUni, data = agr, missing = "FIML", estimator = "MLR")
 summary(agrRiclpm)
