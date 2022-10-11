@@ -1,5 +1,3 @@
-
-
 model1_main <- '
 
 #metric invariance (equal loadings)
@@ -159,56 +157,57 @@ o17	=~	agr1701r
 #regression model with equality contraints-----------------------
 
 #cross-lagged effects------------------
-relig09 ~ aj*a05 + ak*c05 + al*e05 + am*n05 + an*o05 
-relig13 ~ aj*a09 + ak*c09 + al*e09 + am*n09 + an*o09 
-relig17 ~ aj*a13 + ak*c13 + al*e13 + am*n13 + an*o13 
+relig09 ~ c_ra*a05 + c_rc*c05 + c_re*e05 + c_rn*n05 + c_ro*o05 
+relig13 ~ c_ra*a09 + c_rc*c09 + c_re*e09 + c_rn*n09 + c_ro*o09 
+relig17 ~ c_ra*a13 + c_rc*c13 + c_re*e13 + c_rn*n13 + c_ro*o13 
 
-a09 ~ ao*relig05
-c09 ~ ap*relig05
-e09 ~ ar*relig05
-n09 ~ as*relig05
-o09 ~ at*relig05
+a09 ~ c_ar*relig05
+c09 ~ c_cr*relig05
+e09 ~ c_er*relig05
+n09 ~ c_nr*relig05
+o09 ~ c_or*relig05
 
-a13 ~ ao*relig09
-c13 ~ ap*relig09
-e13 ~ ar*relig09
-n13 ~ as*relig09
-o13 ~ at*relig09
+a13 ~ c_ar*relig09
+c13 ~ c_cr*relig09
+e13 ~ c_er*relig09
+n13 ~ c_nr*relig09
+o13 ~ c_or*relig09
 
-a17 ~ ao*relig13
-c17 ~ ap*relig13
-e17 ~ ar*relig13
-n17 ~ as*relig13
-o17 ~ at*relig13
+a17 ~ c_ar*relig13
+c17 ~ c_cr*relig13
+e17 ~ c_er*relig13
+n17 ~ c_nr*relig13
+o17 ~ c_or*relig13
 
 #correlated change-------------------------------------
-relig05 ~~ a05 + c05 + e05 + n05 + o05
-relig09 ~~ ae*a09 + af*c09 + ag*e09 + ah*n09 + ai*o09
-relig13 ~~ ae*a13 + af*c13 + ag*e13 + ah*n13 + ai*o13
-relig17 ~~ ae*a17 + af*c17 + ag*e17 + ah*n17 + ai*o17
+relig05 ~~ r1_ra*a05 + r1_rc*c05 + r1_re*e05 + r1_rn*n05 + r1_ro*o05
+relig09 ~~ r2_ra*a09 + r2_rc*c09 + r2_re*e09 + r2_rn*n09 + r2_ro*o09
+relig13 ~~ r2_ra*a13 + r2_rc*c13 + r2_re*e13 + r2_rn*n13 + r2_ro*o13
+relig17 ~~ r2_ra*a17 + r2_rc*c17 + r2_re*e17 + r2_rn*n17 + r2_ro*o17
 
 #autocorrelations------------------
-relig09 ~ au*relig05
-relig13 ~ au*relig09
-relig17 ~ au*relig13
+relig09 ~ sr*relig05
+relig13 ~ sr*relig09
+relig17 ~ sr*relig13
 
-a09 ~ av*a05
-a13 ~ av*a09
-a17 ~ av*a13
+a09 ~ sa*a05
+a13 ~ sa*a09
+a17 ~ sa*a13
 
-c09 ~ aw*c05
-c13 ~ aw*c09
-c17 ~ aw*c13
+c09 ~ sc*c05
+c13 ~ sc*c09
+c17 ~ sc*c13
 
-e09 ~ ax*e05
-e13 ~ ax*e09
-e17 ~ ax*e13
+e09 ~ se*e05
+e13 ~ se*e09
+e17 ~ se*e13
 
-n09 ~ ay*n05
-n13 ~ ay*n09
-n17 ~ ay*n13
+n09 ~ sn*n05
+n13 ~ sn*n09
+n17 ~ sn*n13
 
-o09 ~ az*o05
-o13 ~ az*o09
-o17 ~ az*o13'
+o09 ~ so*o05
+o13 ~ so*o09
+o17 ~ so*o13
+'
 

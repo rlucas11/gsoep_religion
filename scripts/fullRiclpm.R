@@ -197,58 +197,60 @@ o17o	=~	agr1701r
 #regression model with equality contraints-----------------------
 
 #cross-lagged effects------------------
-relig09w ~ aj*a05 + ak*c05 + al*e05 + am*n05 + an*o05 
-relig13w ~ aj*a09 + ak*c09 + al*e09 + am*n09 + an*o09 
-relig17w ~ aj*a13 + ak*c13 + al*e13 + am*n13 + an*o13 
+relig09w ~ c_ra*a05 + c_rc*c05 + c_re*e05 + c_rn*n05 + c_ro*o05 
+relig13w ~ c_ra*a09 + c_rc*c09 + c_re*e09 + c_rn*n09 + c_ro*o09 
+relig17w ~ c_ra*a13 + c_rc*c13 + c_re*e13 + c_rn*n13 + c_ro*o13 
 
-a09 ~ ao*relig05w
-c09 ~ ap*relig05w
-e09 ~ ar*relig05w
-n09 ~ as*relig05w
-o09 ~ at*relig05w
+a09 ~ c_ar*relig05w
+c09 ~ c_cr*relig05w
+e09 ~ c_er*relig05w
+n09 ~ c_nr*relig05w
+o09 ~ c_or*relig05w
 
-a13 ~ ao*relig09w
-c13 ~ ap*relig09w
-e13 ~ ar*relig09w
-n13 ~ as*relig09w
-o13 ~ at*relig09w
+a13 ~ c_ar*relig09w
+c13 ~ c_cr*relig09w
+e13 ~ c_er*relig09w
+n13 ~ c_nr*relig09w
+o13 ~ c_or*relig09w
 
-a17 ~ ao*relig13w
-c17 ~ ap*relig13w
-e17 ~ ar*relig13w
-n17 ~ as*relig13w
-o17 ~ at*relig13w
+a17 ~ c_ar*relig13w
+c17 ~ c_cr*relig13w
+e17 ~ c_er*relig13w
+n17 ~ c_nr*relig13w
+o17 ~ c_or*relig13w
 
 #correlated change-------------------------------------
-relig05w ~~ a05 + c05 + e05 + n05 + o05
-relig09w ~~ ae*a09 + af*c09 + ag*e09 + ah*n09 + ai*o09
-relig13w ~~ ae*a13 + af*c13 + ag*e13 + ah*n13 + ai*o13
-relig17w ~~ ae*a17 + af*c17 + ag*e17 + ah*n17 + ai*o17
+relig05w ~~ r1_ra*a05 + r1_rc*c05 + r1_re*e05 + r1_rn*n05 + r1_ro*o05
+relig09w ~~ r2_ra*a09 + r2_rc*c09 + r2_re*e09 + r2_rn*n09 + r2_ro*o09
+relig13w ~~ r2_ra*a13 + r2_rc*c13 + r2_re*e13 + r2_rn*n13 + r2_ro*o13
+relig17w ~~ r2_ra*a17 + r2_rc*c17 + r2_re*e17 + r2_rn*n17 + r2_ro*o17
+
 
 #autocorrelations------------------
-relig09w ~ au*relig05w
-relig13w ~ au*relig09w
-relig17w ~ au*relig13w
+relig09w ~ sr*relig05w
+relig13w ~ sr*relig09w
+relig17w ~ sr*relig13w
 
-a09 ~ av*a05
-a13 ~ av*a09
-a17 ~ av*a13
+a09 ~ sa*a05
+a13 ~ sa*a09
+a17 ~ sa*a13
 
-c09 ~ aw*c05
-c13 ~ aw*c09
-c17 ~ aw*c13
+c09 ~ sc*c05
+c13 ~ sc*c09
+c17 ~ sc*c13
 
-e09 ~ ax*e05
-e13 ~ ax*e09
-e17 ~ ax*e13
+e09 ~ se*e05
+e13 ~ se*e09
+e17 ~ se*e13
 
-n09 ~ ay*n05
-n13 ~ ay*n09
-n17 ~ ay*n13
+n09 ~ sn*n05
+n13 ~ sn*n09
+n17 ~ sn*n13
 
-o09 ~ az*o05
-o13 ~ az*o09
-o17 ~ az*o13
+o09 ~ so*o05
+o13 ~ so*o09
+o17 ~ so*o13
+
 
 ## Variances
 relig05 ~~ 0*relig05
@@ -282,25 +284,25 @@ o17o ~~ 0*o17o
 
 ## Random Intercept Correlations
 
-ri_a ~~ ri_c
-ri_a ~~ ri_e
-ri_a ~~ ri_n
-ri_a ~~ ri_o
-ri_a ~~ ri_r
+ri_a ~~ ri_ac*ri_c
+ri_a ~~ ri_ae*ri_e
+ri_a ~~ ri_an*ri_n
+ri_a ~~ ri_ao*ri_o
+ri_a ~~ ri_ar*ri_r
 
-ri_c ~~ ri_e
-ri_c ~~ ri_n
-ri_c ~~ ri_o
-ri_c ~~ ri_r
+ri_c ~~ ri_ce*ri_e
+ri_c ~~ ri_cn*ri_n
+ri_c ~~ ri_co*ri_o
+ri_c ~~ ri_cr*ri_r
 
-ri_e ~~ ri_n
-ri_e ~~ ri_o
-ri_e ~~ ri_r
+ri_e ~~ ri_en*ri_n
+ri_e ~~ ri_eo*ri_o
+ri_e ~~ ri_er*ri_r
 
-ri_n ~~ ri_o
-ri_n ~~ ri_r
+ri_n ~~ ri_no*ri_o
+ri_n ~~ ri_nr*ri_r
 
-ri_o ~~ ri_r
+ri_o ~~ ri_or*ri_r
 
 ## Constrained to 0
 
@@ -345,7 +347,5 @@ ri_r ~~ 0*e05
 ri_r ~~ 0*n05
 ri_r ~~ 0*o05
 ri_r ~~ 0*relig05w
-
-
 
 '
