@@ -64,7 +64,9 @@ The code is set up to use the STATA files provided by the SOEP.
 
 ### Variables
 
+- [https://paneldata.org/soep-core/datasets/hbrutt/bula_h](https://paneldata.org/soep-core/datasets/hbrutt/bula_h)
 - State variable in hbrutt file, variable name: bula_h
+- Certain years are missing n the hbrutt file, but the hbrutto file seems to have them. I'm not sure why.
 
 #### Religion variable: 
 - [https://paneldata.org/soep-core/datasets/pl/pli0098_v2](https://paneldata.org/soep-core/datasets/pl/pli0098_v2)
