@@ -4,6 +4,14 @@ Entringer et al. (in press) examined the reciprocal associations between the Big
 
 - Entringer, T. M., Gebauer, J. E., & Kroeger, H. (in press). Big Five Personality and Religiosity: Bidirectional Cross-Lagged Effects and their Moderation by Culture. Journal of Personality. http://dx.doi.org/10.1111/jopy.12770
 
+## Directory structure
+
+To run the following analyses, you need to set up the correct directory structure. The cleaning and analysis scripts are in the root directory. Within the root directory, there should be three additional directories for "data", "info", and "scripts". Because of the confidential nature of the data, I keep the original data in a separate directory that is specified in the cleaning script. I do keep derived dataframes in the "data" folder, but I include this directory in .gitignore so it is not uploaded to github. 
+
+A list of variables needed for the cleaning script to run is included in the "info" directory. That directory is also used to store some R objects and results. 
+
+The code is set up to use the STATA files provided by the SOEP. 
+
 ## Analysis plan
 
 ### Calculate Zero-Order Correlations
