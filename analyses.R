@@ -294,7 +294,6 @@ names(agr) <- c(
 
 agrClpm <- sem(clpmUni, data = agr, missing = "FIML")
 summary(agrClpm)
-
 standardizedSolution(agrClpm,
                      type = "std.all",
                      se = TRUE,

@@ -30,7 +30,7 @@ varInfo <- read_csv("info/variables.csv")
 
 
 ################################################################################
-## Define Functions
+## Define Functions for Cleaning
 ################################################################################
 
 ## Get variable, along with sample, sex, and age (from ppath file)
@@ -242,17 +242,30 @@ hids <- arrange(hids, syear, pid)
 ## Merge state info with pids by hid
 bula <- full_join(hids, hbrutto, by = c("hid", "syear"))
 
+## Remove household ids with no pid
+bula <- filter(bula, !is.na(pid))
+
 ## Save long version of bula
 write_csv(bula, "data/bula.csv")
+
+bula <- read_csv("data/bula.csv")
+
+## Find first state
+first.state <- bula %>%
+    group_by(pid) %>%
+    mutate(firstYear = min(syear)) %>%
+    ungroup() %>%
+    filter(syear==firstYear)
+names(first.state) <- c("pid", "hid", "syear", "first.state", "firstYear")
 
 ## Create wide version
 bula_w <- bula %>%
     arrange(pid, syear) %>%
     ##    replaceMissing("bula_h") %>%
-    filter(!is.na("bula_h")) %>%
+    filter(!is.na(bula_h)) %>%
     pivot_wider(
         names_from = syear,
-        id_cols = c(pid, hid),
+        id_cols = pid,
         names_prefix = paste0("bula_h", "_"),
         names_sep = "_",
         values_from = bula_h,
@@ -260,8 +273,12 @@ bula_w <- bula %>%
     )
 
 ## Check whether respondent changes state (1 = no move)
-## In original, about 2% changed state
-bula_w$no_move <- apply(bula_w[, 3:39], 1, function(a) length(unique(a[!is.na(a)])))
+## In original paper, authors say that about 2% changed state
+bula_w$no_move <- apply(bula_w[, 2:38], 1, function(a) length(unique(a[!is.na(a)])))
+
+bula_w <- left_join(bula_w, first.state[,c("pid", "first.state")], by="pid")
 
 write_csv(bula_w, "data/bula_w.csv")
+
+
 

@@ -1,3 +1,15 @@
+## RI-CLPM model with latent traits
+## Modified from Entringer et al. original model
+##
+## Labels (for extracting results):
+##
+## s_(var) = stability
+## r1_(v1v2) = initial wave correlations
+## r2_(v1v2) = subsequent wave correlations
+## c_r(t) = cross-lag, religion regressed on trait
+## c_(t)r = cross-lag, trait regressed on religion
+## ri_(v1v2) = correlation between random intercepts
+
 model1_riclpm <- '
 
 #metric invariance (equal loadings)
