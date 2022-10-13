@@ -149,8 +149,9 @@ clpm.estimates.w <- clpm.estimates %>%
 ################################################################################
 
 ## Create function for running models in one selected state
+## "data" is the full dataset; "bula" is the number of the state to be selected
 runModels <- function(bula, data) {
-    temp <- subset(data, fake.state == bula)
+    temp <- subset(data, first.state == bula)
     fit_bula <- sem(model1_main,
                     missing="FIML",
                     estimator="MLR",
@@ -165,7 +166,7 @@ bula_neu <- sort(unique(data$first.state))
 ## data$fake.state <- sample(1:17, nrow(data), replace=TRUE)
 ## bula_neu <- sort(unique(data$fake.state))
 
-## Use purrr to run through states, saving errors
+## Use purrr to run through states, saving output and errors
 stateOutput <- map(bula_neu, safely(runModels), data)
 
 ## Extract estimates for each state
