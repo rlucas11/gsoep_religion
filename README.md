@@ -12,7 +12,13 @@ A list of variables needed for the cleaning script to run is included in the "in
 
 The code is set up to use the STATA files provided by the SOEP. 
 
-## Analysis plan
+## Guide to Code
+
+- Script for pulling raw data and cleaning for analysis: [cleaning.R](cleaning.R)
+- Replicate original model from published paper: [clpm.latent.all.R](clpm.latent.all.R)
+- Run RI-CLPM for each state: [riclpm.latent.all.R](riclpm.latent.all.R)
+
+## Analysis Plan
 
 ### Calculate Zero-Order Correlations
 
