@@ -351,7 +351,7 @@ ri_o ~~ 0*c05
 ri_o ~~ 0*e05
 ri_o ~~ 0*n05
 ri_o ~~ 0*o05
-ri_o ~~ 0*o05
+ri_o ~~ 0*relig05w
 
 ri_r ~~ 0*a05
 ri_r ~~ 0*c05
