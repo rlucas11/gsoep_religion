@@ -196,7 +196,7 @@ bula_neu <- sort(unique(data$first.state))
 ## bula_neu <- sort(unique(data$first.state))
 
 ## Use purrr to run through states, saving output and errors (using "safely")
-stateOutput <- map(bula_neu[1:3], safely(runModelsRiclpm), data)
+stateOutput <- map(bula_neu, safely(runModelsRiclpm), data)
 
 ## Extract estimates for each state
 for (j in 1:length(stateOutput)) {
