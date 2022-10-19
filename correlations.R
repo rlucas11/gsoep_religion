@@ -1,26 +1,3 @@
-################################################################################
-## Setup
-################################################################################
-
-## Load libraries
-library(tidyverse)
-library(psych)
-
-## Read Data
-data <- read_csv("data/final.csv")
-bula <- read_csv("data/bula_w.csv")
-
-## Rename religion variales so recoded versions are used in model
-names(data)[65:72] <- c(paste0(rep("relig", 4),
-                                c("05", "09", "13", "17"),
-                                rep("_orig", 4)),
-                         paste0(rep("relig", 4),
-                                c("05", "09", "13", "17")))
-
-## Add state info to dataframe
-data <- left_join(data, bula[,c("pid", "no_move", "first.state")], by="pid")
-data <- filter(data, no_move==1)
-
 ## Create cross-wave means for personality measures
 
 data <- data %>%
@@ -35,14 +12,13 @@ data <- data %>%
 
 cor(data[,c("agr", "cns", "ext", "neu", "opn", "relig")], use="pair")
 
-## Temporary for testing
-data$first.state <- sample(1:17, nrow(data), replace=TRUE)
-bula_neu <- sort(unique(data$fake.state))
-
+## ## Temporary for testing
+## data$first.state <- sample(1:17, nrow(data), replace=TRUE)
+## bula_neu <- sort(unique(data$fake.state))
 
 out <- statsBy(data[,c("agr", "cns", "ext", "neu", "opn", "relig", "first.state")],
                group="first.state",
                cors=TRUE)
 
 print(out, short=FALSE)
-
+save(out, "results/correlationsByState.RData")
