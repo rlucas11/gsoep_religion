@@ -118,59 +118,59 @@ extract.est.riclpm <- function(riclpm.labels, results) {
 }
 
 
-################################################################################
-## Test Ri-CLPM in full sample
-################################################################################
-## This takes a very long time to run
+## ################################################################################
+## ## Test Ri-CLPM in full sample
+## ################################################################################
+## ## This takes a very long time to run
 
-riclpm.latent.all <- sem(model1_riclpm, missing = "FIML", estimator = "MLR", data = data)
-sink(file = "info/riclpm.latent.all.txt", append = FALSE)
-summary(riclpm.latent.all)
-z.riclpm.latent.all <- standardizedSolution(riclpm.latent.all,
-    type = "std.all", se = TRUE, zstat = TRUE,
-    pvalue = TRUE, ci = TRUE, level = .95, output = "text"
-)
-z.riclpm.latent.all
-fitMeasures(riclpm.latent.all)
-sink()
+## riclpm.latent.all <- sem(model1_riclpm, missing = "FIML", estimator = "MLR", data = data)
+## sink(file = "info/riclpm.latent.all.txt", append = FALSE)
+## summary(riclpm.latent.all)
+## z.riclpm.latent.all <- standardizedSolution(riclpm.latent.all,
+##     type = "std.all", se = TRUE, zstat = TRUE,
+##     pvalue = TRUE, ci = TRUE, level = .95, output = "text"
+## )
+## z.riclpm.latent.all
+## fitMeasures(riclpm.latent.all)
+## sink()
 
-## Temporarily save model.extract
-save(riclpm.latent.all, file = "info/riclpm.latent.all.RData")
-load("info/riclpm.latent.all.RData")
+## ## Temporarily save model.extract
+## save(riclpm.latent.all, file = "info/riclpm.latent.all.RData")
+## load("info/riclpm.latent.all.RData")
 
-## Extract all the estimates in a loop
-rm(riclpm.estimates)
-riclpm.estimates <- data.frame(
-    trait = character(),
-    r1 = numeric(),
-    r1.lb = numeric(),
-    r1.ub = numeric(),
-    r2 = numeric(),
-    r2.lb = numeric(),
-    r2.ub = numeric(),
-    rt.cl = numeric(),
-    rt.cl.lb = numeric(),
-    rt.cl.ub = numeric(),
-    tr.cl = numeric(),
-    tr.cl.lb = numeric(),
-    tr.cl.ub = numeric(),
-    st = numeric(),
-    st.lb = numeric(),
-    st.ub = numeric(),
-    ri.r = numeric(),
-    ri.r.lb = numeric(),
-    ri.r.ub = numeric()
-)
-for (i in 1:nrow(riclpm.labels)) {
-    tempResults <- extract.est.riclpm(riclpm.labels[i, ], z.riclpm.latent.all)
-    riclpm.estimates[i, ] <- tempResults
-}
-riclpm.estimates
+## ## Extract all the estimates in a loop
+## rm(riclpm.estimates)
+## riclpm.estimates <- data.frame(
+##     trait = character(),
+##     r1 = numeric(),
+##     r1.lb = numeric(),
+##     r1.ub = numeric(),
+##     r2 = numeric(),
+##     r2.lb = numeric(),
+##     r2.ub = numeric(),
+##     rt.cl = numeric(),
+##     rt.cl.lb = numeric(),
+##     rt.cl.ub = numeric(),
+##     tr.cl = numeric(),
+##     tr.cl.lb = numeric(),
+##     tr.cl.ub = numeric(),
+##     st = numeric(),
+##     st.lb = numeric(),
+##     st.ub = numeric(),
+##     ri.r = numeric(),
+##     ri.r.lb = numeric(),
+##     ri.r.ub = numeric()
+## )
+## for (i in 1:nrow(riclpm.labels)) {
+##     tempResults <- extract.est.riclpm(riclpm.labels[i, ], z.riclpm.latent.all)
+##     riclpm.estimates[i, ] <- tempResults
+## }
+## riclpm.estimates
 
-riclpm.estimates.w <- riclpm.estimates %>%
-    pivot_longer(cols=-trait) %>%
-    pivot_wider(names_from = c(trait, name),
-                names_sep = ".")
+## riclpm.estimates.w <- riclpm.estimates %>%
+##     pivot_longer(cols=-trait) %>%
+##     pivot_wider(names_from = c(trait, name),
+##                 names_sep = ".")
 
 
 ################################################################################
@@ -196,13 +196,17 @@ bula_neu <- sort(unique(data$first.state))
 ## bula_neu <- sort(unique(data$first.state))
 
 ## Use purrr to run through states, saving output and errors (using "safely")
-stateOutput <- map(bula_neu, safely(runModelsRiclpm), data)
+stateOutput <- map(bula_neu, quietly(safely(runModelsRiclpm)), data)
 
 ## Extract estimates for each state
 for (j in 1:length(stateOutput)) {
     bula <- j
     ## Extract results for one state
-    fit_bula <- stateOutput[[j]]$result
+    fit_bula <- stateOutput[[j]]$result$result
+    ## Extract warnings
+    riclpm.warnings[j] <- list(stateOutput[[j]]$warnings)
+    ## Extract errors
+    riclpm.errors[j] <- list(stateOutput[[j]]$result$error)
     ## Skip results which had an error
     if(!is.null(fit_bula)) {
         estimate <- standardizedSolution(fit_bula)
@@ -255,13 +259,16 @@ for (j in 1:length(stateOutput)) {
 
 ## Save matrix of results
 write_csv(riclpm.aggregated.estimates, file="results/riclpm.latent.states.aggregated.estimates.csv")
+save(riclpm.warnings, file="results/riclpm.warnings.RData")
+save(riclpm.errors, file="results/riclpm.errors.RData")
+
 
 ## Get fit info
 
 for (j in 1:length(stateOutput)) {
     bula <- j
     ## Extract one state
-    fit_bula <- stateOutput[[j]]$result
+    fit_bula <- stateOutput[[j]]$result$result
     ## Skip if error in running original model
     if(!is.null(fit_bula)) {
         cfi <- fitMeasures(fit_bula, fit.measures="cfi.robust")
