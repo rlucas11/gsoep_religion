@@ -16,7 +16,9 @@ The code is set up to use the STATA files provided by the SOEP.
 
 - Script for pulling raw data and cleaning for analysis: [cleaning.R](cleaning.R)
 - Replicate original model from published paper: [clpm.latent.all.R](clpm.latent.all.R)
+- Examine correlations in each state: [correlations.R](correlations.R)
 - Run RI-CLPM for each state: [riclpm.latent.all.R](riclpm.latent.all.R)
+- Run RI-CLPM for each state with observed-variable model: [riclpm.observed.all.R](riclpm.observed.all.R)
 
 ## Analysis Plan
 

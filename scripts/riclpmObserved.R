@@ -44,85 +44,85 @@ ri_relig =~ 1*relig05 + 1*relig09 + 1*relig13 + 1*relig17
 
 ## Stabilities
 
-wagr09 ~ sta*wagr05
-wagr13 ~ sta*wagr09
-wagr17 ~ sta*wagr13
+wagr09 ~ sa*wagr05
+wagr13 ~ sa*wagr09
+wagr17 ~ sa*wagr13
 
-wcns09 ~ stc*wcns05
-wcns13 ~ stc*wcns09
-wcns17 ~ stc*wcns13
+wcns09 ~ sc*wcns05
+wcns13 ~ sc*wcns09
+wcns17 ~ sc*wcns13
 
-wext09 ~ ste*wext05
-wext13 ~ ste*wext09
-wext17 ~ ste*wext13
+wext09 ~ se*wext05
+wext13 ~ se*wext09
+wext17 ~ se*wext13
 
-wneu09 ~ stn*wneu05
-wneu13 ~ stn*wneu09
-wneu17 ~ stn*wneu13
+wneu09 ~ sn*wneu05
+wneu13 ~ sn*wneu09
+wneu17 ~ sn*wneu13
 
-wopn09 ~ sto*wopn05
-wopn13 ~ sto*wopn09
-wopn17 ~ sto*wopn13
+wopn09 ~ so*wopn05
+wopn13 ~ so*wopn09
+wopn17 ~ so*wopn13
 
-wrelig09 ~ str*wrelig05
-wrelig13 ~ str*wrelig09
-wrelig17 ~ str*wrelig13
+wrelig09 ~ sr*wrelig05
+wrelig13 ~ sr*wrelig09
+wrelig17 ~ sr*wrelig13
 
 ## Cross-lagged paths
 
-wrelig09 ~ cla*wagr05 + clc*wcns05 + cle*wext05 + cln*wneu05 + clo*wopn05
-wrelig13 ~ cla*wagr09 + clc*wcns09 + cle*wext09 + cln*wneu09 + clo*wopn09
-wrelig17 ~ cla*wagr13 + clc*wcns13 + cle*wext13 + cln*wneu13 + clo*wopn13
+wrelig09 ~ c_ra*wagr05 + c_rc*wcns05 + c_re*wext05 + c_rn*wneu05 + c_ro*wopn05
+wrelig13 ~ c_ra*wagr09 + c_rc*wcns09 + c_re*wext09 + c_rn*wneu09 + c_ro*wopn09
+wrelig17 ~ c_ra*wagr13 + c_rc*wcns13 + c_re*wext13 + c_rn*wneu13 + c_ro*wopn13
 
-wagr09 ~ clra*wrelig05
-wcns09 ~ clrc*wrelig05
-wext09 ~ clre*wrelig05
-wneu09 ~ clrn*wrelig05
-wopn09 ~ clr0*wrelig05
+wagr09 ~ c_ar*wrelig05
+wcns09 ~ c_cr*wrelig05
+wext09 ~ c_er*wrelig05
+wneu09 ~ c_nr*wrelig05
+wopn09 ~ c_or*wrelig05
 
-wagr13 ~ clra*wrelig09
-wcns13 ~ clrc*wrelig09
-wext13 ~ clre*wrelig09
-wneu13 ~ clrn*wrelig09
-wopn13 ~ clr0*wrelig09
+wagr13 ~ c_ar*wrelig09
+wcns13 ~ c_cr*wrelig09
+wext13 ~ c_er*wrelig09
+wneu13 ~ c_nr*wrelig09
+wopn13 ~ c_or*wrelig09
 
-wagr17 ~ clra*wrelig13
-wcns17 ~ clrc*wrelig13
-wext17 ~ clre*wrelig13
-wneu17 ~ clrn*wrelig13
-wopn17 ~ clro*wrelig13
+wagr17 ~ c_ar*wrelig13
+wcns17 ~ c_cr*wrelig13
+wext17 ~ c_er*wrelig13
+wneu17 ~ c_nr*wrelig13
+wopn17 ~ c_or*wrelig13
 
 ## Correlations
 
-ri_relig ~~ ri_agr + ri_cns + ri_ext + ri_neu + ri_opn
+ri_relig ~~ ri_ar*ri_agr + ri_cr*ri_cns + ri_er*ri_ext + ri_nr*ri_neu + ri_or*ri_opn
 ri_agr ~~ ri_cns + ri_ext + ri_neu + ri_opn
 ri_cns ~~ ri_ext + ri_neu + ri_opn
 ri_ext ~~ ri_neu + ri_opn
 ri_neu ~~ ri_opn
 
-wrelig05 ~~ wagr05 + wcns05 + wext05 + wneu05 + wopn05
+wrelig05 ~~ r1_ra*wagr05 + r1_rc*wcns05 + r1_re*wext05 + r1_rn*wneu05 + r1_ro*wopn05
 wagr05 ~~ wcns05 + wext05 + wneu05 + wopn05
 wcns05 ~~ wext05 + wneu05 + wopn05
 wext05 ~~ wneu05 + wopn05
 wneu05 ~~ wopn05
 
-wrelig09 ~~ r1*wagr09 + r2*wcns09 + r3*wext09 + r4*wneu09 + r5*wopn09
-wagr09 ~~ r6*wcns09 + r7*wext09 + r8*wneu09 + r9*wopn09
-wcns09 ~~ r10*wext09 + r11*wneu09 + r12*wopn09
-wext09 ~~ r13*wneu09 + r14*wopn09
-wneu09 ~~ r15*wopn09
+wrelig09 ~~ r2_ra*wagr09 + r2_rc*wcns09 + r2_re*wext09 + r2_rn*wneu09 + r2_ro*wopn09
+wagr09 ~~ wcns09 + wext09 + wneu09 + wopn09
+wcns09 ~~ wext09 + wneu09 + wopn09
+wext09 ~~ wneu09 + wopn09
+wneu09 ~~ wopn09
 
-wrelig13 ~~ r1*wagr13 + r2*wcns13 + r3*wext13 + r4*wneu13 + r5*wopn13
-wagr13 ~~ r6*wcns13 + r7*wext13 + r8*wneu13 + r9*wopn13
-wcns13 ~~ r10*wext13 + r11*wneu13 + r12*wopn13
-wext13 ~~ r13*wneu13 + r14*wopn13
-wneu13 ~~ r15*wopn13
+wrelig13 ~~ r2_ra*wagr13 + r2_rc*wcns13 + r2_re*wext13 + r2_rn*wneu13 + r2_ro*wopn13
+wagr13 ~~ wcns13 + wext13 + wneu13 + wopn13
+wcns13 ~~ wext13 + wneu13 + wopn13
+wext13 ~~ wneu13 + wopn13
+wneu13 ~~ wopn13
 
-wrelig17 ~~ r1*wagr17 + r2*wcns17 + r3*wext17 + r4*wneu17 + r5*wopn17
-wagr17 ~~ r6*wcns17 + r7*wext17 + r8*wneu17 + r9*wopn17
-wcns17 ~~ r10*wext17 + r11*wneu17 + r12*wopn17
-wext17 ~~ r13*wneu17 + r14*wopn17
-wneu17 ~~ r15*wopn17
+wrelig17 ~~ r2_ra*wagr17 + r2_rc*wcns17 + r2_re*wext17 + r2_rn*wneu17 + r2_ro*wopn17
+wagr17 ~~ wcns17 + wext17 + wneu17 + wopn17
+wcns17 ~~ wext17 + wneu17 + wopn17
+wext17 ~~ wneu17 + wopn17
+wneu17 ~~ wopn17
 
 ## Correlations constrained to zero
 
