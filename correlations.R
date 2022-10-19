@@ -14,11 +14,12 @@ cor(data[,c("agr", "cns", "ext", "neu", "opn", "relig")], use="pair")
 
 ## ## Temporary for testing
 ## data$first.state <- sample(1:17, nrow(data), replace=TRUE)
-## bula_neu <- sort(unique(data$fake.state))
+## bula_neu <- sort(unique(data$first.state))
 
 out <- statsBy(data[,c("agr", "cns", "ext", "neu", "opn", "relig", "first.state")],
                group="first.state",
                cors=TRUE)
 
 print(out, short=FALSE)
-save(out, "results/correlationsByState.RData")
+out$r
+save(out, file="results/correlationsByState.RData")

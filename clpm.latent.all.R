@@ -132,7 +132,8 @@ runModels <- function(bula, data) {
     fit_bula <- sem(model1_main,
                     missing="FIML",
                     estimator="MLR",
-                    data=temp)
+                    data=temp,
+                    em.h1.iter.max=20000)
     return(fit_bula)
 }
 
@@ -140,8 +141,9 @@ runModels <- function(bula, data) {
 bula_neu <- sort(unique(data$first.state))
 
 ## ## Temporary for testing
-## data$first.state <- sample(1:3, nrow(data), replace=TRUE)
-## bula_neu <- sort(unique(data$fake.state))
+## data$first.state <- sample(1:100, nrow(data), replace=TRUE)
+## bula_neu <- sort(unique(data$first.state))
+## stateOutput <- map(bula_neu[1:3], quietly(safely(runModels)), data)
 
 ## Use purrr to run through states, saving output and errors
 stateOutput <- map(bula_neu, quietly(safely(runModels)), data)

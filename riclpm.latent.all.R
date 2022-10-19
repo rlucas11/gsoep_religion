@@ -160,7 +160,8 @@ runModelsRiclpm <- function(bula, data) {
     fit_bula <- sem(model1_riclpm,
                     missing="FIML",
                     estimator="MLR",
-                    data=temp)
+                    data=temp,
+                    em.h1.iter.max=20000)
     return(fit_bula)
 }
 
@@ -168,12 +169,15 @@ runModelsRiclpm <- function(bula, data) {
 bula_neu <- sort(unique(data$first.state))
 
 ## ## Temporary for testing
-## data$first.state <- sample(1:17, nrow(data), replace=TRUE)
+## data$first.state <- sample(1:50, nrow(data), replace=TRUE)
 ## bula_neu <- sort(unique(data$first.state))
+## stateOutput <- map(bula_neu[1:3], quietly(safely(runModelsRiclpm)), data)
 
 ## Use purrr to run through states, saving output and errors (using "safely")
 stateOutput <- map(bula_neu, quietly(safely(runModelsRiclpm)), data)
 
+riclpm.warnings <- vector(mode="list", length=length(stateOutput))
+riclpm.errors <- vector(mode="list",length=length(stateOutput))
 ## Extract estimates for each state
 for (j in 1:length(stateOutput)) {
     bula <- j
