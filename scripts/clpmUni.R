@@ -51,13 +51,13 @@ wr17 ~ sr*wr13
 
 ## Cross-Lags
 
-wtr09 ~ clr*wr05
-wtr13 ~ clr*wr09
-wtr17 ~ clr*wr13
+wtr09 ~ cl_r*wr05
+wtr13 ~ cl_r*wr09
+wtr17 ~ cl_r*wr13
 
-wr09 ~ clt*wtr05
-wr13 ~ clt*wtr09
-wr17 ~ clt*wtr13
+wr09 ~ cl_t*wtr05
+wr13 ~ cl_t*wtr09
+wr17 ~ cl_t*wtr13
 
 ## Variances
 wtr05 ~~ wtr05
@@ -81,8 +81,8 @@ relig17 ~~ 0*relig17
 
 
 ## Covariances
-wtr05 ~~ wr05
-wtr09 ~~ wr09
-wtr13 ~~ wr13
-wtr17 ~~ wr17
+wtr05 ~~ r1_r*wr05
+wtr09 ~~ r2_r*wr09
+wtr13 ~~ r2_r*wr13
+wtr17 ~~ r2_r*wr17
 '
