@@ -13,17 +13,17 @@ source("scripts/clpmUni.R")   ## Lavaan model name: clpmUni
 ## c_t = cross-lag, religion regressed on trait
 ## c_r = cross-lag, trait regressed on religion
 clpm.labels <- data.frame(matrix(c(
-    "agr", "a", "c_t", "c_r", "st", "r1_r", "r2_r",
-    "cns", "c", "c_t", "c_r", "st", "r1_r", "r2_r",
-    "ext", "e", "c_t", "c_r", "st", "r1_r", "r2_r",
-    "neu", "n", "c_t", "c_r", "st", "r1_r", "r2_r",
-    "opn", "o", "c_t", "c_r", "st", "r1_r", "r2_r"
+    "agr", "cl_t", "cl_r", "st", "r1_r", "r2_r",
+    "cns", "cl_t", "cl_r", "st", "r1_r", "r2_r",
+    "ext", "cl_t", "cl_r", "st", "r1_r", "r2_r",
+    "neu", "cl_t", "cl_r", "st", "r1_r", "r2_r",
+    "opn", "cl_t", "cl_r", "st", "r1_r", "r2_r"
 ),
 nrow = 5,
-ncol = 7,
+ncol = 6,
 byrow = TRUE
 ))
-names(clpm.labels) <- c("trait", "initial", "cl_rOnt", "cl_tOnr", "stability", "r1", "r2")
+names(clpm.labels) <- c("trait", "cl_rOnt", "cl_tOnr", "stability", "r1", "r2")
 
 ## Function to extract standardized estimates for meta-analysis
 ## Extracts estimate of r, along with 95% CIs
@@ -137,21 +137,23 @@ opnOutput <- map(bula_neu, quietly(safely(runModels)), opn)
 ## Extract estimates
 ################################################################################
 
-for (k in list(agrOutput,
+stateOutput <- list(agrOutput,
                cnsOutput,
                extOutput,
                neuOutput,
-               opnOutput)) {
-    clpm.warnings <- vector(mode="list", length=length(k))
-    clpm.errors <- vector(mode="list",length=length(k))
-    for (j in 1:length(k)) {
+               opnOutput)
+for (k in 1:length(stateOutput)) {
+    traitOutput <- stateOutput[[k]]
+    clpm.warnings <- vector(mode="list", length=length(traitOutput))
+    clpm.errors <- vector(mode="list",length=length(traitOutput))
+    for (j in 1:length(traitOutput)) {
         bula <- j
         ## Extract results for one state
-        fit_bula <- k[[j]]$result$result
+        fit_bula <- traitOutput[[j]]$result$result
         ## Extract warnings
-        clpm.warnings[j] <- list(k[[j]]$warnings)
+        clpm.warnings[j] <- list(traitOutput[[j]]$warnings)
         ## Extract errors
-        clpm.errors[j] <- list(k[[j]]$result$error)
+        clpm.errors[j] <- list(traitOutput[[j]]$result$error)
         ## Skip results which had an error
         if(!is.null(fit_bula)) {
             estimate <- standardizedSolution(fit_bula)
@@ -159,7 +161,6 @@ for (k in list(agrOutput,
             ## Initialize df for results
             clpm.estimates <- data.frame(
                 trait = character(),
-                initial = character(),
                 r1 = numeric(),
                 r1.lb = numeric(),
                 r1.ub = numeric(),
@@ -179,12 +180,11 @@ for (k in list(agrOutput,
                 samplesize = numeric()
             )
             ## Extract results
-            tempResults <- extract.est.clpm(clpm.labels[i, ], estimate)
-            clpm.estimates[i, ] <- tempResults
+            tempResults <- extract.est.clpm(clpm.labels[k, ], estimate)
             ## Add additional info (state and samplesize)
-            clpm.estimates$state <- bula
-            clpm.estimates$samplesize <- as.numeric(summary(fit_bula)$data$nobs)
-
+            tempResults$state <- bula
+            tempResults$samplesize <- as.numeric(summary(fit_bula)$data$nobs)
+            clpm.estimates[j,] <- tempResults
         }
     }
 }
