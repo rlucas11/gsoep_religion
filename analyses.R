@@ -265,6 +265,7 @@ model.all.observed.clpm <- sem(clpm_observed,
     data = data
     )
 summary(model.all.observed.clpm)
+
 fitMeasures(model.all.observed.clpm)
 standardizedSolution(model.all.observed.clpm,
                      type = "std.all", se = TRUE, zstat = TRUE,
