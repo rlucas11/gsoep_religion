@@ -84,12 +84,9 @@ runModels <- function(bula, data) {
 ## Run separately in each state
 ################################################################################
 
-## Get list of states
-bula_neu <- sort(unique(data$first.state))
-
-## Temporary for testing
-data$first.state <- sample(1:100, nrow(data), replace=TRUE)
-bula_neu <- sort(unique(data$first.state))[1:3]
+## ## Temporary for testing
+## data$first.state <- sample(1:100, nrow(data), replace=TRUE)
+## bula_neu <- sort(unique(data$first.state))[1:3]
 
 ## Use purrr to run through states, saving output and errors
 ## Do this separately for each trait
@@ -142,10 +139,39 @@ stateOutput <- list(agrOutput,
                extOutput,
                neuOutput,
                opnOutput)
+
+stateWarnings <- vector(mode="list",
+                        length(stateOutput))
+stateErrors <- vector(mode="list",
+                      length(stateOutput))
+                       
+if(exists("singleTraitOutput")) rm(singleTraitOutput)
+
 for (k in 1:length(stateOutput)) {
     traitOutput <- stateOutput[[k]]
     clpm.warnings <- vector(mode="list", length=length(traitOutput))
     clpm.errors <- vector(mode="list",length=length(traitOutput))
+    ## Initialize df for results
+    clpm.estimates <- data.frame(
+        trait = character(),
+        r1 = numeric(),
+        r1.lb = numeric(),
+        r1.ub = numeric(),
+        r2 = numeric(),
+        r2.lb = numeric(),
+        r2.ub = numeric(),
+        rt.cl = numeric(),
+        rt.cl.lb = numeric(),
+        rt.cl.ub = numeric(),
+        tr.cl = numeric(),
+        tr.cl.lb = numeric(),
+        tr.cl.ub = numeric(),
+        st = numeric(),
+        st.lb = numeric(),
+        st.ub = numeric(),
+        state = numeric(),
+        samplesize = numeric()
+    )
     for (j in 1:length(traitOutput)) {
         bula <- j
         ## Extract results for one state
@@ -158,27 +184,6 @@ for (k in 1:length(stateOutput)) {
         if(!is.null(fit_bula)) {
             estimate <- standardizedSolution(fit_bula)
 
-            ## Initialize df for results
-            clpm.estimates <- data.frame(
-                trait = character(),
-                r1 = numeric(),
-                r1.lb = numeric(),
-                r1.ub = numeric(),
-                r2 = numeric(),
-                r2.lb = numeric(),
-                r2.ub = numeric(),
-                rt.cl = numeric(),
-                rt.cl.lb = numeric(),
-                rt.cl.ub = numeric(),
-                tr.cl = numeric(),
-                tr.cl.lb = numeric(),
-                tr.cl.ub = numeric(),
-                st = numeric(),
-                st.lb = numeric(),
-                st.ub = numeric(),
-                state = numeric(),
-                samplesize = numeric()
-            )
             ## Extract results
             tempResults <- extract.est.clpm(clpm.labels[k, ], estimate)
             ## Add additional info (state and samplesize)
@@ -187,16 +192,23 @@ for (k in 1:length(stateOutput)) {
             clpm.estimates[j,] <- tempResults
         }
     }
+    ## Restructure clpm.estimates
+    tempTrait <- clpm.estimates %>%
+        pivot_longer(cols = c(r1:st.ub, samplesize))
+    ifelse(!exists("singleTraitOutput"),
+           singleTraitOutput <- tempTrait,
+           singleTraitOutput <- rbind(singleTraitOutput, tempTrait))
+    stateWarnings[k] <- list(clpm.warnings)
+    stateErrors[k] <- list(clpm.errors)
 }
 
+names(stateWarnings) <- clpm.labels[[1]]
+names(stateErrors) <- clpm.labels[[1]]
 
-            ## Aggregate accross states
-            ifelse(j == 1,
-                   clpm.aggregated.estimates <- clpm.estimates.w,
-                   clpm.aggregated.estimates <- rbind(clpm.aggregated.estimates,
-                                                      clpm.estimates.w)
-                   )
-        }
-    }
-}
+## Create wide version of singleTraitOutput
+singleTraitOutput.w <- singleTraitOutput %>%
+    pivot_wider(id_cols=state,
+                names_from = c(trait, name),
+                names_sep = ".")
+
 
