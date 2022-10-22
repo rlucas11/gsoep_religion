@@ -138,7 +138,7 @@ runModels <- function(bula, data) {
 }
 
 ## Get list of states
-bula_neu <- sort(unique(data$first.state))
+## bula_neu <- sort(unique(data$first.state))
 
 ## ## Temporary for testing
 ## data$first.state <- sample(1:100, nrow(data), replace=TRUE)

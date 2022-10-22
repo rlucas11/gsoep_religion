@@ -110,7 +110,7 @@ runModels <- function(bula, data) {
 }
 
 ## Get list of states
-bula_neu <- sort(unique(data$first.state))
+## bula_neu <- sort(unique(data$first.state))
 
 ## ## Temporary for testing
 ## data$first.state <- sample(1:100, nrow(data), replace=TRUE)
@@ -118,7 +118,7 @@ bula_neu <- sort(unique(data$first.state))
 ## stateOutput <- map(bula_neu[1:3], quietly(safely(runModels)), data)
 
 ## Use purrr to run through states, saving output and errors (using "safely")
-stateOutput <- map(bula_neu, quietly(safely(runModelsRiclpm)), data)
+stateOutput <- map(bula_neu, quietly(safely(runModels)), data)
 
 riclpm.warnings <- vector(mode="list", length=length(stateOutput))
 riclpm.errors <- vector(mode="list",length=length(stateOutput))
@@ -207,6 +207,6 @@ for (j in 1:length(stateOutput)) {
 }
 
 ## Save matrix of results
-write_csv(riclpm.aggregated.fit, file="results/riclpm.observed.latent.states.aggregated.fit.csv")           
+write_csv(riclpm.aggregated.fit, file="results/riclpm.observed.states.aggregated.fit.csv")           
 
 

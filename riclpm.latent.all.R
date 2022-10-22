@@ -166,7 +166,7 @@ runModelsRiclpm <- function(bula, data) {
 }
 
 ## Get list of states
-bula_neu <- sort(unique(data$first.state))
+## bula_neu <- sort(unique(data$first.state))
 
 ## ## Temporary for testing
 ## data$first.state <- sample(1:50, nrow(data), replace=TRUE)
