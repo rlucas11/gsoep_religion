@@ -212,3 +212,6 @@ singleTraitOutput.w <- singleTraitOutput %>%
                 names_sep = ".")
 
 
+write_csv(singleTraitOutput.w, file="results/clpm.states.single.estimates.csv")
+save(stateWarnings, file="results/clpm.single.warnings.RData")
+save(stateErrors, file="results/clpm.single.errors.RData")
