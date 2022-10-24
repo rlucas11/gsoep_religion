@@ -26,7 +26,7 @@ The code is set up to use the STATA files provided by the SOEP.
 - Run CLPM with single-variable models in each state: [clpm.single.R](clpm.single.R)
 - Run RI-CLPM with single-variable models in each state: [riclpm.single.R](riclpm.single.R)
 
-The script [updateAnalysis.R](updateAnalysis.R) will run all of the above code and can be modified to run subsets (e.g., setup plus one or more specific analyses).
+The script [updateAnalyses.R](updateAnalyses.R) will run all of the above code and can be modified to run subsets (e.g., setup plus one or more specific analyses).
 
 ## Analysis Plan
 
