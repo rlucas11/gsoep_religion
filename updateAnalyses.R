@@ -1,3 +1,7 @@
+## Sink messages for later examination
+fileName <- file(paste0("results/", format(Sys.time(), "%m-%d-%Y"), ".out.txt"), open="wt")
+sink(fileName, type="message")
+
 ## Setup (load data and packages)
 source('analysisSetup.R')
 
@@ -29,3 +33,6 @@ source('clpm.single.R')
 
 ## Run RI-CLPM with latent variables, trait-by-trait (trait-by-trait, latent, state-by-state)
 source('riclpm.single.R')
+
+## Turn off sink
+sink()
