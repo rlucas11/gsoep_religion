@@ -34,11 +34,4 @@ dbl (40): pid, bula_h_1984, bula_h_1985, bula_h_1986, bu...
 ℹ Use `spec()` to retrieve the full column specification for this data.
 ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
 Warning message:
-The `value` argument of `names<-` must have the same length
-as `x` as of tibble 3.0.0.
-ℹ `names` must have length 26, not 28.
-This warning is displayed once every 8 hours.
-Call `lifecycle::last_lifecycle_warnings()` to see where
-this warning was generated. 
-Warning message:
 In sink() : no sink to remove
