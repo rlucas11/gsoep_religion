@@ -122,9 +122,9 @@ traitModelNames <- c(
     "tr051", "tr091", "tr131", "tr171",
     "tr052", "tr092", "tr132", "tr172",
     "tr053", "tr093", "tr133", "tr173",
-    "trMean05", "trMean09", "trMean13", "trMean17", "trMiss", "trMean",
+    "trMean05", "trMean09", "trMean13", "trMean17", "trMiss",
     "relig05_orig", "relig09_orig", "relig13_orig", "relig17_orig",
-    "relig05", "relig09", "relig13", "relig17", "religMean",
+    "relig05", "relig09", "relig13", "relig17",
     "first.state"
 )
 

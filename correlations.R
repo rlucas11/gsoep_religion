@@ -1,6 +1,6 @@
 ## Create cross-wave means for personality measures
 
-data <- data %>%
+aggData <- data %>%
     rowwise() %>%
     mutate(agr=mean(c(agr05, agr09, agr13, agr17), na.rm=TRUE),
            cns=mean(c(cns05, cns09, cns13, cns17), na.rm=TRUE),
@@ -10,13 +10,13 @@ data <- data %>%
            relig=mean(c(relig05, relig09, relig13, relig17), na.rm=TRUE)
            )
 
-cor(data[,c("agr", "cns", "ext", "neu", "opn", "relig")], use="pair")
+cor(aggData[,c("agr", "cns", "ext", "neu", "opn", "relig")], use="pair")
 
 ## ## Temporary for testing
 ## data$first.state <- sample(1:17, nrow(data), replace=TRUE)
 ## bula_neu <- sort(unique(data$first.state))
 
-out <- statsBy(data[,c("agr", "cns", "ext", "neu", "opn", "relig", "first.state")],
+out <- statsBy(aggData[,c("agr", "cns", "ext", "neu", "opn", "relig", "first.state")],
                group="first.state",
                cors=TRUE)
 
