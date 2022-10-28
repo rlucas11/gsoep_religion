@@ -211,13 +211,13 @@ singleTraitObsOutput.w <- singleTraitObsOutput %>%
                 names_from = c(trait, name),
                 names_sep = ".")
 
-## ## Write Results
-## write_csv(singleTraitObsOutput.w, file="results/clpm.states.single.obs.estimates.csv")
-## save(stateWarnings, file="results/clpm.single.obs.warnings.RData")
-## save(stateErrors, file="results/clpm.single.obs.errors.RData")
+## Write Results
+write_csv(singleTraitObsOutput.w, file="results/clpm.states.single.obs.estimates.csv")
+save(stateWarnings, file="results/clpm.single.obs.warnings.RData")
+save(stateErrors, file="results/clpm.single.obs.errors.RData")
 
-## Test Results (comment when not testing)
-write_csv(singleTraitObsOutput.w, file="testResults/clpm.states.single.obs.estimates.csv")
-save(stateWarnings, file="testResults/clpm.single.obs.warnings.RData")
-save(stateErrors, file="testResults/clpm.single.obs.errors.RData")
+## ## Test Results (comment when not testing)
+## write_csv(singleTraitObsOutput.w, file="testResults/clpm.states.single.obs.estimates.csv")
+## save(stateWarnings, file="testResults/clpm.single.obs.warnings.RData")
+## save(stateErrors, file="testResults/clpm.single.obs.errors.RData")
 

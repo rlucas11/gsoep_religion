@@ -8,10 +8,10 @@ source('analysisSetup.R')
 ## Restrict sample to those with at least one item per construct
 source('restrictSample.R')
 
-## Testing (comment out when running actual analysis)
-## This creates random state data and will only run through the first 3
-data$first.state <- sample(1:50, nrow(data), replace=TRUE)
-bula_neu <- sort(unique(data$first.state))[1:3]
+## ## Testing (comment out when running actual analysis)
+## ## This creates random state data and will only run through the first 3
+## data$first.state <- sample(1:50, nrow(data), replace=TRUE)
+## bula_neu <- sort(unique(data$first.state))[1:3]
 
 ## ## Get correlations
 ## source('correlations.R')
