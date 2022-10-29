@@ -35,10 +35,10 @@ source('restrictSample.R')
 ## source('riclpm.single.R')
 
 ## Run CLPM with observed variables, trait-by-trait (trait-by-trait, observed, state-by-state)
-source('clpm.single.obs.R')
+## source('clpm.single.obs.R')
 
 ## Run RI-CLPM with observed variables, trait-by-trait (trait-by-trait, observed, state-by-state)
-source('riclpm.single.obs.R')
+## source('riclpm.single.obs.R')
 
 
 ## Turn off sink

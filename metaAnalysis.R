@@ -53,33 +53,372 @@ bulaList <- bulaList %>%
     arrange(desc(z.relig)) %>%
     mutate(stateName = factor(stateName, unique(stateName)))
 
+bulaLevels <- data.frame(levels=levels(bulaList$stateName))
+write_csv(bulaLevels, "info/stateReligiosity.csv")
+################################################################################
+## Load warnings
+################################################################################
+
+## List warnings
+load("results/clpm.warnings.RData")
+problems <- as.numeric(grep(
+    "instabilities|positive\ definite|variances\ are\ negative",
+    clpm.warnings
+))
+load("results/riclpm.warnings.RData")
+problemsRi <- as.numeric(grep(
+    "instabilities|positive\ definite|variances\ are\ negative",
+    riclpm.warnings
+))
+load("results/clpm.observed.warnings.RData")
+problemsObs <- as.numeric(grep(
+    "instabilities|positive\ definite|variances\ are\ negative",
+    clpm.warnings
+))
+load("results/riclpm.observed.warnings.RData")
+problemsRiObs <- as.numeric(grep(
+    "instabilities|positive\ definite|variances\ are\ negative",
+    riclpm.warnings
+))
+load("results/clpm.single.warnings.RData")
+warningsList <- lapply(
+    stateWarnings,
+    function(x) grep("instabilities|positive\ definite|variances\ are\ negative", x)
+)
+load("results/riclpm.single.warnings.RData")
+warningsListRi <- lapply(
+    stateWarnings,
+    function(x) grep("instabilities|positive\ definite|variances\ are\ negative", x)
+)
+load("results/clpm.single.obs.warnings.RData")
+warningsListObs <- lapply(
+    stateWarnings,
+    function(x) grep("instabilities|positive\ definite|variances\ are\ negative", x)
+)
+load("results/riclpm.single.obs.warnings.RData")
+warningsListRiObs <- lapply(
+    stateWarnings,
+    function(x) grep("instabilities|positive\ definite|variances\ are\ negative", x)
+)
 
 
 ################################################################################
 ## Load Data
 ################################################################################
 
-data <- read_csv("results/clpm.latent.states.aggregated.estimates.csv")
-data <- left_join(data, bulaList[, c("state", "stateName", "z.relig")], by = "state")
-
+dataC <- read_csv("results/clpm.latent.states.aggregated.estimates.csv")
 dataRi <- read_csv("results/riclpm.latent.states.aggregated.estimates.csv")
-dataRi <- left_join(dataRi, bulaList[, c("state", "stateName", "z.relig")], by = "state")
-
 dataObs <- read_csv("results/clpm.observed.states.aggregated.estimates.csv")
-dataObs <- left_join(dataObs, bulaList[, c("state", "stateName", "z.relig")], by = "state")
-
 dataRiObs <- read_csv("results/riclpm.observed.states.aggregated.estimates.csv")
-dataRiObs <- left_join(dataRiObs, bulaList[, c("state", "stateName", "z.relig")], by = "state")
-
 dataSingle <- read_csv("results/clpm.states.single.estimates.csv")
-dataSingle <- left_join(dataSingle, bulaList[, c("state", "stateName", "z.relig")], by = "state")
-
 dataRiSingle <- read_csv("results/riclpm.states.single.estimates.csv")
-dataRiSingle <- left_join(dataRiSingle, bulaList[, c("state", "stateName", "z.relig")], by = "state")
+dataSingleObs <- read_csv("results/clpm.states.single.obs.estimates.csv")
+dataRiSingleObs <- read_csv("results/riclpm.states.single.obs.estimates.csv")
+
+resultsList <- data.frame(
+    results = c(
+        "dataC",
+        "dataRi",
+        "dataObs",
+        "dataRiObs",
+        "dataSingle",
+        "dataRiSingle",
+        "dataSingleObs",
+        "dataRiSingleObs"
+    ),
+    warnings = c(
+        "problems",
+        "problemsRi",
+        "problemsObs",
+        "problemsRiObs",
+        "warningsList",
+        "warningsListRi",
+        "warningsListObs",
+        "warningsListRiObs"
+    ),
+    model = rep(c(
+        "CLPM",
+        "RICLPM"
+    ), 4),
+    type = rep(
+        rep(c("Latent", "Observed"),
+            each = 2
+        ), 2
+    ),
+    traits = rep(
+        c("All", "Single"),
+        each = 4
+    )
+)
+
+
+################################################################################
+## Restructure and combine data
+################################################################################
+
+## Function to restructure results to long form
+## Also adds state and warnings info
+restructureResults <- function(data, problems, model, type) {
+    data.l <- data %>%
+        left_join(bulaList[, c("state", "stateName", "z.relig")],
+            by = "state"
+            ) %>%
+        mutate(
+            Model = model,
+            Type = type,
+            Traits = "All"
+        ) %>%
+        pivot_longer(
+            cols=agr.r1:opn.st.ub,
+            names_to = c("Trait", "Parameter"),
+            names_pattern="([[:alpha:]]*)\\.(.*)"
+        )
+    data.l[!(data.l$state %in% problems), "select"] <- 1
+    return(data.l[, c(
+        "state",
+        "stateName",
+        "z.relig",
+        "Model",
+        "Type",
+        "Traits",
+        "Trait",
+        "Parameter",
+        "value",
+        "select",
+        "samplesize"
+    )])
+}
+
+## Function to restructure single-trait results to long form
+## Also adds state and warnings info
+restructureResultsSingle <- function(data, problems, model, type) {
+    nTable <- data %>%
+        select(state, contains("samplesize")) %>%
+        pivot_longer(
+            cols = contains("samplesize"),
+            names_to = c("Trait", "var"),
+            values_to = "samplesize",
+            names_pattern = "([[:alpha:]]*)\\.(.*)"
+        )
+    for (i in c("agr", "cns", "ext", "neu", "opn")) {
+        nTable[
+            nTable$Trait == i &
+                !(nTable$state %in% warningsList[[i]]),
+            "select"
+        ] <- 1
+    }
+    data.l <- data %>%
+        left_join(bulaList[, c("state", "stateName", "z.relig")],
+            by = "state"
+        ) %>%
+        mutate(
+            Model = model,
+            Type = type,
+            Traits = "Single"
+        ) %>%
+        select(!contains("samplesize")) %>%
+        pivot_longer(
+            cols = agr.r1:opn.st.ub,
+            names_to = c("Trait", "Parameter"),
+            names_pattern = "([[:alpha:]]*)\\.(.*)"
+        ) %>%
+        left_join(nTable[, -3],
+            by = c("state", "Trait")
+            )
+    return(data.l[, c(
+        "state",
+        "stateName",
+        "z.relig",
+        "Model",
+        "Type",
+        "Traits",
+        "Trait",
+        "Parameter",
+        "value",
+        "select",
+        "samplesize"
+    )])
+}
+
+
+for (i in 1:nrow(resultsList)) {
+    if (str_detect(resultsList[i, 1], "Single")) {
+        data <- restructureResultsSingle(
+            data = eval(parse(text = resultsList[[i, 1]])),
+            problems = eval(parse(text = resultsList[[i, 2]])),
+            model = resultsList[[i, 3]],
+            type = resultsList[[i, 4]]
+        )
+    } else {
+        data <- restructureResults(
+            data = eval(parse(text = resultsList[[i, 1]])),
+            problems = eval(parse(text = resultsList[[i, 2]])),
+            model = resultsList[[i, 3]],
+            type = resultsList[[i, 4]]
+        )
+    }
+    if(i == 1) {
+        combinedResults <- data
+    } else {
+        combinedResults <- rbind(combinedResults, data)
+    }
+}
+
+## Remove attributes for religiosity
+
+write.csv(data.frame(combinedResults), "data/combinedResults.csv", row.names=FALSE)
 
 ################################################################################
 ## Plots
 ################################################################################
+
+results <- read_csv("data/combinedResults.csv")
+bulaLevels <- read_csv("info/stateReligiosity.csv")
+results$stateName <- factor(results$stateName, levels = bulaLevels$levels)
+results$Model <- as.factor(results$Model)
+results$Type <- as.factor(results$Type)
+results$Traits <- as.factor(results$Traits)
+
+metaSelect <- function(results,
+                       parameter,
+                       trait,
+                       model = NULL,
+                       type = NULL,
+                       traits = NULL) {
+    data <- results %>%
+        filter(grepl(parameter, Parameter) &
+            grepl(trait, Trait))
+    if (!is.null(model)) {
+        data <- data %>%
+            filter(Model==model)
+    }
+    if (!is.null(type)) {
+        data <- data %>%
+            filter(grepl(type, Type))
+    }
+    if (!is.null(traits)) {
+        data <- data %>%
+            filter(grepl(traits, Traits))
+    }
+    data <- data %>%
+        pivot_wider(
+            names_from = Parameter,
+            values_from = value
+        )
+    return(data)
+}
+
+
+
+temp <- metaSelect(results, "rt.cl", "opn", model="CLPM")
+
+temp %>%
+    filter(!is.na(select)) %>%
+    ggplot(
+        aes(
+            x = stateName,
+            y = rt.cl,
+            ymin = rt.cl.lb,
+            ymax = rt.cl.ub,
+            color = Model,
+            linetype = Type,
+            shape = Traits
+        )
+    ) +
+    geom_point(position = position_dodge(width = 0.5)) +
+    geom_errorbar(width = .05, position = position_dodge(width = 0.5)) +
+    coord_flip()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+################################################################################
+#### CLPM with Latent Variables, All Traits
+## Load warnings
+load("results/clpm.warnings.RData")
+## Find any with problems
+
+## Load results
+data <- read_csv("results/clpm.latent.states.aggregated.estimates.csv")
+data <- data %>%
+    left_join(bulaList[, c("state", "stateName", "z.relig")],
+              by = "state")  %>%
+    mutate(Model="CLPM",
+           Type="Latent")
+## Restructure
+data.l <- data %>%
+    pivot_longer(
+        cols = agr.r1:opn.st.ub,
+        names_to = c("Trait", "Parameter"),
+        names_pattern = "([[:alpha:]]*)\\.(.*)"
+    )
+data.l[!(data.l$state %in% problems), "select"] <- 1    
+
+
+#### RI-CLPM with Latent Variables, All Traits
+## Load warnings
+load("results/riclpm.warnings.RData")
+## Find any with problems
+## Load results
+dataRi <- read_csv("results/riclpm.latent.states.aggregated.estimates.csv")
+dataRi <- dataRi %>%
+    left_join(bulaList[, c("state", "stateName", "z.relig")],
+              by = "state")  %>%
+    mutate(
+        Model = "RICLPM",
+        Type = "Latent"
+    )
+dataRi[!(dataRi$state %in% problemsRi), "select"] <- 1
+## Restructure
+dataRi.l <- dataRi %>%
+    pivot_longer(cols=agr.r1:opn.st.ub)
+
+
+cl.rt.models.ri <- dataRi %>%
+    select(starts_with("agr.rt.cl"), state, stateName, z.relig) %>%
+    mutate(Model="RI-CLPM",
+           Type="Latent")
+names(cl.rt.models.ri) <- c("rt.cl", "ub", "lb", "stateId", "State", "Religiosity", "Model", "Type")
+## Load warnings
+cl.rt.models.ri[!(cl.rt.models.ri$stateId %in% problems), "select"] <- 1
+
+
+dataRi <- read_csv("results/riclpm.latent.states.aggregated.estimates.csv")
+dataRi <- left_join(dataRi,
+                    bulaList[, c("state", "stateName", "z.relig")],
+                    by = "state")
+
+dataObs <- read_csv("results/clpm.observed.states.aggregated.estimates.csv")
+dataObs <- left_join(dataObs,
+                     bulaList[, c("state", "stateName", "z.relig")],
+                     by = "state")
+
+dataRiObs <- read_csv("results/riclpm.observed.states.aggregated.estimates.csv")
+dataRiObs <- left_join(dataRiObs,
+                       bulaList[, c("state", "stateName", "z.relig")],
+                       by = "state")
+
+dataSingle <- read_csv("results/clpm.states.single.estimates.csv")
+dataSingle <- left_join(dataSingle,
+                        bulaList[, c("state", "stateName", "z.relig")],
+                        by = "state")
+
+dataRiSingle <- read_csv("results/riclpm.states.single.estimates.csv")
+dataRiSingle <- left_join(dataRiSingle,
+                          bulaList[, c("state", "stateName", "z.relig")],
+                          by = "state")
+
 
 ## Use grep to find errors
 ## grep("instabilities|positive\ definite|variances\ are\ negative", clpm.warnings)
@@ -132,16 +471,63 @@ problems <- as.numeric(grep("instabilities|positive\ definite|variances\ are\ ne
 cl.rt.models.ri.obs[!(cl.rt.models.ri.obs$stateId %in% problems), "select"] <- 1
 
 
+
+#### Working here
+## Load warnings
+load("results/clpm.single.warnings.RData")
+warningsList <- lapply(
+    stateWarnings,
+    function(x) grep("instabilities|positive\ definite|variances\ are\ negative", x)
+)
+
+nTable <- dataSingle %>%
+    select(state, contains("samplesize")) %>%
+    pivot_longer(
+        cols = contains("samplesize"),
+        names_to = c("Trait", "var"),
+        values_to = "samplesize",
+        names_pattern = "([[:alpha:]]*)\\.(.*)"
+    )
+
+for (i in c("agr","cns","ext","neu","opn")) {
+    nTable[nTable$Trait==i &
+           !(nTable$state %in% warningsList[[i]]),
+           "select"] <- 1
+}
+
+dataSingle.l <- dataSingle %>%
+    left_join(bulaList[, c("state", "stateName", "z.relig")],
+        by = "state"
+        ) %>%
+    mutate(
+        Model = "CLPM",
+        Type = "Latent"
+    ) %>%
+    select(!contains("samplesize")) %>%
+        pivot_longer(
+            cols = agr.r1:opn.st.ub,
+            names_to = c("Trait", "parameter"),
+            names_pattern = "([[:alpha:]]*)\\.(.*)"
+        ) %>%
+    left_join(nTable[, -3],
+        by = c("state", "Trait")
+    )
+    
+
+
+    
+
+
 cl.rt.models.single <- dataSingle %>%
     select(starts_with("agr.rt.cl"), state, stateName, z.relig) %>%
     mutate(Model="CLPM",
            Type="Single")
 names(cl.rt.models.single) <- c("rt.cl", "ub", "lb", "stateId", "State", "Religiosity", "Model", "Type")
-## Load warnings
-load("results/clpm.single.warnings.RData")
 ## Find any with problems
 problems <- grep("instabilities|positive\ definite|variances\ are\ negative", stateWarnings[["agr"]])
 cl.rt.models.single[!(cl.rt.models.single$stateId %in% problems), "select"] <- 1
+
+
 
 
 cl.rt.models.ri.single <- dataRiSingle %>%
@@ -154,6 +540,9 @@ load("results/riclpm.single.warnings.RData")
 ## Find any with problems
 problems <- grep("instabilities|positive\ definite|variances\ are\ negative", stateWarnings[["agr"]])
 cl.rt.models.ri.single[!(cl.rt.models.ri.single$stateId %in% problems), "select"] <- 1
+
+
+
 
 
 allModels <- rbind(cl.rt.models.orig,
