@@ -226,7 +226,7 @@ for (k in 1:length(stateOutput)) {
     }
     ## Restructure riclpm.estimates
     tempTrait <- riclpm.estimates %>%
-        pivot_longer(cols = c(r1:st.ub, samplesize))
+        pivot_longer(cols = c(r1:ri.ub, samplesize))
     ifelse(!exists("singleTraitObsOutput"),
            singleTraitObsOutput <- tempTrait,
            singleTraitObsOutput <- rbind(singleTraitObsOutput, tempTrait))
