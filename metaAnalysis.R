@@ -279,6 +279,15 @@ results$Model <- as.factor(results$Model)
 results$Type <- as.factor(results$Type)
 results$Traits <- as.factor(results$Traits)
 
+
+temp <- results %>%
+    filter(Model == "RICLPM",
+           Parameter == "ri.r")
+
+
+table(temp[, c("Type", "Traits")])
+    
+
 metaSelect <- function(results,
                        parameter,
                        trait,
@@ -287,7 +296,8 @@ metaSelect <- function(results,
                        traits = NULL) {
     data <- results %>%
         filter(grepl(parameter, Parameter) &
-            grepl(trait, Trait))
+               grepl(trait, Trait) &
+               select==1)
     if (!is.null(model)) {
         data <- data %>%
             filter(Model==model)
@@ -305,12 +315,24 @@ metaSelect <- function(results,
             names_from = Parameter,
             values_from = value
         )
+    names(data) <- c("state",
+                     "State",
+                     "Religiosity",
+                     "Model",
+                     "Type",
+                     "Traits",
+                     "Trait",
+                     "select",
+                     "samplesize",
+                     "es",
+                     "lb",
+                     "ub")
     return(data)
 }
 
 
 
-temp <- metaSelect(results, "rt.cl", "opn", model="CLPM")
+temp <- metaSelect(results, "ri.r", "opn", model="RICLPM")
 
 temp %>%
     filter(!is.na(select)) %>%
@@ -343,251 +365,62 @@ temp %>%
 
 
 
-################################################################################
-#### CLPM with Latent Variables, All Traits
-## Load warnings
-load("results/clpm.warnings.RData")
-## Find any with problems
-
-## Load results
-data <- read_csv("results/clpm.latent.states.aggregated.estimates.csv")
-data <- data %>%
-    left_join(bulaList[, c("state", "stateName", "z.relig")],
-              by = "state")  %>%
-    mutate(Model="CLPM",
-           Type="Latent")
-## Restructure
-data.l <- data %>%
-    pivot_longer(
-        cols = agr.r1:opn.st.ub,
-        names_to = c("Trait", "Parameter"),
-        names_pattern = "([[:alpha:]]*)\\.(.*)"
-    )
-data.l[!(data.l$state %in% problems), "select"] <- 1    
-
-
-#### RI-CLPM with Latent Variables, All Traits
-## Load warnings
-load("results/riclpm.warnings.RData")
-## Find any with problems
-## Load results
-dataRi <- read_csv("results/riclpm.latent.states.aggregated.estimates.csv")
-dataRi <- dataRi %>%
-    left_join(bulaList[, c("state", "stateName", "z.relig")],
-              by = "state")  %>%
-    mutate(
-        Model = "RICLPM",
-        Type = "Latent"
-    )
-dataRi[!(dataRi$state %in% problemsRi), "select"] <- 1
-## Restructure
-dataRi.l <- dataRi %>%
-    pivot_longer(cols=agr.r1:opn.st.ub)
-
-
-cl.rt.models.ri <- dataRi %>%
-    select(starts_with("agr.rt.cl"), state, stateName, z.relig) %>%
-    mutate(Model="RI-CLPM",
-           Type="Latent")
-names(cl.rt.models.ri) <- c("rt.cl", "ub", "lb", "stateId", "State", "Religiosity", "Model", "Type")
-## Load warnings
-cl.rt.models.ri[!(cl.rt.models.ri$stateId %in% problems), "select"] <- 1
-
-
-dataRi <- read_csv("results/riclpm.latent.states.aggregated.estimates.csv")
-dataRi <- left_join(dataRi,
-                    bulaList[, c("state", "stateName", "z.relig")],
-                    by = "state")
-
-dataObs <- read_csv("results/clpm.observed.states.aggregated.estimates.csv")
-dataObs <- left_join(dataObs,
-                     bulaList[, c("state", "stateName", "z.relig")],
-                     by = "state")
-
-dataRiObs <- read_csv("results/riclpm.observed.states.aggregated.estimates.csv")
-dataRiObs <- left_join(dataRiObs,
-                       bulaList[, c("state", "stateName", "z.relig")],
-                       by = "state")
-
-dataSingle <- read_csv("results/clpm.states.single.estimates.csv")
-dataSingle <- left_join(dataSingle,
-                        bulaList[, c("state", "stateName", "z.relig")],
-                        by = "state")
-
-dataRiSingle <- read_csv("results/riclpm.states.single.estimates.csv")
-dataRiSingle <- left_join(dataRiSingle,
-                          bulaList[, c("state", "stateName", "z.relig")],
-                          by = "state")
-
-
-## Use grep to find errors
-## grep("instabilities|positive\ definite|variances\ are\ negative", clpm.warnings)
-
-## Load results
-cl.rt.models.orig <- data %>%
-    select(starts_with("agr.rt.cl"), state, stateName, z.relig) %>%
-    mutate(Model="CLPM",
-           Type="Latent")
-names(cl.rt.models.orig) <- c("rt.cl", "ub", "lb", "stateId", "State", "Religiosity", "Model", "Type")
-## Load warnings
-load("results/clpm.warnings.RData")
-## Find any with problems
-problems <- as.numeric(grep("instabilities|positive\ definite|variances\ are\ negative", clpm.warnings))
-cl.rt.models.orig[!(cl.rt.models.orig$stateId %in% problems), "select"] <- 1
-
-cl.rt.models.ri <- dataRi %>%
-    select(starts_with("agr.rt.cl"), state, stateName, z.relig) %>%
-    mutate(Model="RI-CLPM",
-           Type="Latent")
-names(cl.rt.models.ri) <- c("rt.cl", "ub", "lb", "stateId", "State", "Religiosity", "Model", "Type")
-## Load warnings
-load("results/riclpm.warnings.RData")
-## Find any with problems
-problems <- as.numeric(grep("instabilities|positive\ definite|variances\ are\ negative", riclpm.warnings))
-cl.rt.models.ri[!(cl.rt.models.ri$stateId %in% problems), "select"] <- 1
-
-
-cl.rt.models.obs <- dataObs %>%
-    select(starts_with("agr.rt.cl"), state, stateName, z.relig) %>%
-    mutate(Model="CLPM",
-           Type="Observed")
-names(cl.rt.models.obs) <- c("rt.cl", "ub", "lb", "stateId", "State", "Religiosity", "Model", "Type")
-## Load warnings
-load("results/clpm.observed.warnings.RData")
-## Find any with problems
-problems <- as.numeric(grep("instabilities|positive\ definite|variances\ are\ negative", clpm.warnings))
-cl.rt.models.obs[!(cl.rt.models.obs$stateId %in% problems), "select"] <- 1
-
-
-cl.rt.models.ri.obs <- dataRiObs %>%
-    select(starts_with("agr.rt.cl"), state, stateName, z.relig) %>%
-    mutate(Model="RI-CLPM",
-           Type="Observed")
-names(cl.rt.models.ri.obs) <- c("rt.cl", "ub", "lb", "stateId", "State", "Religiosity", "Model", "Type")
-## Load warnings
-load("results/riclpm.observed.warnings.RData")
-## Find any with problems
-problems <- as.numeric(grep("instabilities|positive\ definite|variances\ are\ negative", riclpm.warnings))
-cl.rt.models.ri.obs[!(cl.rt.models.ri.obs$stateId %in% problems), "select"] <- 1
-
-
-
-#### Working here
-## Load warnings
-load("results/clpm.single.warnings.RData")
-warningsList <- lapply(
-    stateWarnings,
-    function(x) grep("instabilities|positive\ definite|variances\ are\ negative", x)
-)
-
-nTable <- dataSingle %>%
-    select(state, contains("samplesize")) %>%
-    pivot_longer(
-        cols = contains("samplesize"),
-        names_to = c("Trait", "var"),
-        values_to = "samplesize",
-        names_pattern = "([[:alpha:]]*)\\.(.*)"
-    )
-
-for (i in c("agr","cns","ext","neu","opn")) {
-    nTable[nTable$Trait==i &
-           !(nTable$state %in% warningsList[[i]]),
-           "select"] <- 1
-}
-
-dataSingle.l <- dataSingle %>%
-    left_join(bulaList[, c("state", "stateName", "z.relig")],
-        by = "state"
-        ) %>%
-    mutate(
-        Model = "CLPM",
-        Type = "Latent"
-    ) %>%
-    select(!contains("samplesize")) %>%
-        pivot_longer(
-            cols = agr.r1:opn.st.ub,
-            names_to = c("Trait", "parameter"),
-            names_pattern = "([[:alpha:]]*)\\.(.*)"
-        ) %>%
-    left_join(nTable[, -3],
-        by = c("state", "Trait")
-    )
-    
-
-
-    
-
-
-cl.rt.models.single <- dataSingle %>%
-    select(starts_with("agr.rt.cl"), state, stateName, z.relig) %>%
-    mutate(Model="CLPM",
-           Type="Single")
-names(cl.rt.models.single) <- c("rt.cl", "ub", "lb", "stateId", "State", "Religiosity", "Model", "Type")
-## Find any with problems
-problems <- grep("instabilities|positive\ definite|variances\ are\ negative", stateWarnings[["agr"]])
-cl.rt.models.single[!(cl.rt.models.single$stateId %in% problems), "select"] <- 1
-
-
-
-
-cl.rt.models.ri.single <- dataRiSingle %>%
-    select(starts_with("agr.rt.cl"), state, stateName, z.relig) %>%
-    mutate(Model="RI-CLPM",
-           Type="Single")
-names(cl.rt.models.ri.single) <- c("rt.cl", "ub", "lb", "stateId", "State", "Religiosity", "Model", "Type")
-## Load warnings
-load("results/riclpm.single.warnings.RData")
-## Find any with problems
-problems <- grep("instabilities|positive\ definite|variances\ are\ negative", stateWarnings[["agr"]])
-cl.rt.models.ri.single[!(cl.rt.models.ri.single$stateId %in% problems), "select"] <- 1
-
-
-
-
-
-allModels <- rbind(cl.rt.models.orig,
-                   cl.rt.models.ri,
-                   cl.rt.models.obs,
-                   cl.rt.models.ri.obs,
-                   cl.rt.models.single,
-                   cl.rt.models.ri.single)
-allModels$Model <- as.factor(allModels$Model)
-allModels$Type <- as.factor(allModels$Type)
-
-testPlot <- ggplot(data=subset(allModels[allModels$select==1,], !is.na(Model)),
-                   aes(x=State,
-                       y=rt.cl,
-                       ymin=lb,
-                       ymax=ub,
-                       color=Model,
-                       linetype=Type)) +
-    geom_point(position=position_dodge(width=0.5)) +
-    geom_errorbar(width=.05, position=position_dodge(width=0.5)) + coord_flip()
-testPlot
-    
-                       
 
 ################################################################################
 ## Functions
 ################################################################################
 
-stateMeta <- function(trait, data, varNames, single=FALSE, moderator=FALSE) {
-    ifelse(single == TRUE,
-        ni <- varNames[varNames$traitNames == trait, 3],
-        ni <- varNames[varNames$traitNames == trait, 4]
-    )
+stateMeta <- function(data,
+                      trait,
+                      effect,
+                      model,
+                      type,
+                      traits,
+                      moderator=FALSE) {
+    metaData <- metaSelect(data,
+                           effect,
+                           trait,
+                           model,
+                           type,
+                           traits)
     yivi <- escalc(measure = "COR",
-                   ri = eval(parse(text=varNames[varNames$traitNames==trait, 2])),
-                   ni = eval(parse(text=ni)),
-                   data = data)
+                   ri = es,
+                   ni = samplesize,
+                   data = metaData)
     ifelse(moderator == FALSE,
         meta <- rma(yi, vi, data = yivi, method = "ML"),
-        meta <- rma(yi, vi, data = yivi, method = "ML", mods = z.relig)
+        meta <- rma(yi, vi, data = yivi, method = "ML", mods = Religiosity)
     )
     summary(meta)
 }
 
-                       
+stateMeta(results, "agr", "rt.cl", "CLPM", "Latent", "All")
+stateMeta(results, "agr", "rt.cl", "CLPM", "Latent", "Single")
+stateMeta(results, "agr", "rt.cl", "CLPM", "Observed", "All")
+stateMeta(results, "agr", "rt.cl", "CLPM", "Observed", "Single")
+
+stateMeta(results, "agr", "rt.cl", "RICLPM", "Latent", "All")
+stateMeta(results, "agr", "rt.cl", "RICLPM", "Latent", "Single")
+stateMeta(results, "agr", "rt.cl", "RICLPM", "Observed", "All")
+stateMeta(results, "agr", "rt.cl", "RICLPM", "Observed", "Single")
+
+stateMeta(results, "opn", "rt.cl", "CLPM", "Latent", "All", moderator = TRUE)
+stateMeta(results, "opn", "rt.cl", "CLPM", "Latent", "Single", moderator = TRUE)
+stateMeta(results, "opn", "rt.cl", "CLPM", "Observed", "All", moderator = TRUE)
+stateMeta(results, "opn", "rt.cl", "CLPM", "Observed", "Single", moderator = TRUE)
+
+stateMeta(results, "opn", "rt.cl", "RICLPM", "Latent", "All", moderator = TRUE)
+stateMeta(results, "opn", "rt.cl", "RICLPM", "Latent", "Single", moderator = TRUE)
+stateMeta(results, "opn", "rt.cl", "RICLPM", "Observed", "All", moderator = TRUE)
+stateMeta(results, "opn", "rt.cl", "RICLPM", "Observed", "Single", moderator = TRUE)
+
+stateMeta(results, "opn", "ri.r", "RICLPM", "Latent", "All", moderator = TRUE)
+stateMeta(results, "opn", "ri.r", "RICLPM", "Latent", "Single", moderator = TRUE)
+stateMeta(results, "opn", "ri.r", "RICLPM", "Observed", "All", moderator = TRUE)
+stateMeta(results, "opn", "ri.r", "RICLPM", "Observed", "Single", moderator = TRUE)
+
+
+
 
 ################################################################################
 ## Original Model: CLPM, Latent Traits, All Traits
