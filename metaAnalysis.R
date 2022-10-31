@@ -404,6 +404,37 @@ stateMeta(results, "agr", "rt.cl", "RICLPM", "Latent", "Single")
 stateMeta(results, "agr", "rt.cl", "RICLPM", "Observed", "All")
 stateMeta(results, "agr", "rt.cl", "RICLPM", "Observed", "Single")
 
+stateMeta(results, "cns", "rt.cl", "CLPM", "Latent", "All")
+stateMeta(results, "cns", "rt.cl", "CLPM", "Latent", "Single")
+stateMeta(results, "cns", "rt.cl", "CLPM", "Observed", "All")
+stateMeta(results, "cns", "rt.cl", "CLPM", "Observed", "Single")
+
+stateMeta(results, "cns", "rt.cl", "RICLPM", "Latent", "All")
+stateMeta(results, "cns", "rt.cl", "RICLPM", "Latent", "Single")
+stateMeta(results, "cns", "rt.cl", "RICLPM", "Observed", "All")
+stateMeta(results, "cns", "rt.cl", "RICLPM", "Observed", "Single")
+
+stateMeta(results, "ext", "rt.cl", "CLPM", "Latent", "All")
+stateMeta(results, "ext", "rt.cl", "CLPM", "Latent", "Single")
+stateMeta(results, "ext", "rt.cl", "CLPM", "Observed", "All")
+stateMeta(results, "ext", "rt.cl", "CLPM", "Observed", "Single")
+
+stateMeta(results, "ext", "rt.cl", "RICLPM", "Latent", "All")
+stateMeta(results, "ext", "rt.cl", "RICLPM", "Latent", "Single")
+stateMeta(results, "ext", "rt.cl", "RICLPM", "Observed", "All")
+stateMeta(results, "ext", "rt.cl", "RICLPM", "Observed", "Single")
+
+stateMeta(results, "neu", "rt.cl", "CLPM", "Latent", "All")
+stateMeta(results, "neu", "rt.cl", "CLPM", "Latent", "Single")
+stateMeta(results, "neu", "rt.cl", "CLPM", "Observed", "All")
+stateMeta(results, "neu", "rt.cl", "CLPM", "Observed", "Single")
+
+stateMeta(results, "neu", "rt.cl", "RICLPM", "Latent", "All")
+stateMeta(results, "neu", "rt.cl", "RICLPM", "Latent", "Single")
+stateMeta(results, "neu", "rt.cl", "RICLPM", "Observed", "All")
+stateMeta(results, "neu", "rt.cl", "RICLPM", "Observed", "Single")
+
+
 stateMeta(results, "opn", "rt.cl", "CLPM", "Latent", "All", moderator = TRUE)
 stateMeta(results, "opn", "rt.cl", "CLPM", "Latent", "Single", moderator = TRUE)
 stateMeta(results, "opn", "rt.cl", "CLPM", "Observed", "All", moderator = TRUE)
