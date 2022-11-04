@@ -394,6 +394,66 @@ stateMeta <- function(data,
     summary(meta)
 }
 
+varLoop <- expand_grid(trait = c("agr", "cns", "ext", "neu", "opn"),
+                       effect = c("rt.cl", "tr.cl"),
+                       model = c("CLPM", "RICLPM"),
+                       type = c("Latent", "Observed"),
+                       variables = c("All", "Single"))
+
+metaCombinedResults <- data.frame(
+    trait = character(),
+    effect = character(),
+    model = character(),
+    type = character(),
+    variables = character(),
+    est = numeric(),
+    se = numeric(),
+    lb = numeric(),
+    ub = numeric()
+)
+
+for (i in 1:nrow(varLoop)) {
+    tempOut <- stateMeta(
+        results,
+        varLoop[[i, "trait"]],
+        varLoop[[i, "effect"]],
+        varLoop[[i, "model"]],
+        varLoop[[i, "type"]],
+        varLoop[[i, "variables"]]
+    )
+    metaCombinedResults[i, "trait"] <- varLoop[i, "trait"]
+    metaCombinedResults[i, "effect"] <- varLoop[i, "effect"]
+    metaCombinedResults[i, "model"] <- varLoop[i, "model"]
+    metaCombinedResults[i, "type"] <- varLoop[i, "type"]
+    metaCombinedResults[i, "variables"] <- varLoop[i, "variables"]
+    metaCombinedResults[i, "est"] <- as.numeric(tempOut$b)
+    metaCombinedResults[i, "se"] <- as.numeric(tempOut$se)
+    metaCombinedResults[i, "lb"] <- as.numeric(tempOut$ci.lb)
+    metaCombinedResults[i, "ub"] <- as.numeric(tempOut$ci.ub)
+}
+
+metaCombinedResults %>%
+    filter(
+        effect == "rt.cl"
+    ) %>%
+    ggplot(
+        aes(
+            x = trait,
+            y = est,
+            ymin = lb,
+            ymax = ub,
+            color = model,
+            linetype = type,
+            shape = variables
+        )
+    ) +
+    geom_point(position = position_dodge(width = 0.5)) +
+    geom_errorbar(width = .05, position = position_dodge(width = 0.5)) +
+    coord_flip()
+
+
+
+
 stateMeta(results, "agr", "rt.cl", "CLPM", "Latent", "All")
 stateMeta(results, "agr", "rt.cl", "CLPM", "Latent", "Single")
 stateMeta(results, "agr", "rt.cl", "CLPM", "Observed", "All")
