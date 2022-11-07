@@ -6,7 +6,7 @@ Entringer et al. (in press) examined the reciprocal associations between the Big
 
 ## Directory structure
 
-To run the following analyses, you need to set up the correct directory structure. The cleaning and analysis scripts are in the root directory. Within the root directory, there should be four additional directories for "data", "results", "info", and "scripts". Because of the confidential nature of the data, I keep the original data in a separate directory that is specified in the cleaning script. I do keep derived dataframes in the "data" folder, but I include this directory in .gitignore so it is not uploaded to github. 
+To run the following analyses, you need to set up the correct directory structure, only some of which will be created by cloning the repository. The cleaning and analysis scripts are in the root directory. Within the root directory, there should be four additional directories for "data", "results", "info", and "scripts". Because of the confidential nature of the data, I keep the original data in a separate directory that is specified in the cleaning script. I do keep derived dataframes in the "data" folder, but I include this directory in .gitignore so it is not uploaded to github. You will likely need to create this directory even after cloning the repository.
 
 A list of variables needed for the cleaning script to run is included in the "info" directory. That directory is also used to store some R objects and results. Some final results are saved to the "results" directory. Separate files with the lavaan models are saved in "scripts".
 
@@ -25,6 +25,8 @@ The code is set up to use the STATA files provided by the SOEP.
 - Run RI-CLPM with observed variables in each state: [riclpm.observed.all.R](riclpm.observed.all.R)
 - Run CLPM with single-variable models in each state: [clpm.single.R](clpm.single.R)
 - Run RI-CLPM with single-variable models in each state: [riclpm.single.R](riclpm.single.R)
+- The [metaAnalysisSetup.R](metaAnalysisSetup.R) script collects the relevant effects for the meta-analysis
+- The [metaAnalysis.R](metaAnalysis.R) script actually runs the meta-analysis and creates plots
 
 The script [updateAnalyses.R](updateAnalyses.R) will run all of the above code and can be modified to run subsets (e.g., setup plus one or more specific analyses).
 
@@ -32,7 +34,6 @@ The script [updateAnalyses.R](updateAnalyses.R) will run all of the above code a
 
 ### Calculate Zero-Order Correlations
 
-- Within each waves
 - Aggregating across waves
 - For full sample and separately by state
 
