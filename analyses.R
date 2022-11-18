@@ -271,6 +271,7 @@ standardizedSolution(model.all.observed.clpm,
                      type = "std.all", se = TRUE, zstat = TRUE,
                      pvalue = TRUE, ci = TRUE, level = .95, output = "text"
                      )
+cov2cor(fitted(model.all.observed.clpm)$cov)
 
 
 
