@@ -173,6 +173,9 @@ stateWarnings <- vector(mode="list",
                         length(stateOutput))
 stateErrors <- vector(mode="list",
                       length(stateOutput))
+stateFit <- vector(mode="list",
+                   length(stateOutput))
+
                        
 if(exists("singleTraitOutput")) rm(singleTraitOutput)
 
@@ -180,6 +183,7 @@ for (k in 1:length(stateOutput)) {
     traitOutput <- stateOutput[[k]]
     riclpm.warnings <- vector(mode="list", length=length(traitOutput))
     riclpm.errors <- vector(mode="list",length=length(traitOutput))
+    riclpm.fit <- vector(mode="list", length=length(traitOutput))
     ## Initialize df for results
     riclpm.estimates <- data.frame(
         trait = character(),
@@ -215,7 +219,8 @@ for (k in 1:length(stateOutput)) {
         ## Skip results which had an error
         if(!is.null(fit_bula)) {
             estimate <- standardizedSolution(fit_bula)
-
+            ## Extract Fit Measures
+            riclpm.fit[j] <- list(fitMeasures(fit_bula))
             ## Extract results
             tempResults <- extract.est.riclpm(riclpm.labels[k, ], estimate)
             ## Add additional info (state and samplesize)
@@ -232,10 +237,12 @@ for (k in 1:length(stateOutput)) {
            singleTraitOutput <- rbind(singleTraitOutput, tempTrait))
     stateWarnings[k] <- list(riclpm.warnings)
     stateErrors[k] <- list(riclpm.errors)
+    stateFit[k] <- list(riclpm.fit)
 }
 
 names(stateWarnings) <- riclpm.labels[[1]]
 names(stateErrors) <- riclpm.labels[[1]]
+names(stateFit) <- riclpm.labels[[1]]
 
 ## Create wide version of singleTraitOutput
 singleTraitOutput.w <- singleTraitOutput %>%
@@ -247,8 +254,7 @@ singleTraitOutput.w <- singleTraitOutput %>%
 write_csv(singleTraitOutput.w, file="results/riclpm.states.single.estimates.csv")
 save(stateWarnings, file="results/riclpm.single.warnings.RData")
 save(stateErrors, file="results/riclpm.single.errors.RData")
-
-
+save(stateFit, file="results/riclpm.single.fit.RData")
 
 
 

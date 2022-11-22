@@ -134,23 +134,35 @@ opnOutput <- map(bula_neu, quietly(safely(runModels)), opn)
 ## Extract estimates
 ################################################################################
 
-stateOutput <- list(agrOutput,
-               cnsOutput,
-               extOutput,
-               neuOutput,
-               opnOutput)
+stateOutput <- list(
+    agrOutput,
+    cnsOutput,
+    extOutput,
+    neuOutput,
+    opnOutput
+)
 
-stateWarnings <- vector(mode="list",
-                        length(stateOutput))
-stateErrors <- vector(mode="list",
-                      length(stateOutput))
+stateWarnings <- vector(
+    mode = "list",
+    length(stateOutput)
+)
+stateErrors <- vector(
+    mode = "list",
+    length(stateOutput)
+)
+stateFit <- vector(
+    mode = "list",
+    length(stateOutput)
+)
+
                        
 if(exists("singleTraitObsOutput")) rm(singleTraitObsOutput)
 
 for (k in 1:length(stateOutput)) {
     traitOutput <- stateOutput[[k]]
-    clpm.warnings <- vector(mode="list", length=length(traitOutput))
-    clpm.errors <- vector(mode="list",length=length(traitOutput))
+    clpm.warnings <- vector(mode = "list", length = length(traitOutput))
+    clpm.errors <- vector(mode = "list", length = length(traitOutput))
+    clpm.fit <- vector(mode = "list", length = length(traitOutput))
     ## Initialize df for results
     clpm.estimates <- data.frame(
         trait = character(),
@@ -183,7 +195,8 @@ for (k in 1:length(stateOutput)) {
         ## Skip results which had an error
         if(!is.null(fit_bula)) {
             estimate <- standardizedSolution(fit_bula)
-
+            ## Extract fit Measures
+            clpm.fit[j] <- list(fitMeasures(fit_bula))
             ## Extract results
             tempResults <- extract.est.clpm(clpm.labels[k, ], estimate)
             ## Add additional info (state and samplesize)
@@ -200,10 +213,12 @@ for (k in 1:length(stateOutput)) {
            singleTraitObsOutput <- rbind(singleTraitObsOutput, tempTrait))
     stateWarnings[k] <- list(clpm.warnings)
     stateErrors[k] <- list(clpm.errors)
+    stateFit[k] <- list(clpm.fit)
 }
 
 names(stateWarnings) <- clpm.labels[[1]]
 names(stateErrors) <- clpm.labels[[1]]
+names(stateFit) <- clpm.labels[[1]]
 
 ## Create wide version of singleTraitOutput
 singleTraitObsOutput.w <- singleTraitObsOutput %>%
@@ -213,8 +228,9 @@ singleTraitObsOutput.w <- singleTraitObsOutput %>%
 
 ## Write Results
 write_csv(singleTraitObsOutput.w, file="results/clpm.states.single.obs.estimates.csv")
-save(stateWarnings, file="results/clpm.single.obs.warnings.RData")
-save(stateErrors, file="results/clpm.single.obs.errors.RData")
+save(stateWarnings, file = "results/clpm.single.obs.warnings.RData")
+save(stateErrors, file = "results/clpm.single.obs.errors.RData")
+save(stateFit, file = "results/clpm.single.obs.fit.RData")
 
 ## ## Test Results (comment when not testing)
 ## write_csv(singleTraitObsOutput.w, file="testResults/clpm.states.single.obs.estimates.csv")

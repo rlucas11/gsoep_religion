@@ -169,17 +169,26 @@ stateOutput <- list(agrOutput,
                neuOutput,
                opnOutput)
 
-stateWarnings <- vector(mode="list",
-                        length(stateOutput))
-stateErrors <- vector(mode="list",
-                      length(stateOutput))
+stateWarnings <- vector(
+    mode = "list",
+    length(stateOutput)
+)
+stateErrors <- vector(
+    mode = "list",
+    length(stateOutput)
+)
+stateFit <- vector(
+    mode = "list",
+    length(stateOutput)
+)
                        
 if(exists("singleTraitObsOutput")) rm(singleTraitObsOutput)
 
 for (k in 1:length(stateOutput)) {
     traitOutput <- stateOutput[[k]]
-    riclpm.warnings <- vector(mode="list", length=length(traitOutput))
-    riclpm.errors <- vector(mode="list",length=length(traitOutput))
+    riclpm.warnings <- vector(mode = "list", length = length(traitOutput))
+    riclpm.errors <- vector(mode = "list", length = length(traitOutput))
+    riclpm.fit <- vector(mode = "list", length = length(traitOutput))
     ## Initialize df for results
     riclpm.estimates <- data.frame(
         trait = character(),
@@ -215,8 +224,9 @@ for (k in 1:length(stateOutput)) {
         ## Skip results which had an error
         if(!is.null(fit_bula)) {
             estimate <- standardizedSolution(fit_bula)
-
-            ## Extract results
+            ## Extract fit measures
+            riclpm.fit[j] <- list(fitMeasures(fit_bula))
+            ## extract results
             tempResults <- extract.est.riclpm(riclpm.labels[k, ], estimate)
             ## Add additional info (state and samplesize)
             tempResults$state <- bula
@@ -232,10 +242,12 @@ for (k in 1:length(stateOutput)) {
            singleTraitObsOutput <- rbind(singleTraitObsOutput, tempTrait))
     stateWarnings[k] <- list(riclpm.warnings)
     stateErrors[k] <- list(riclpm.errors)
+    stateFit[k] <- list(riclpm.fit)
 }
 
 names(stateWarnings) <- riclpm.labels[[1]]
 names(stateErrors) <- riclpm.labels[[1]]
+names(stateFit) <- riclpm.labels[[1]]
 
 ## Create wide version of singleTraitOutput
 singleTraitObsOutput.w <- singleTraitObsOutput %>%

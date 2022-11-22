@@ -144,6 +144,10 @@ stateWarnings <- vector(mode="list",
                         length(stateOutput))
 stateErrors <- vector(mode="list",
                       length(stateOutput))
+stateFit <- vector(mode="list",
+                   length(stateOutput))
+
+                   
                        
 if(exists("singleTraitOutput")) rm(singleTraitOutput)
 
@@ -151,6 +155,7 @@ for (k in 1:length(stateOutput)) {
     traitOutput <- stateOutput[[k]]
     clpm.warnings <- vector(mode="list", length=length(traitOutput))
     clpm.errors <- vector(mode="list",length=length(traitOutput))
+    clpm.fit <- vector(mode="list", length=length(traitOutput))
     ## Initialize df for results
     clpm.estimates <- data.frame(
         trait = character(),
@@ -183,7 +188,8 @@ for (k in 1:length(stateOutput)) {
         ## Skip results which had an error
         if(!is.null(fit_bula)) {
             estimate <- standardizedSolution(fit_bula)
-
+            ## Extract Fit Measures
+            clpm.fit[j] <- list(fitMeasures(fit_bula))
             ## Extract results
             tempResults <- extract.est.clpm(clpm.labels[k, ], estimate)
             ## Add additional info (state and samplesize)
@@ -200,10 +206,12 @@ for (k in 1:length(stateOutput)) {
            singleTraitOutput <- rbind(singleTraitOutput, tempTrait))
     stateWarnings[k] <- list(clpm.warnings)
     stateErrors[k] <- list(clpm.errors)
+    stateFit[k] <- list(clpm.fit)
 }
 
 names(stateWarnings) <- clpm.labels[[1]]
 names(stateErrors) <- clpm.labels[[1]]
+names(stateFit) <- clpm.labels[[1]]
 
 ## Create wide version of singleTraitOutput
 singleTraitOutput.w <- singleTraitOutput %>%
@@ -215,3 +223,4 @@ singleTraitOutput.w <- singleTraitOutput %>%
 write_csv(singleTraitOutput.w, file="results/clpm.states.single.estimates.csv")
 save(stateWarnings, file="results/clpm.single.warnings.RData")
 save(stateErrors, file="results/clpm.single.errors.RData")
+save(sateFit, file="results/clpm.single.fit.RData")
