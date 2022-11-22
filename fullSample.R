@@ -1,30 +1,17 @@
 ## Source model files
 source("scripts/originalModel.R")
+source("scripts/fullRiclpm.R")
+source("scripts/clpmObserved.R")
+source("scripts/riclpmObserved.R")
 source("scripts/clpmUni.R")
 source("scripts/riclpmUni.R")
-source("scripts/gclpm.R")
-source("scripts/fullRiclpm.R")
-source("scripts/riclpmObserved.R")
-source("scripts/clpmObserved.R")
 source("scripts/clpmUniObserved.R")
 source("scripts/riclpmUniObserved.R")
 
 ################################################################################
-## All Traits, Observed Variables
+## Original Model: CLPM, Latent, All Traits
 ################################################################################
 
-## Randomly Select 1/3 of Respondents for Testing
-data$testSelect <- sample(c(1,2,3), nrow(data), replace=TRUE)
-fullData <- data
-
-
-data <- data |>
-    filter(testSelect == 1)
-
-#### Run Models
-
-## CLPM, all traits, latent
-## Original Model
 clpm.latent.all <- sem(model1_main,
                        missing = "FIML",
                        estimator = "MLR",
@@ -43,8 +30,11 @@ clpm.latent.results <- list(
 )
 save(clpm.latent.results, file = "results/clpm.latent.results.RData")
 
-## RICLPM, all traits, latent
- riclpm.latent.all <- sem(model1_riclpm,
+################################################################################
+## RICLPM, Latent, All Traits
+################################################################################
+
+riclpm.latent.all <- sem(model1_riclpm,
                        missing = "FIML",
                        estimator = "MLR",
                        data = data)
@@ -63,8 +53,10 @@ riclpm.latent.results <- list(
 save(riclpm.latent.results, file = "results/riclpm.latent.results.RData")
 
 
+################################################################################
+## CLPM, Observed, All Traits
+################################################################################
 
-## CLPM, all traits, observed
 model.all.observed.clpm <- sem(clpm_observed,
     missing = "FIML",
     estimator = "MLR",
@@ -89,8 +81,10 @@ clpm.observed.results <- list(
 save(clpm.observed.results, file = "clpm.observed.results.RData")
 
 
+################################################################################
+## RICLPM, Observed, All Traits
+################################################################################
 
-## RI-CLPM, all traits, observed
 model.all.observed.riclpm <- sem(riclpm_observed,
     missing = "FIML",
     estimator = "MLR",
@@ -116,7 +110,7 @@ save(riclpm.observed.results, file = "riclpm.observed.results.RData")
 ################################################################################
 ## CLPM, single trait, latent
 ################################################################################
-## 
+
 traitModelNames <- c(
     "tr051", "tr091", "tr131", "tr171",
     "tr052", "tr092", "tr132", "tr172",
@@ -147,7 +141,6 @@ agr.clpm.latent.results <- list(
     fit.agr.clpm.latent
 )
 
-
 ## Conscientiousness
 cns <- data %>%
     select(contains("cns"), contains("relig"), first.state)
@@ -167,8 +160,6 @@ cns.clpm.latent.results <- list(
     est.cns.clpm.latent,
     fit.cns.clpm.latent
 )
-
-
 
 ## Extraversion
 ext <- data %>%
@@ -210,7 +201,6 @@ neu.clpm.latent.results <- list(
     fit.neu.clpm.latent
 )
 
-
 ## Openness
 opn <- data %>%
     select(contains("opn"), contains("relig"), first.state)
@@ -240,8 +230,9 @@ single.clpm.latent.results <- list(
 )
 save(single.clpm.latent.results, file = "results/single.clpm.latent.results")
 
-
-## RICLPM, single trait, latent
+################################################################################
+## RICLPM, Latent, Single Trait
+################################################################################
 
 ## Agreeableness
 agr <- data %>%
@@ -284,8 +275,6 @@ cns.riclpm.latent.results <- list(
     fit.cns.riclpm.latent
 )
 
-
-
 ## Extraversion
 ext <- data %>%
     select(contains("ext"), contains("relig"), first.state)
@@ -326,7 +315,6 @@ neu.riclpm.latent.results <- list(
     fit.neu.riclpm.latent
 )
 
-
 ## Openness
 opn <- data %>%
     select(contains("opn"), contains("relig"), first.state)
@@ -356,8 +344,9 @@ single.riclpm.latent.results <- list(
 )
 save(single.riclpm.latent.results, file = "results/single.riclpm.latent.results")
 
-
-## CLPM, single trait, observed
+################################################################################
+## CLPM, Observed, Single Trait
+################################################################################
 
 traitModelNames <- c(
     "tr051", "tr091", "tr131", "tr171",
@@ -368,7 +357,6 @@ traitModelNames <- c(
     "relig05", "relig09", "relig13", "relig17",
     "first.state"
 )
-
 
 ## Agreeableness
 
@@ -391,7 +379,6 @@ agr.clpm.obs.results <- list(
     fit.agr.clpm.obs
 )
 
-
 ## Conscientiousness
 cns <- data %>%
     select(contains("cns"), contains("relig"), first.state)
@@ -411,8 +398,6 @@ cns.clpm.obs.results <- list(
     est.cns.clpm.obs,
     fit.cns.clpm.obs
 )
-
-
 
 ## Extraversion
 ext <- data %>%
@@ -454,7 +439,6 @@ neu.clpm.obs.results <- list(
     fit.neu.clpm.obs
 )
 
-
 ## Openness
 opn <- data %>%
     select(contains("opn"), contains("relig"), first.state)
@@ -484,8 +468,10 @@ single.clpm.obs.results <- list(
 )
 save(single.clpm.obs.results, file = "results/single.clpm.obs.results")
 
+################################################################################
+## RICLPM, Observed, Single Trait
+################################################################################
 
-## RICLPM, single trait, observed
 ## Agreeableness
 
 agr <- data %>%
@@ -507,7 +493,6 @@ agr.riclpm.obs.results <- list(
     fit.agr.riclpm.obs
 )
 
-
 ## Conscientiousness
 cns <- data %>%
     select(contains("cns"), contains("relig"), first.state)
@@ -527,8 +512,6 @@ cns.riclpm.obs.results <- list(
     est.cns.riclpm.obs,
     fit.cns.riclpm.obs
 )
-
-
 
 ## Extraversion
 ext <- data %>%
@@ -569,7 +552,6 @@ neu.riclpm.obs.results <- list(
     est.neu.riclpm.obs,
     fit.neu.riclpm.obs
 )
-
 
 ## Openness
 opn <- data %>%
