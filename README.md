@@ -27,6 +27,7 @@ The code is set up to use the STATA files provided by the SOEP.
 - Run RI-CLPM with single-variable models in each state: [riclpm.single.R](riclpm.single.R)
 - The [metaAnalysisSetup.R](metaAnalysisSetup.R) script collects the relevant effects for the meta-analysis
 - The [metaAnalysis.R](metaAnalysis.R) script actually runs the meta-analysis and creates plots
+- Run all models in the full sample: [fullSample.R](fullSample.R)
 
 The script [updateAnalyses.R](updateAnalyses.R) will run all of the above code and can be modified to run subsets (e.g., setup plus one or more specific analyses).
 
