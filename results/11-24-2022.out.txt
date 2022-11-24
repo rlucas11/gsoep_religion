@@ -1,0 +1,20 @@
+Rows: 58502 Columns: 92
+── Column specification ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+Delimiter: ","
+dbl (92): pid, sex, gebjahr, psample, cns0501, cns0901, cns1301, cns1701, ext0501, ext0901, ext1301, ext1701, agr0501r, agr0901r, agr1301...
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+Rows: 103460 Columns: 40
+── Column specification ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+Delimiter: ","
+dbl (40): pid, bula_h_1984, bula_h_1985, bula_h_1986, bula_h_1987, bula_h_1988, bula_h_1989, bula_h_1990, bula_h_1991, bula_h_1992, bula_...
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+Error in save(sateFit, file = "results/clpm.single.fit.RData") : 
+  Objekt ‘sateFit’ nicht gefunden
+Error in write_delim(x, file, delim = ",", na = na, append = append, col_names = col_names,  : 
+  is.data.frame(x) ist nicht TRUE
+Warning message:
+In sink() : no sink to remove
