@@ -8,9 +8,23 @@ source("scripts/riclpmUni.R")
 source("scripts/clpmUniObserved.R")
 source("scripts/riclpmUniObserved.R")
 
+## ## Testing
+## ## Preserve original data
+## dataOld <- data
+## ## Select random subset
+## data <- data |>
+##     mutate(select = sample(c(1:20), size = 1, replace = TRUE)) |>
+##     filter(select == 1)
+## location <- "testResults"
+
+## Set Results Location (comment when testing)
+location <- "results"
+
+
 ################################################################################
 ## Original Model: CLPM, Latent, All Traits
 ################################################################################
+
 
 clpm.latent.all <- sem(model1_main,
                        missing = "FIML",
@@ -28,7 +42,9 @@ clpm.latent.results <- list(
     fit.all.latent.clpm.full,
     est.all.latent.clpm.full
 )
-save(clpm.latent.results, file = "results/clpm.latent.results.RData")
+save(clpm.latent.results,
+    file = paste0(location, "/clpm.latent.results.RData")
+    )
 
 ################################################################################
 ## RICLPM, Latent, All Traits
@@ -50,8 +66,10 @@ riclpm.latent.results <- list(
     fit.all.latent.riclpm.full,
     est.all.latent.riclpm.full
 )
-save(riclpm.latent.results, file = "results/riclpm.latent.results.RData")
 
+save(riclpm.latent.results,
+    file = paste0(location, "/riclpm.latent.results.RData")
+    )
 
 ################################################################################
 ## CLPM, Observed, All Traits
@@ -70,15 +88,22 @@ est.all.observed.clpm.full <- standardizedSolution(model.all.observed.clpm,
                      )
 
 ## Predicted correlations based on CLPM Model
-cor.all.observed.clpm.full <- cov2cor(fitted(model.all.observed.clpm)$cov)
-write_csv(cor.all.observed.clpm.full, "results/predictCorsClpm.csv")
+cor.all.observed.clpm.full <- as.data.frame(cov2cor(
+    fitted(model.all.observed.clpm)$cov))
+write_csv(
+    cor.all.observed.clpm.full,
+    paste0(location, "/predictCorsClpm.csv")
+)
+
 
 clpm.observed.results <- list(
     fit.all.observed.clpm.full,
     est.all.observed.clpm.full
 )
 
-save(clpm.observed.results, file = "clpm.observed.results.RData")
+save(clpm.observed.results,
+    file = paste0(location, "/clpm.observed.results.RData")
+    )
 
 
 ################################################################################
@@ -98,14 +123,22 @@ est.all.observed.riclpm.full <- standardizedSolution(model.all.observed.riclpm,
 )
 
 ## Predicted correlations based on RICLPM Model
-cor.all.observed.riclpm.full <- cov2cor(fitted(model.all.observed.riclpm)$cov)
-write_csv(cor.all.observed.riclpm.full, "results/predictedCorRiclpm.csv")
+cor.all.observed.riclpm.full <- as.data.frame(cov2cor(
+    fitted(model.all.observed.riclpm)$cov
+))
+write_csv(
+    cor.all.observed.riclpm.full,
+    paste0(location, "/predictedCorRiclpm.csv")
+)
 
 riclpm.observed.results <- list(
     fit.all.observed.riclpm.full,
     est.all.observed.riclpm.full
 )
-save(riclpm.observed.results, file = "riclpm.observed.results.RData")
+save(riclpm.observed.results,
+    file = paste0(location, "/riclpm.observed.results.RData")
+    )
+
 
 ################################################################################
 ## CLPM, single trait, latent
@@ -228,7 +261,10 @@ single.clpm.latent.results <- list(
     neu.clpm.latent.results,
     opn.clpm.latent.results
 )
-save(single.clpm.latent.results, file = "results/single.clpm.latent.results")
+save(single.clpm.latent.results,
+    file = paste0(location, "/single.clpm.latent.results")
+    )
+
 
 ################################################################################
 ## RICLPM, Latent, Single Trait
@@ -342,7 +378,10 @@ single.riclpm.latent.results <- list(
     neu.riclpm.latent.results,
     opn.riclpm.latent.results
 )
-save(single.riclpm.latent.results, file = "results/single.riclpm.latent.results")
+save(single.riclpm.latent.results,
+    file = paste0(location, "/single.riclpm.latent.results")
+    )
+
 
 ################################################################################
 ## CLPM, Observed, Single Trait
@@ -466,7 +505,10 @@ single.clpm.obs.results <- list(
     neu.clpm.obs.results,
     opn.clpm.obs.results
 )
-save(single.clpm.obs.results, file = "results/single.clpm.obs.results")
+save(single.clpm.obs.results,
+    file = paste0(location, "/single.clpm.obs.results")
+    )
+
 
 ################################################################################
 ## RICLPM, Observed, Single Trait
@@ -580,4 +622,7 @@ single.riclpm.obs.results <- list(
     neu.riclpm.obs.results,
     opn.riclpm.obs.results
 )
-save(single.riclpm.obs.results, file = "results/single.riclpm.obs.results")
+save(single.riclpm.obs.results,
+    file = paste0(location, "/single.riclpm.obs.results")
+    )
+

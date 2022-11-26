@@ -223,4 +223,4 @@ singleTraitOutput.w <- singleTraitOutput %>%
 write_csv(singleTraitOutput.w, file="results/clpm.states.single.estimates.csv")
 save(stateWarnings, file="results/clpm.single.warnings.RData")
 save(stateErrors, file="results/clpm.single.errors.RData")
-save(sateFit, file="results/clpm.single.fit.RData")
+save(stateFit, file="results/clpm.single.fit.RData")

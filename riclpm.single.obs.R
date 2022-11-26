@@ -259,6 +259,7 @@ singleTraitObsOutput.w <- singleTraitObsOutput %>%
 write_csv(singleTraitObsOutput.w, file="results/riclpm.states.single.obs.estimates.csv")
 save(stateWarnings, file="results/riclpm.single.obs.warnings.RData")
 save(stateErrors, file="results/riclpm.single.obs.errors.RData")
+save(stateFit, file="results/riclpm.single.obs.fit.RData")
 
 ## ## Test Results (comment when not testing)
 ## write_csv(singleTraitObsOutput.w, file="testResults/riclpm.states.single.obs.estimates.csv")
