@@ -185,6 +185,12 @@ for (k in 1:length(stateOutput)) {
         clpm.warnings[j] <- list(traitOutput[[j]]$warnings)
         ## Extract errors
         clpm.errors[j] <- list(traitOutput[[j]]$result$error)
+        ## Check if there is an error
+        ## Work from here ##
+        problems <- as.numeric(grepl(
+            "instabilities|positive\ definite|variances\ are\ negative|solution\ has\ NOT",
+            clpm.warnings
+        ))
         ## Skip results which had an error
         if(!is.null(fit_bula)) {
             estimate <- standardizedSolution(fit_bula)
