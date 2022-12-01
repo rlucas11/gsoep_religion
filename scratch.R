@@ -27,3 +27,27 @@ load("results/riclpm.single.warnings.RData")
 load("results/clpm.single.errors.RData")
 load("results/clpm.single.warnings.RData")
 
+
+if (length(stateWarnings[[5]][[4]])>0) {
+    if (grepl("solution\ has\ NOT", stateWarnings[[5]][[4]])) {
+        print("nope")
+    }
+}
+
+fit <- NULL
+testVar <- stateWarnings[[5]][[5]]
+if (length(testVar) == 0) {
+    fit <- "yes"
+} else
+    { if (!(TRUE %in% grepl("solution\ has\ NOT", testVar))) {
+        fit <- "yes"
+    }
+}
+fit
+
+grepl("solution\ has\ NOT", stateWarnings[[5]][[3]])
+
+
+
+TRUE %in% grepl("solution\ has\ NOT", testVar)
+

@@ -185,17 +185,17 @@ for (k in 1:length(stateOutput)) {
         clpm.warnings[j] <- list(traitOutput[[j]]$warnings)
         ## Extract errors
         clpm.errors[j] <- list(traitOutput[[j]]$result$error)
-        ## Check if there is an error
-        ## Work from here ##
-        problems <- as.numeric(grepl(
-            "instabilities|positive\ definite|variances\ are\ negative|solution\ has\ NOT",
-            clpm.warnings
-        ))
         ## Skip results which had an error
         if(!is.null(fit_bula)) {
             estimate <- standardizedSolution(fit_bula)
-            ## Extract Fit Measures
-            clpm.fit[j] <- list(fitMeasures(fit_bula))
+            ## Extract Fit Measures if model converges
+            if (length(clpm.warnings) == 0) {
+                clpm.fit[j] <- list(fitMeasures(fit_bula))
+            } else {
+                if (!(TRUE %in% grepl("solution\ has\ NOT", clpm.warnings))) {
+                    clpm.fit[j] <- list(fitMeasures(fit_bula))
+                }
+            }
             ## Extract results
             tempResults <- extract.est.clpm(clpm.labels[k, ], estimate)
             ## Add additional info (state and samplesize)
