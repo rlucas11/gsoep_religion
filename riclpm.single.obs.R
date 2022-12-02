@@ -224,8 +224,14 @@ for (k in 1:length(stateOutput)) {
         ## Skip results which had an error
         if(!is.null(fit_bula)) {
             estimate <- standardizedSolution(fit_bula)
-            ## Extract fit measures
-            riclpm.fit[j] <- list(fitMeasures(fit_bula))
+            ## Extract fit measures if model converges
+            if (length(riclpm.warnings) == 0) {
+                riclpm.fit[j] <- list(fitMeasures(fit_bula))
+            } else {
+                if (!(TRUE %in% grepl("solution\ has\ NOT", riclpm.warnings))) {
+                    riclpm.fit[j] <- list(fitMeasures(fit_bula))
+                }
+            }
             ## extract results
             tempResults <- extract.est.riclpm(riclpm.labels[k, ], estimate)
             ## Add additional info (state and samplesize)

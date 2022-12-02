@@ -195,8 +195,14 @@ for (k in 1:length(stateOutput)) {
         ## Skip results which had an error
         if(!is.null(fit_bula)) {
             estimate <- standardizedSolution(fit_bula)
-            ## Extract fit Measures
-            clpm.fit[j] <- list(fitMeasures(fit_bula))
+            ## Extract fit Measures if model converges
+            if (length(clpm.warnings) == 0) {
+                clpm.fit[j] <- list(fitMeasures(fit_bula))
+            } else {
+                if (!(TRUE %in% grepl("solution\ has\ NOT", clpm.warnings))) {
+                    clpm.fit[j] <- list(fitMeasures(fit_bula))
+                }
+            }
             ## Extract results
             tempResults <- extract.est.clpm(clpm.labels[k, ], estimate)
             ## Add additional info (state and samplesize)
