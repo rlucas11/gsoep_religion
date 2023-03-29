@@ -51,3 +51,22 @@ grepl("solution\ has\ NOT", stateWarnings[[5]][[3]])
 
 TRUE %in% grepl("solution\ has\ NOT", testVar)
 
+load("results/correlationsByState.RData")
+
+
+cor(data[, paste0(
+    rep(
+        c(
+            "agr",
+            "cns",
+            "ext",
+            "neu",
+            "opn",
+            "relig"
+        ),
+        each = 4
+    ),
+    c("05", "09", "13", "17")
+)], use = "pair")
+
+         
