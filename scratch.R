@@ -70,3 +70,4 @@ cor(data[, paste0(
 )], use = "pair")
 
          
+load("info/clpm.latent.all.RData")
