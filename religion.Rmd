@@ -101,6 +101,59 @@ This paper uses data from the German Socio-Economic Panel (SOEP) study, which as
 The SOEP is a long-running panel study 
 
 
+# Results
+
+```{r correlations, echo=FALSE, message=FALSE, warning=FALSE}
+
+################################################################################
+## Correlations by state
+################################################################################
+load("results/correlationsByState.RData")
+states <- read_csv("info/states.csv")
+
+## Initialize data frame
+corTab <- data.frame(
+    State = numeric(),
+    Agr = numeric(),
+    Con = numeric(),
+    Ext = numeric(),
+    Neu = numeric(),
+    Opn = numeric(),
+    Religiosity = numeric(),
+    N = numeric()
+)
+
+## Extract results
+for (i in 1:16) {
+    corTab[i, ] <- c(
+        states[i, 2],
+        out$r[i][[1]][6, 1:5],
+        out$mean[i, 6],
+        out$n[i, 7]
+    )
+}
+
+corTab[17,1] <- "Pooled Within"
+corTab[17,2:6] <- out$rwg[6, 1:5]
+corTab[17,8] <- sum(corTab[1:16, 8])
+corTab[18,1] <- "Raw Correlation"
+corTab[18,2:6] <- out$raw[6, 1:5]
+corTab[18,8] <- sum(corTab[1:16, 8])
+
+corTab$N <- as.character(corTab$N)
+
+
+papaja::apa_table(corTab,
+                  midrules=c(16),
+                  align=rep("r", 8),
+                  format.args=list(na_string=""),
+                  col_spanners=list(`Correlation with Religiosity`=c(2, 6)),
+                  caption="Within-state correlations between each personality trait and religiosity.",
+                  note="Agr = Agreableness; Con = Conscientiousness; Ext = Extraversion; Neu = Neuroticism; Opn = Openness. Mean religiosity and sample sizes are presented in the rightmost columns.")
+
+
+```
+
 
 # Disclosures
 

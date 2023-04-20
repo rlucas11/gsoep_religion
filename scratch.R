@@ -71,3 +71,55 @@ cor(data[, paste0(
 
          
 load("info/clpm.latent.all.RData")
+
+
+################################################################################
+## Correlations by state
+################################################################################
+load("results/correlationsByState.RData")
+states <- read_csv("info/states.csv")
+
+## Initialize data frame
+corTab <- data.frame(
+    State = numeric(),
+    Agreeableness = numeric(),
+    Conscientiousness = numeric(),
+    Extraversion = numeric(),
+    Neuroticism = numeric(),
+    Openness = numeric(),
+    Religiosity = numeric(),
+    N = numeric()
+)
+
+## Extract results
+for (i in 1:16) {
+    corTab[i, ] <- c(
+        states[i, 2],
+        out$r[i][[1]][6, 1:5],
+        out$mean[i, 6],
+        out$n[i, 7]
+    )
+}
+
+## Add overall rs
+corTab <- rbind(corTab, c(
+    "Pooled Within",
+    out$rwg[6, 1:5],
+    NA,
+    sum(corTab[1:16, 8])
+))
+
+corTab <- rbind(corTab, c(
+    "Raw Correlation",
+    out$raw[6, 1:5],
+    NA,
+    corTab[17, 8]
+))
+
+papaja::apa_table(corTab,
+                  midrules=c(16),
+                  align=rep("r", 8),
+                  format.args=list(na_string=""),
+                  col_spanners=list(`Correlation with Religiosity`=c(2, 6)),
+                  caption="Within-state correlations between each personality trait and religiosity. Sample size and mean religiosity are presented in the rightmost columns.")
+
