@@ -267,3 +267,7 @@ for (i in 1:nrow(resultsList)) {
 ## Remove attributes for religiosity
 
 write.csv(data.frame(combinedResults), "data/combinedResults.csv", row.names=FALSE)
+
+
+load("results/clpm.latent.results.RData")
+load("results/riclpm.latent.results.RData")

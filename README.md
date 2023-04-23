@@ -12,22 +12,36 @@ A list of variables needed for the cleaning script to run is included in the "in
 
 The code is set up to use the STATA files provided by the SOEP. 
 
+
+
 ## Guide to Code
 
+### Cleaning/Setup
 - Pull raw data and clean for analysis: [cleaning.R](cleaning.R)
 - Setup analyses each time you run them: [analysisSetup.R](analysisSetup.R)
 - Restrict analyses to those with at least one item per construct: [restrictSample.R](restrictSample.R)
+
+### Descriptive Information
 - Examine correlations in each state: [correlations.R](correlations.R)
-- Replicate original model from published paper: [clpm.latent.all.R](clpm.latent.all.R)
-- Run RI-CLPM for each state: [riclpm.latent.all.R](riclpm.latent.all.R)
-- Run RI-CLPM for each state with observed-variable model: [riclpm.observed.all.R](riclpm.observed.all.R)
-- Run CLPM with observed variables in each state: [clpm.observed.all.R](clpm.observed.all.R)
-- Run RI-CLPM with observed variables in each state: [riclpm.observed.all.R](riclpm.observed.all.R)
-- Run CLPM with single-variable models in each state: [clpm.single.R](clpm.single.R)
-- Run RI-CLPM with single-variable models in each state: [riclpm.single.R](riclpm.single.R)
+
+### Run Models
+- Run all models in the full sample: [fullSample.R](fullSample.R)
+- Run models in each state:
+  - Replicate CLPM for each state (original model from published paper): [clpm.latent.all.R](clpm.latent.all.R)
+  - Run RI-CLPM for each state: [riclpm.latent.all.R](riclpm.latent.all.R)
+  - Run RI-CLPM for each state with observed-variable model: [riclpm.observed.all.R](riclpm.observed.all.R)
+  - Run CLPM with observed variables in each state: [clpm.observed.all.R](clpm.observed.all.R)
+  - Run RI-CLPM with observed variables in each state: [riclpm.observed.all.R](riclpm.observed.all.R)
+  - Run CLPM with single-variable models in each state: [clpm.single.R](clpm.single.R)
+  - Run RI-CLPM with single-variable models in each state: [riclpm.single.R](riclpm.single.R)
+  
+### Meta Analysis  
 - The [metaAnalysisSetup.R](metaAnalysisSetup.R) script collects the relevant effects for the meta-analysis
 - The [metaAnalysis.R](metaAnalysis.R) script actually runs the meta-analysis and creates plots
-- Run all models in the full sample: [fullSample.R](fullSample.R)
+
+### Report
+- Rmd file for report: [religion.Rmd](religion.Rmd)
+- Rmd file for supplement: [supplement.Rmd](supplement.Rmd)
 
 The script [updateAnalyses.R](updateAnalyses.R) will run all of the above code and can be modified to run subsets (e.g., setup plus one or more specific analyses).
 

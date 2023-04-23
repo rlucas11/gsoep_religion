@@ -123,3 +123,149 @@ papaja::apa_table(corTab,
                   col_spanners=list(`Correlation with Religiosity`=c(2, 6)),
                   caption="Within-state correlations between each personality trait and religiosity. Sample size and mean religiosity are presented in the rightmost columns.")
 
+
+
+################################################################################
+## meta-analysis
+################################################################################
+
+temp <- metaSelect(
+    results,
+    "rt.cl",
+    "agr",
+    "CLPM",
+    "Latent",
+    "All"
+)
+
+load("results/clpm.errors.RData")
+load("results/clpm.warnings.RData")
+
+
+################################################################################
+## Collect results for full sample models
+################################################################################
+
+load("testResults/clpm.latent.results.RData")
+results <- clpm.latent.results[2][[1]]
+
+traitLabels <- matrix(
+    c(
+        "agr", "a",
+        "cns", "c",
+        "ext", "e",
+        "neu", "n",
+        "opn", "o"
+    ),
+    nrow = 5, ncol = 2, byrow = TRUE
+)
+
+extractAvg <- function(results, trait) {
+    pLabel <- paste0(
+        "c_r",
+        trait
+    )
+    pLabel2 <- paste0(
+        "c_",
+        trait,
+        "r"
+    )
+    ## Religion predicted from trait
+    agg <- results %>%
+        filter(label == pLabel) %>%
+        select(est.std, ci.lower, ci.upper) %>%
+        summarise(
+            est = mean(est.std),
+            ci.lower = mean(ci.lower),
+            ci.upper = mean(ci.upper)
+        )
+    ## Trait predicted from religion
+    agg2 <- results %>%
+        filter(label == pLabel2) %>%
+        select(est.std, ci.lower, ci.upper) %>%
+        summarise(
+            est = mean(est.std),
+            ci.lower = mean(ci.lower),
+            ci.upper = mean(ci.upper)
+        )
+    return(c(agg, agg2))
+}
+
+extractAvg(results, "a")
+
+
+extractParameterEstimates <- function(results,
+                                      model,
+                                      type,
+                                      variables) {
+    result <- data.frame(
+        est = numeric(),
+        ci.lower = numeric(),
+        ci.upper = numeric(),
+        est.1 = numeric(),
+        ci.lower.1 = numeric(),
+        ci.upper.1 = numeric(),
+        trait = character(),
+        model = character(),
+        type = character(),
+        variables = character()
+    )
+    for (i in 1:nrow(traitLabels)) {
+        trait <- traitLabels[i, 2]
+        result[i, ] <- c(
+            extractAvg(results, trait),
+            traitLabels[i,1],
+            model,
+            type,
+            variables
+        )
+    }
+    return(result)
+}
+        
+load("testResults/clpm.latent.results.RData")
+results.c.l.a <- clpm.latent.results[2][[1]]
+c.l.a <- extractParameterEstimates(results.c.l.a, "clpm", "latent", "all")
+
+
+load("testResults/riclpm.latent.results.RData")
+results.r.l.a <- riclpm.latent.results[2][[1]]
+r.l.a <- extractParameterEstimates(results.r.l.a, "riclpm", "latent", "all")
+
+
+load("testResults/clpm.observed.results.RData")
+results.c.o.a <- clpm.observed.results[2][[1]]
+c.o.a <- extractParameterEstimates(results.c.o.a, "clpm", "observed", "all")
+
+
+load("testResults/riclpm.observed.results.RData")
+results.r.o.a <- riclpm.observed.results[2][[1]]
+r.o.a <- extractParameterEstimates(results.r.o.a, "riclpm", "observed", "all")
+
+
+plotData <- rbind(
+    c.l.a,
+    r.l.a,
+    c.o.a,
+    r.o.a
+)
+
+
+plotData %>%
+    ggplot(
+        aes(
+            x = trait,
+            y = est,
+            ymin = ci.lower,
+            ymax = ci.upper,
+            color = model,
+            linetype = type,
+            shape = variables
+        )
+    ) +
+    geom_point(position = position_dodge(width = 0.5)) +
+    geom_errorbar(width = .05, position = position_dodge(width = 0.5)) +
+    coord_flip()
+
+
+load("testResults/single.clpm.latent.results.RData")

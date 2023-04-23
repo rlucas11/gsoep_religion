@@ -15,7 +15,7 @@ source("scripts/riclpmUniObserved.R")
 ## data <- data |>
 ##     mutate(select = sample(c(1:20), size = 1, replace = TRUE)) |>
 ##     filter(select == 1)
-## location <- "testResults"
+location <- "testResults"
 
 ## Set Results Location (comment when testing)
 location <- "results"
@@ -40,7 +40,8 @@ est.all.latent.clpm.full <- standardizedSolution(clpm.latent.all,
 
 clpm.latent.results <- list(
     fit.all.latent.clpm.full,
-    est.all.latent.clpm.full
+    est.all.latent.clpm.full,
+    summary(clpm.latent.all)
 )
 save(clpm.latent.results,
     file = paste0(location, "/clpm.latent.results.RData")
@@ -56,15 +57,16 @@ riclpm.latent.all <- sem(model1_riclpm,
                        data = data)
 ## Save to file because it takes so long to run
 summary(riclpm.latent.all)
-fit.all.latent.riclpm.full <- fitMeasures(clpm.latent.all)
-est.all.latent.riclpm.full <- standardizedSolution(clpm.latent.all,
+fit.all.latent.riclpm.full <- fitMeasures(riclpm.latent.all)
+est.all.latent.riclpm.full <- standardizedSolution(riclpm.latent.all,
     type = "std.all", se = TRUE, zstat = TRUE,
     pvalue = TRUE, ci = TRUE, level = .95, output = "text"
     )
 
 riclpm.latent.results <- list(
     fit.all.latent.riclpm.full,
-    est.all.latent.riclpm.full
+    est.all.latent.riclpm.full,
+    summary(riclpm.latent.all)
 )
 
 save(riclpm.latent.results,
@@ -98,7 +100,8 @@ write_csv(
 
 clpm.observed.results <- list(
     fit.all.observed.clpm.full,
-    est.all.observed.clpm.full
+    est.all.observed.clpm.full,
+    summary(model.all.observed.clpm)
 )
 
 save(clpm.observed.results,
@@ -133,7 +136,8 @@ write_csv(
 
 riclpm.observed.results <- list(
     fit.all.observed.riclpm.full,
-    est.all.observed.riclpm.full
+    est.all.observed.riclpm.full,
+    summary(model.all.observed.riclpm)
 )
 save(riclpm.observed.results,
     file = paste0(location, "/riclpm.observed.results.RData")
@@ -150,13 +154,12 @@ traitModelNames <- c(
     "tr053", "tr093", "tr133", "tr173",
     "trMean05", "trMean09", "trMean13", "trMean17", "trMiss",
     "relig05_orig", "relig09_orig", "relig13_orig", "relig17_orig",
-    "relig05", "relig09", "relig13", "relig17",
-    "first.state"
+    "relig05", "relig09", "relig13", "relig17"
 )
 
 ## Agreeableness
 agr <- data %>%
-    select(contains("agr"), contains("relig"), first.state)
+    select(contains("agr"), contains("relig"))
 names(agr) <- traitModelNames
 agrFit <- sem(clpmUni,
     missing = "FIML",
@@ -171,12 +174,13 @@ est.agr.clpm.latent <- standardizedSolution(agrFit,
 fit.agr.clpm.latent <- fitMeasures(agrFit)
 agr.clpm.latent.results <- list(
     est.agr.clpm.latent,
-    fit.agr.clpm.latent
+    fit.agr.clpm.latent,
+    summary(agrFit)
 )
 
 ## Conscientiousness
 cns <- data %>%
-    select(contains("cns"), contains("relig"), first.state)
+    select(contains("cns"), contains("relig"))
 names(cns) <- traitModelNames
 cnsFit <- sem(clpmUni,
     missing = "FIML",
@@ -191,12 +195,13 @@ est.cns.clpm.latent <- standardizedSolution(cnsFit,
 fit.cns.clpm.latent <- fitMeasures(cnsFit)
 cns.clpm.latent.results <- list(
     est.cns.clpm.latent,
-    fit.cns.clpm.latent
+    fit.cns.clpm.latent,
+    summary(cnsFit)
 )
 
 ## Extraversion
 ext <- data %>%
-    select(contains("ext"), contains("relig"), first.state)
+    select(contains("ext"), contains("relig"))
 names(ext) <- traitModelNames
 extFit <- sem(clpmUni,
     missing = "FIML",
@@ -211,12 +216,13 @@ est.ext.clpm.latent <- standardizedSolution(extFit,
 fit.ext.clpm.latent <- fitMeasures(extFit)
 ext.clpm.latent.results <- list(
     est.ext.clpm.latent,
-    fit.ext.clpm.latent
+    fit.ext.clpm.latent,
+    summary(extFit)
 )
 
 ## Neuroticism
 neu <- data %>%
-    select(contains("neu"), contains("relig"), first.state)
+    select(contains("neu"), contains("relig"))
 names(neu) <- traitModelNames
 neuFit <- sem(clpmUni,
     missing = "FIML",
@@ -231,12 +237,13 @@ est.neu.clpm.latent <- standardizedSolution(neuFit,
 fit.neu.clpm.latent <- fitMeasures(neuFit)
 neu.clpm.latent.results <- list(
     est.neu.clpm.latent,
-    fit.neu.clpm.latent
+    fit.neu.clpm.latent,
+    summary(neuFit)
 )
 
 ## Openness
 opn <- data %>%
-    select(contains("opn"), contains("relig"), first.state)
+    select(contains("opn"), contains("relig"))
 names(opn) <- traitModelNames
 opnFit <- sem(clpmUni,
     missing = "FIML",
@@ -251,7 +258,8 @@ est.opn.clpm.latent <- standardizedSolution(opnFit,
 fit.opn.clpm.latent <- fitMeasures(opnFit)
 opn.clpm.latent.results <- list(
     est.opn.clpm.latent,
-    fit.opn.clpm.latent
+    fit.opn.clpm.latent,
+    summary(opnFit)
 )
 
 single.clpm.latent.results <- list(
@@ -262,7 +270,7 @@ single.clpm.latent.results <- list(
     opn.clpm.latent.results
 )
 save(single.clpm.latent.results,
-    file = paste0(location, "/single.clpm.latent.results")
+    file = paste0(location, "/single.clpm.latent.results.RData")
     )
 
 
@@ -272,7 +280,7 @@ save(single.clpm.latent.results,
 
 ## Agreeableness
 agr <- data %>%
-    select(contains("agr"), contains("relig"), first.state)
+    select(contains("agr"), contains("relig"))
 names(agr) <- traitModelNames
 agrFit <- sem(riclpmUni,
     missing = "FIML",
@@ -287,13 +295,14 @@ est.agr.riclpm.latent <- standardizedSolution(agrFit,
 fit.agr.riclpm.latent <- fitMeasures(agrFit)
 agr.riclpm.latent.results <- list(
     est.agr.riclpm.latent,
-    fit.agr.riclpm.latent
+    fit.agr.riclpm.latent,
+    summary(agrFit)
 )
 
 
 ## Conscientiousness
 cns <- data %>%
-    select(contains("cns"), contains("relig"), first.state)
+    select(contains("cns"), contains("relig"))
 names(cns) <- traitModelNames
 cnsFit <- sem(riclpmUni,
     missing = "FIML",
@@ -308,12 +317,13 @@ est.cns.riclpm.latent <- standardizedSolution(cnsFit,
 fit.cns.riclpm.latent <- fitMeasures(cnsFit)
 cns.riclpm.latent.results <- list(
     est.cns.riclpm.latent,
-    fit.cns.riclpm.latent
+    fit.cns.riclpm.latent,
+    summary(cnsFit)
 )
 
 ## Extraversion
 ext <- data %>%
-    select(contains("ext"), contains("relig"), first.state)
+    select(contains("ext"), contains("relig"))
 names(ext) <- traitModelNames
 extFit <- sem(riclpmUni,
     missing = "FIML",
@@ -328,12 +338,13 @@ est.ext.riclpm.latent <- standardizedSolution(extFit,
 fit.ext.riclpm.latent <- fitMeasures(extFit)
 ext.riclpm.latent.results <- list(
     est.ext.riclpm.latent,
-    fit.ext.riclpm.latent
+    fit.ext.riclpm.latent,
+    summary(extFit)
 )
 
 ## Neuroticism
 neu <- data %>%
-    select(contains("neu"), contains("relig"), first.state)
+    select(contains("neu"), contains("relig"))
 names(neu) <- traitModelNames
 neuFit <- sem(riclpmUni,
     missing = "FIML",
@@ -348,12 +359,13 @@ est.neu.riclpm.latent <- standardizedSolution(neuFit,
 fit.neu.riclpm.latent <- fitMeasures(neuFit)
 neu.riclpm.latent.results <- list(
     est.neu.riclpm.latent,
-    fit.neu.riclpm.latent
+    fit.neu.riclpm.latent,
+    summary(neuFit)
 )
 
 ## Openness
 opn <- data %>%
-    select(contains("opn"), contains("relig"), first.state)
+    select(contains("opn"), contains("relig"))
 names(opn) <- traitModelNames
 opnFit <- sem(riclpmUni,
     missing = "FIML",
@@ -368,7 +380,8 @@ est.opn.riclpm.latent <- standardizedSolution(opnFit,
 fit.opn.riclpm.latent <- fitMeasures(opnFit)
 opn.riclpm.latent.results <- list(
     est.opn.riclpm.latent,
-    fit.opn.riclpm.latent
+    fit.opn.riclpm.latent,
+    summary(opnFit)
 )
 
 single.riclpm.latent.results <- list(
@@ -379,7 +392,7 @@ single.riclpm.latent.results <- list(
     opn.riclpm.latent.results
 )
 save(single.riclpm.latent.results,
-    file = paste0(location, "/single.riclpm.latent.results")
+    file = paste0(location, "/single.riclpm.latent.results.RData")
     )
 
 
@@ -400,7 +413,7 @@ traitModelNames <- c(
 ## Agreeableness
 
 agr <- data %>%
-    select(contains("agr"), contains("relig"), first.state)
+    select(contains("agr"), contains("relig"))
 names(agr) <- traitModelNames
 agrFit <- sem(clpmUniObserved,
     missing = "FIML",
@@ -420,7 +433,7 @@ agr.clpm.obs.results <- list(
 
 ## Conscientiousness
 cns <- data %>%
-    select(contains("cns"), contains("relig"), first.state)
+    select(contains("cns"), contains("relig"))
 names(cns) <- traitModelNames
 cnsFit <- sem(clpmUniObserved,
     missing = "FIML",
@@ -440,7 +453,7 @@ cns.clpm.obs.results <- list(
 
 ## Extraversion
 ext <- data %>%
-    select(contains("ext"), contains("relig"), first.state)
+    select(contains("ext"), contains("relig"))
 names(ext) <- traitModelNames
 extFit <- sem(clpmUniObserved,
     missing = "FIML",
@@ -460,7 +473,7 @@ ext.clpm.obs.results <- list(
 
 ## Neuroticism
 neu <- data %>%
-    select(contains("neu"), contains("relig"), first.state)
+    select(contains("neu"), contains("relig"))
 names(neu) <- traitModelNames
 neuFit <- sem(clpmUniObserved,
     missing = "FIML",
@@ -480,7 +493,7 @@ neu.clpm.obs.results <- list(
 
 ## Openness
 opn <- data %>%
-    select(contains("opn"), contains("relig"), first.state)
+    select(contains("opn"), contains("relig"))
 names(opn) <- traitModelNames
 opnFit <- sem(clpmUniObserved,
     missing = "FIML",
@@ -506,7 +519,7 @@ single.clpm.obs.results <- list(
     opn.clpm.obs.results
 )
 save(single.clpm.obs.results,
-    file = paste0(location, "/single.clpm.obs.results")
+    file = paste0(location, "/single.clpm.obs.results.RData")
     )
 
 
@@ -517,7 +530,7 @@ save(single.clpm.obs.results,
 ## Agreeableness
 
 agr <- data %>%
-    select(contains("agr"), contains("relig"), first.state)
+    select(contains("agr"), contains("relig"))
 names(agr) <- traitModelNames
 agrFit <- sem(riclpmUniObserved,
     missing = "FIML",
@@ -537,7 +550,7 @@ agr.riclpm.obs.results <- list(
 
 ## Conscientiousness
 cns <- data %>%
-    select(contains("cns"), contains("relig"), first.state)
+    select(contains("cns"), contains("relig"))
 names(cns) <- traitModelNames
 cnsFit <- sem(riclpmUniObserved,
     missing = "FIML",
@@ -557,7 +570,7 @@ cns.riclpm.obs.results <- list(
 
 ## Extraversion
 ext <- data %>%
-    select(contains("ext"), contains("relig"), first.state)
+    select(contains("ext"), contains("relig"))
 names(ext) <- traitModelNames
 extFit <- sem(riclpmUniObserved,
     missing = "FIML",
@@ -577,7 +590,7 @@ ext.riclpm.obs.results <- list(
 
 ## Neuroticism
 neu <- data %>%
-    select(contains("neu"), contains("relig"), first.state)
+    select(contains("neu"), contains("relig"))
 names(neu) <- traitModelNames
 neuFit <- sem(riclpmUniObserved,
     missing = "FIML",
@@ -597,7 +610,7 @@ neu.riclpm.obs.results <- list(
 
 ## Openness
 opn <- data %>%
-    select(contains("opn"), contains("relig"), first.state)
+    select(contains("opn"), contains("relig"))
 names(opn) <- traitModelNames
 opnFit <- sem(riclpmUniObserved,
     missing = "FIML",
@@ -623,6 +636,6 @@ single.riclpm.obs.results <- list(
     opn.riclpm.obs.results
 )
 save(single.riclpm.obs.results,
-    file = paste0(location, "/single.riclpm.obs.results")
+    file = paste0(location, "/single.riclpm.obs.results.RData")
     )
 
