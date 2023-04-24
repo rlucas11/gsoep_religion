@@ -149,6 +149,9 @@ load("results/clpm.warnings.RData")
 load("testResults/clpm.latent.results.RData")
 results <- clpm.latent.results[2][[1]]
 
+library(tidyverse)
+library(ggplot2)
+
 traitLabels <- matrix(
     c(
         "agr", "a",
@@ -268,4 +271,134 @@ plotData %>%
     coord_flip()
 
 
+
+
+
+extractAvgSingle <- function(results) {
+    ## Religion predicted from trait
+    agg <- results %>%
+        filter(label == "cl_t") %>%
+        select(est.std, ci.lower, ci.upper) %>%
+        summarise(
+            est = mean(est.std),
+            ci.lower = mean(ci.lower),
+            ci.upper = mean(ci.upper)
+        )
+    ## Trait predicted from religion
+    agg2 <- results %>%
+        filter(label == "cl_r") %>%
+        select(est.std, ci.lower, ci.upper) %>%
+        summarise(
+            est = mean(est.std),
+            ci.lower = mean(ci.lower),
+            ci.upper = mean(ci.upper)
+        )
+    return(c(agg, agg2))
+}
+
+
+extractParameterEstimatesSingle <- function(results,
+                                            model,
+                                            type,
+                                            variables) {
+    result <- data.frame(
+        est = numeric(),
+        ci.lower = numeric(),
+        ci.upper = numeric(),
+        est.1 = numeric(),
+        ci.lower.1 = numeric(),
+        ci.upper.1 = numeric(),
+        trait = character(),
+        model = character(),
+        type = character(),
+        variables = character()
+    )
+    for (i in 1:nrow(traitLabels)) {
+        trait <- traitLabels[i, 2]
+        result[i, ] <- c(
+            extractAvgSingle(results[[i]][[1]]),
+            traitLabels[i,1],
+            model,
+            type,
+            variables
+        )
+    }
+    return(result)
+}
+
+extractParameterEstimatesSingle(
+    single.clpm.latent.results,
+    "clpm",
+    "latent",
+    "single"
+)
+
+
 load("testResults/single.clpm.latent.results.RData")
+c.l.s <- extractParameterEstimatesSingle(
+    single.clpm.latent.results,
+    "clpm",
+    "latent",
+    "single"
+)
+c.l.s
+
+
+load("testResults/single.riclpm.latent.results.RData")
+r.l.s <- extractParameterEstimatesSingle(
+    single.riclpm.latent.results,
+    "riclpm",
+    "latent",
+    "single"
+)
+r.l.s
+
+load("testResults/single.clpm.obs.results.RData")
+c.o.s <- extractParameterEstimatesSingle(
+    single.clpm.obs.results,
+    "clpm",
+    "observed",
+    "single"
+)
+c.o.s
+
+
+load("testResults/single.riclpm.obs.results.RData")
+r.o.s <- extractParameterEstimatesSingle(
+    single.riclpm.obs.results,
+    "riclpm",
+    "observed",
+    "single"
+)
+r.o.s
+
+
+
+plotData <- rbind(
+    c.l.a,
+    r.l.a,
+    c.o.a,
+    r.o.a,
+    c.l.s,
+    r.l.s,
+    c.o.s,
+    r.o.s
+)
+
+
+plotData %>%
+    ggplot(
+        aes(
+            x = trait,
+            y = est,
+            ymin = ci.lower,
+            ymax = ci.upper,
+            color = model,
+            linetype = type,
+            shape = variables
+        )
+    ) +
+    geom_point(position = position_dodge(width = 0.5)) +
+    geom_errorbar(width = .05, position = position_dodge(width = 0.5)) +
+    coord_flip()
+
