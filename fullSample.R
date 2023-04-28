@@ -896,3 +896,193 @@ plotData %>%
             panel.grid.major.y = element_blank(),
             panel.grid.minor = element_blank()
         )
+
+################################################################################
+## Compare pattern of correlations
+################################################################################
+
+source("scripts/usefulFunctions.R")
+
+## Get actual stabilities
+clpm.a.a <- summarizeR(cor(data[, c("agr05", "agr09", "agr13", "agr17")], use = "pair"))
+clpm.a.c <- summarizeR(cor(data[, c("cns05", "cns09", "cns13", "cns17")], use = "pair"))
+clpm.a.e <- summarizeR(cor(data[, c("ext05", "ext09", "ext13", "ext17")], use = "pair"))
+clpm.a.n <- summarizeR(cor(data[, c("neu05", "neu09", "neu13", "neu17")], use = "pair"))
+clpm.a.o <- summarizeR(cor(data[, c("opn05", "opn09", "opn13", "opn17")], use = "pair"))
+clpm.a.r <- summarizeR(cor(data[, c("relig05", "relig09", "relig13", "relig17")], use = "pair"))
+
+## Get model predicted stabilities
+predictedC <- read_csv("results/predictCorsClpm.csv")
+predictedR <- read_csv("results/predictedCorRiclpm.csv")
+
+## CLPM
+clpm.p.a <- summarizeR(as.matrix(predictedC[1:4, 1:4]))
+clpm.p.c <- summarizeR(as.matrix(predictedC[5:8, 5:8]))
+clpm.p.e <- summarizeR(as.matrix(predictedC[9:12, 9:12]))
+clpm.p.n <- summarizeR(as.matrix(predictedC[13:16, 13:16]))
+clpm.p.o <- summarizeR(as.matrix(predictedC[17:20, 17:20]))
+clpm.p.r <- summarizeR(as.matrix(predictedC[21:24, 21:24]))
+
+## RICLPM
+riclpm.p.a <- summarizeR(as.matrix(predictedR[1:4, 1:4]))
+riclpm.p.c <- summarizeR(as.matrix(predictedR[5:8, 5:8]))
+riclpm.p.e <- summarizeR(as.matrix(predictedR[9:12, 9:12]))
+riclpm.p.n <- summarizeR(as.matrix(predictedR[13:16, 13:16]))
+riclpm.p.o <- summarizeR(as.matrix(predictedR[17:20, 17:20]))
+riclpm.p.r <- summarizeR(as.matrix(predictedR[21:24, 21:24]))
+
+a.cors <- data.frame(
+    Lag = rep(seq(4, 12, by = 4), 3),
+    Stability = c(clpm.a.a, clpm.p.a, riclpm.p.a),
+    Model = c(
+        rep("Actual", 3),
+        rep("CLPM", 3),
+        rep("RI-CLPM", 3)
+    )
+)
+c.cors <- data.frame(
+    Lag = rep(seq(4, 12, by = 4), 3),
+    Stability = c(clpm.a.c, clpm.p.c, riclpm.p.c),
+    Model = c(
+        rep("Actual", 3),
+        rep("CLPM", 3),
+        rep("RI-CLPM", 3)
+    )
+)
+e.cors <- data.frame(
+    Lag = rep(seq(4, 12, by = 4), 3),
+    Stability = c(clpm.a.e, clpm.p.e, riclpm.p.e),
+    Model = c(
+        rep("Actual", 3),
+        rep("CLPM", 3),
+        rep("RI-CLPM", 3)
+    )
+)
+n.cors <- data.frame(
+    Lag = rep(seq(4, 12, by = 4), 3),
+    Stability = c(clpm.a.n, clpm.p.n, riclpm.p.n),
+    Model = c(
+        rep("Actual", 3),
+        rep("CLPM", 3),
+        rep("RI-CLPM", 3)
+    )
+)
+o.cors <- data.frame(
+    Lag = rep(seq(4, 12, by = 4), 3),
+    Stability = c(clpm.a.o, clpm.p.o, riclpm.p.o),
+    Model = c(
+        rep("Actual", 3),
+        rep("CLPM", 3),
+        rep("RI-CLPM", 3)
+    )
+)
+r.cors <- data.frame(
+    Lag = rep(seq(4, 12, by = 4), 3),
+    Stability = c(clpm.a.r, clpm.p.r, riclpm.p.r),
+    Model = c(
+        rep("Actual", 3),
+        rep("CLPM", 3),
+        rep("RI-CLPM", 3)
+    )
+)
+
+
+
+aPlot <- ggplot(
+    data = a.cors,
+    aes(
+        x = Lag,
+        y = Stability,
+        group = Model,
+        linetype = Model
+    )
+) +
+    geom_smooth(formula = y ~ log(x), span = 2, color = "black") +
+        theme_bw() +
+        scale_y_continuous(limits = c(0, 1)) +
+        theme(legend.position = "none") +
+        ggtitle("Agreeableness") +
+        scale_x_continuous(breaks = c(4, 8, 12))
+
+cPlot <- ggplot(
+    data = c.cors,
+    aes(
+        x = Lag,
+        y = Stability,
+        group = Model,
+        linetype = Model
+    )
+) +
+    geom_smooth(formula=y~log(x), span = 2, color = "black") +
+        theme_bw() +
+        scale_y_continuous(limits = c(0, 1))+
+        theme(legend.position = "none") +
+        ggtitle("Conscientiousness") +
+        scale_x_continuous(breaks = c(4, 8, 12))
+
+ePlot <- ggplot(
+    data = e.cors,
+    aes(
+        x = Lag,
+        y = Stability,
+        group = Model,
+        linetype = Model
+    )
+) +
+    geom_smooth(formula=y~log(x), span = 2, color = "black") +
+        theme_bw() +
+        scale_y_continuous(limits = c(0, 1))+
+        theme(legend.position = "none") +
+        ggtitle("Extraversion") +
+        scale_x_continuous(breaks = c(4, 8, 12))
+
+nPlot <- ggplot(
+    data = n.cors,
+    aes(
+        x = Lag,
+        y = Stability,
+        group = Model,
+        linetype = Model
+    )
+) +
+    geom_smooth(formula=y~log(x), span = 2, color = "black") +
+        theme_bw() +
+        scale_y_continuous(limits = c(0, 1)) +
+        theme(legend.position = "none") +
+        ggtitle("Neuroticism") +
+        scale_x_continuous(breaks = c(4, 8, 12))
+
+oPlot <- ggplot(
+    data = o.cors,
+    aes(
+        x = Lag,
+        y = Stability,
+        group = Model,
+        linetype = Model
+    )
+) +
+    geom_smooth(formula=y~log(x), span = 2, color = "black") +
+        theme_bw() +
+        scale_y_continuous(limits = c(0, 1)) +
+        theme(legend.position = "none") +
+        ggtitle("Openness") +
+        scale_x_continuous(breaks = c(4, 8, 12))
+
+rPlot <- ggplot(
+    data = r.cors,
+    aes(
+        x = Lag,
+        y = Stability,
+        group = Model,
+        linetype = Model
+    )
+) +
+    geom_smooth(formula=y~log(x), span = 2, color = "black") +
+        theme_bw() +
+        scale_y_continuous(limits = c(0, 1))+
+        theme(legend.position = "none") +
+        ggtitle("Religiosity") +
+        scale_x_continuous(breaks = c(4, 8, 12))
+
+
+grid.arrange(aPlot, cPlot, ePlot, nPlot, oPlot, rPlot, nrow = 2)
