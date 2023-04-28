@@ -402,3 +402,224 @@ plotData %>%
     geom_errorbar(width = .05, position = position_dodge(width = 0.5)) +
     coord_flip()
 
+################################################################################
+## Full Sample Fit Indices
+################################################################################
+
+location <- "testResults"
+
+fit <- data.frame(
+    chisq = numeric(),
+    df = numeric(),
+    pvalue = numeric(),
+    cfi = numeric(),
+    rmsea = numeric(),
+    srmr = numeric(),
+    trait = character(),
+    model = character(),
+    type = character(),
+    variables = character()
+)
+
+                  
+
+## Load results for each set of models
+load(paste0(location, "/clpm.latent.results.RData"))
+fit[1, ] <- c(
+    clpm.latent.results[[1]][c(
+        "chisq",
+        "df",
+        "pvalue",
+        "cfi",
+        "rmsea",
+        "srmr"
+    )],
+    NA,
+    "clpm",
+    "latent",
+    "all"
+)
+
+load(paste0(location, "/riclpm.latent.results.RData"))
+fit[2, ] <- c(
+    riclpm.latent.results[[1]][c(
+        "chisq",
+        "df",
+        "pvalue",
+        "cfi",
+        "rmsea",
+        "srmr"
+    )],
+    NA,
+    "riclpm",
+    "latent",
+    "all"
+)
+
+
+load(paste0(location, "/clpm.observed.results.RData"))
+fit[3, ] <- c(
+    clpm.observed.results[[1]][c(
+        "chisq",
+        "df",
+        "pvalue",
+        "cfi",
+        "rmsea",
+        "srmr"
+    )],
+    NA,
+    "clpm",
+    "observed",
+    "all"
+)
+
+load(paste0(location, "/riclpm.observed.results.RData"))
+fit[4, ] <- c(
+    riclpm.observed.results[[1]][c(
+        "chisq",
+        "df",
+        "pvalue",
+        "cfi",
+        "rmsea",
+        "srmr"
+    )],
+    NA,
+    "riclpm",
+    "observed",
+    "all"
+)
+
+
+traits <- c("agr", "cns", "ext", "neu", "opn")
+
+load(paste0(location, "/single.clpm.latent.results.RData"))
+c.l.s <- data.frame(
+    chisq = numeric(),
+    df = numeric(),
+    pvalue = numeric(),
+    cfi = numeric(),
+    rmsea = numeric(),
+    srmr = numeric(),
+    trait = character(),
+    model = character(),
+    type = character(),
+    variables = character()
+)
+
+for (i in 1:5) {
+    c.l.s[i, 1:6] <- single.clpm.latent.results[[i]][[2]][c(
+        "chisq",
+        "df",
+        "pvalue",
+        "cfi",
+        "rmsea",
+        "srmr"
+        )]
+    c.l.s[i, 7] <- traits[i]
+    c.l.s[i, 8] <- "clpm"
+    c.l.s[i, 9] <- "latent"
+    c.l.s[i, 10] <- "single"
+}
+    
+
+load(paste0(location, "/single.riclpm.latent.results.RData"))
+r.l.s <- data.frame(
+    chisq = numeric(),
+    df = numeric(),
+    pvalue = numeric(),
+    cfi = numeric(),
+    rmsea = numeric(),
+    srmr = numeric(),
+    trait = character(),
+    model = character(),
+    type = character(),
+    variables = character()
+)
+
+for (i in 1:5) {
+    r.l.s[i, 1:6] <- single.riclpm.latent.results[[i]][[2]][c(
+        "chisq",
+        "df",
+        "pvalue",
+        "cfi",
+        "rmsea",
+        "srmr"
+        )]
+    r.l.s[i, 7] <- traits[i]
+    r.l.s[i, 8] <- "riclpm"
+    r.l.s[i, 9] <- "latent"
+    r.l.s[i, 10] <- "single"
+}
+
+
+load(paste0(location, "/single.clpm.obs.results.RData"))
+c.o.s <- data.frame(
+    chisq = numeric(),
+    df = numeric(),
+    pvalue = numeric(),
+    cfi = numeric(),
+    rmsea = numeric(),
+    srmr = numeric(),
+    trait = character(),
+    model = character(),
+    type = character(),
+    variables = character()
+)
+
+for (i in 1:5) {
+    c.o.s[i, 1:6] <- single.clpm.obs.results[[i]][[2]][c(
+        "chisq",
+        "df",
+        "pvalue",
+        "cfi",
+        "rmsea",
+        "srmr"
+        )]
+    c.o.s[i, 7] <- traits[i]
+    c.o.s[i, 8] <- "clpm"
+    c.o.s[i, 9] <- "observed"
+    c.o.s[i, 10] <- "single"
+}
+
+
+load(paste0(location, "/single.riclpm.obs.results.RData"))
+r.o.s <- data.frame(
+    chisq = numeric(),
+    df = numeric(),
+    pvalue = numeric(),
+    cfi = numeric(),
+    rmsea = numeric(),
+    srmr = numeric(),
+    trait = character(),
+    model = character(),
+    type = character(),
+    variables = character()
+)
+
+for (i in 1:5) {
+    r.o.s[i, 1:6] <- single.riclpm.obs.results[[i]][[2]][c(
+        "chisq",
+        "df",
+        "pvalue",
+        "cfi",
+        "rmsea",
+        "srmr"
+        )]
+    r.o.s[i, 7] <- traits[i]
+    r.o.s[i, 8] <- "riclpm"
+    r.o.s[i, 9] <- "observed"
+    r.o.s[i, 10] <- "single"
+}
+
+
+
+
+r.o.s <- extractParameterEstimatesSingle(
+    single.riclpm.obs.results,
+    "riclpm",
+    "observed",
+    "single"
+)
+
+
+finalFit <- rbind(fit, c.l.s, r.l.s, c.o.s, r.o.s)

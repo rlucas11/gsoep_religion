@@ -58,6 +58,7 @@ library(papaja)
 library(directlabels)
 library(gridExtra)
 library(ggplot2)
+library(stringr)
 
 ## Set options
 options(knitr.kable.NA='')
@@ -164,7 +165,258 @@ As can be seen in this table, even after aggregating over a 12-year period, all 
 
 In their original paper, @entringer_big_2023 focused on results from each federal state individually and on the meta-analytic averages of these state-level associations. This allowed them to examine whether results varied across states and specifically to test whether state-level religion moderated associations between religiosity and personality. Although we also use this approach for some of our analyses, we first present model comparisons in the full sample, ignoring state of residence. We do this for three reasons. First, as we will show, the estimates from the full sample mostly replicate the meta-analytic averages across the 14 analyzed states, and focusing on one sample instead of 14 (or 16) allows for clearer model comparisons. Second (and most importantly), in the original analyses, two states were dropped because of small sample sizes that resulted in problems with model convergence. When testing additional models, the specific states in which estimation problems emerge differ across models, which means that any differences that result could be due to differences in the models or differences in which states provide estimates. Finally, by ignoring the state-level structure, no participants needed to be excluded due to residence in states for which sample sizes were small. Again, we note that we eventually do discuss results in each state individually in the next section. 
 
-The models we tested compare estimates across three dichotomous factors: (1) The original CLPM versus the potentially more appropriate RI-CLPM, (2) Models that include latent personality traits (with a complex measurement model) versus models that include only a single observed mean score for each trait, and (c) models that include all five traits simultaneously (and hence control for correlations among traits when predicting religiosity) versus models that include just one trait per model. The combination of these factors results in eight sets of estimates for each personality trait. Consistent with the original paper, our focus is on the cross-lagged paths from each trait to religiosity and from religiosity to each trait. 
+The models we tested compare estimates across three dichotomous factors: (1) The original CLPM versus the potentially more appropriate RI-CLPM, (2) Models that include latent personality traits (with a complex measurement model) versus models that include only a single observed mean score for each trait, and (c) models that include all five traits simultaneously (and hence control for correlations among traits when predicting religiosity) versus models that include just one trait per model. The combination of these factors results in eight sets of estimates for each personality trait. Fit indices for all models are presented in Table \@ref(tab:fullFit). Consistent with @entringer_big_2023, we report Chi-square with degrees of freedom and p-value, along with CFI, RMSEA, and SRMR. 
+
+```{r fullFit, echo=FALSE, message=FALSE, warning=FALSE}
+
+## Change this for final paper
+location <- "testResults"
+
+## Initialize df
+fit <- data.frame(
+    chisq = numeric(),
+    df = numeric(),
+    pvalue = numeric(),
+    cfi = numeric(),
+    rmsea = numeric(),
+    srmr = numeric(),
+    trait = character(),
+    model = character(),
+    type = character(),
+    variables = character()
+)
+
+## Load results for each set of models
+load(paste0(location, "/clpm.latent.results.RData"))
+fit[1, 1:6] <- clpm.latent.results[[1]][c(
+        "chisq",
+        "df",
+        "pvalue",
+        "cfi",
+        "rmsea",
+        "srmr"
+        )]
+fit[1, 7:10] <- c(
+        NA,
+        "clpm",
+        "latent",
+        "all")
+
+load(paste0(location, "/riclpm.latent.results.RData"))
+fit[2, 1:6] <- riclpm.latent.results[[1]][c(
+        "chisq",
+        "df",
+        "pvalue",
+        "cfi",
+        "rmsea",
+        "srmr"
+        )]
+fit[2, 7:10] <- c(
+    NA,
+    "riclpm",
+    "latent",
+    "all"
+)
+
+
+load(paste0(location, "/clpm.observed.results.RData"))
+fit[3, 1:6] <- clpm.observed.results[[1]][c(
+        "chisq",
+        "df",
+        "pvalue",
+        "cfi",
+        "rmsea",
+        "srmr"
+        )]
+fit[3, 7:10] <- c(
+    NA,
+    "clpm",
+    "observed",
+    "all"
+)
+
+load(paste0(location, "/riclpm.observed.results.RData"))
+fit[4, 1:6] <- riclpm.observed.results[[1]][c(
+        "chisq",
+        "df",
+        "pvalue",
+        "cfi",
+        "rmsea",
+        "srmr"
+        )]
+fit[4, 7:10] <- c(
+    NA,
+    "riclpm",
+    "observed",
+    "all"
+)
+
+## List traits for loop in single-trait models
+traits <- c("agr", "cns", "ext", "neu", "opn")
+
+load(paste0(location, "/single.clpm.latent.results.RData"))
+c.l.s <- data.frame(
+    chisq = numeric(),
+    df = numeric(),
+    pvalue = numeric(),
+    cfi = numeric(),
+    rmsea = numeric(),
+    srmr = numeric(),
+    trait = character(),
+    model = character(),
+    type = character(),
+    variables = character()
+)
+
+for (i in 1:5) {
+    c.l.s[i, 1:6] <- single.clpm.latent.results[[i]][[2]][c(
+        "chisq",
+        "df",
+        "pvalue",
+        "cfi",
+        "rmsea",
+        "srmr"
+        )]
+    c.l.s[i, 7] <- traits[i]
+    c.l.s[i, 8] <- "clpm"
+    c.l.s[i, 9] <- "latent"
+    c.l.s[i, 10] <- "single"
+}
+    
+
+load(paste0(location, "/single.riclpm.latent.results.RData"))
+r.l.s <- data.frame(
+    chisq = numeric(),
+    df = numeric(),
+    pvalue = numeric(),
+    cfi = numeric(),
+    rmsea = numeric(),
+    srmr = numeric(),
+    trait = character(),
+    model = character(),
+    type = character(),
+    variables = character()
+)
+
+for (i in 1:5) {
+    r.l.s[i, 1:6] <- single.riclpm.latent.results[[i]][[2]][c(
+        "chisq",
+        "df",
+        "pvalue",
+        "cfi",
+        "rmsea",
+        "srmr"
+        )]
+    r.l.s[i, 7] <- traits[i]
+    r.l.s[i, 8] <- "riclpm"
+    r.l.s[i, 9] <- "latent"
+    r.l.s[i, 10] <- "single"
+}
+
+
+load(paste0(location, "/single.clpm.obs.results.RData"))
+c.o.s <- data.frame(
+    chisq = numeric(),
+    df = numeric(),
+    pvalue = numeric(),
+    cfi = numeric(),
+    rmsea = numeric(),
+    srmr = numeric(),
+    trait = character(),
+    model = character(),
+    type = character(),
+    variables = character()
+)
+
+for (i in 1:5) {
+    c.o.s[i, 1:6] <- single.clpm.obs.results[[i]][[2]][c(
+        "chisq",
+        "df",
+        "pvalue",
+        "cfi",
+        "rmsea",
+        "srmr"
+        )]
+    c.o.s[i, 7] <- traits[i]
+    c.o.s[i, 8] <- "clpm"
+    c.o.s[i, 9] <- "observed"
+    c.o.s[i, 10] <- "single"
+}
+
+
+load(paste0(location, "/single.riclpm.obs.results.RData"))
+r.o.s <- data.frame(
+    chisq = numeric(),
+    df = numeric(),
+    pvalue = numeric(),
+    cfi = numeric(),
+    rmsea = numeric(),
+    srmr = numeric(),
+    trait = character(),
+    model = character(),
+    type = character(),
+    variables = character()
+)
+
+for (i in 1:5) {
+    r.o.s[i, 1:6] <- single.riclpm.obs.results[[i]][[2]][c(
+        "chisq",
+        "df",
+        "pvalue",
+        "cfi",
+        "rmsea",
+        "srmr"
+        )]
+    r.o.s[i, 7] <- traits[i]
+    r.o.s[i, 8] <- "riclpm"
+    r.o.s[i, 9] <- "observed"
+    r.o.s[i, 10] <- "single"
+}
+
+## Combine different models
+finalFit <- rbind(fit, c.l.s, r.l.s, c.o.s, r.o.s)
+
+## Reorder columns
+finalFit <- finalFit[,c("model", "type", "variables", "trait",
+                        "chisq", "df", "pvalue", "cfi", "rmsea", "srmr")]
+
+## Format table elements
+finalFit$model <- toupper(finalFit$model)
+finalFit$type <- str_to_title(finalFit$type)
+finalFit$variables <- str_to_title(finalFit$variables)
+finalFit[c(6:9,
+           11:14,
+           16:19,
+           21:24),
+         c("model",
+           "type",
+           "variables")]  <- NA
+
+names(finalFit) <- c("Model",
+                     "Type",
+                     "Variables",
+                     "Trait",
+                     "ChiSq",
+                     "df",
+                     "p-value",
+                     "CFI",
+                     "RMSEA",
+                     "SRMR")
+
+papaja::apa_table(finalFit,
+                  midrules=c(1,2,3,4,9,14,19),
+                  digits=c(NA, NA, NA, NA, 2, 0, 3, 2, 2, 2),
+                  align=rep("r", 10),
+                  format.args=list(na_string=""),
+                  caption="Fit indices for full sample models.",
+                  note="Agr = Agreableness; Con = Conscientiousness; Ext = Extraversion; Neu = Neuroticism; Opn = Openness.")
+
+
+
+```
+
+Evaluating the fit of these models is challenging, as the chi-square is sensitive to sample size and subtle misfit can lead to significant values with large sample sizes, and there are no unambiguous cutoffs for well-fitting models using the other indices. Recommended cutoffs for the CFI are typically either .90 or .95, and the recommend cutoff for the RMSEA and SRMR is typically .05. The CLPM is nested within the RI-CLPM, so the difference in fit between these pairs of models can be tested explicitly, though the large sample sizes make statistical significance testing overly sensitive. Other pairs of models are not nested and cannot be directly compared. 
+
 
 ```{r fullPlot, echo=FALSE, message=FALSE, warning=FALSE, fig.cap="Estimated Lagged Effects of Personality on Religiosity"}
 
@@ -418,7 +670,7 @@ plotData %>%
 
 ```
 
-Figure \@ref(fig:fullPlot) presents the estimated cross-lagged path from each personality trait to religiosity for each of the eight tested models. Results from the CLPM are presented in black lines, whereas results for the RI-CLPM are presented as grey lines. Results from the latent-variable models are included as solid lines whereas results for the observed-variable models are presented as dashed lines. Finally results for models that include all five traits simultaneously are labeled with triangles, whereas those that model each trait individually are labeled with circles. Bars represent 95% confidence intervals for the standardized parameter estimates. 
+Consistent with the original paper, our focus is on the cross-lagged paths from each trait to religiosity and from religiosity to each trait. Figure \@ref(fig:fullPlot) presents the estimated cross-lagged path from each personality trait to religiosity for each of the eight tested models. Results from the CLPM are presented in black lines, whereas results for the RI-CLPM are presented as grey lines. Results from the latent-variable models are included as solid lines whereas results for the observed-variable models are presented as dashed lines. Finally results for models that include all five traits simultaneously are labeled with triangles, whereas those that model each trait individually are labeled with circles. Bars represent 95% confidence intervals for the standardized parameter estimates. 
 
 Before describing the results, it is important to acknowledge that the confidence intervals for estimates from the RI-CLPM models are generally considerably larger than those for the CLPM. This pattern is not unique to these data or these model specifications. The RI-CLPM is a multilevel model that separates between-person associations from within-person associations, and estimates of the within-person parts of these models often have less bias at the cost of reduced efficiency [see @allison2009fixed, for an explanation]. Because of this, we highlight both the significance of the effect and the parameter estimates when comparing results across models. 
 
