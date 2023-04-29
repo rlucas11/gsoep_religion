@@ -63,6 +63,9 @@ library(stringr)
 ## Set options
 options(knitr.kable.NA='')
 
+## Change this for final version
+location <- "testResults"
+
 ```
 
 
@@ -163,9 +166,9 @@ As can be seen in this table, even after aggregating over a 12-year period, all 
 
 ## Full Sample Analyses
 
-In their original paper, @entringer_big_2023 focused on results from each federal state individually and on the meta-analytic averages of these state-level associations. This allowed them to examine whether results varied across states and specifically to test whether state-level religion moderated associations between religiosity and personality. Although we also use this approach for some of our analyses, we first present model comparisons in the full sample, ignoring state of residence. We do this for three reasons. First, as we will show, the estimates from the full sample mostly replicate the meta-analytic averages across the 14 analyzed states, and focusing on one sample instead of 14 (or 16) allows for clearer model comparisons. Second (and most importantly), in the original analyses, two states were dropped because of small sample sizes that resulted in problems with model convergence. When testing additional models, the specific states in which estimation problems emerge differ across models, which means that any differences that result could be due to differences in the models or differences in which states provide estimates. Finally, by ignoring the state-level structure, no participants needed to be excluded due to residence in states for which sample sizes were small. Again, we note that we eventually do discuss results in each state individually in the next section. 
+In their original paper, @entringer_big_2023 focused on results from each federal state individually and on the meta-analytic averages of these state-level associations. This allowed them to examine whether results varied across states and specifically to test whether state-level religion moderated associations between religiosity and personality. Although we also use this approach for some of our analyses, we first present model comparisons in the full sample, ignoring state of residence. We do this for three reasons. First, as we will show, the estimates from the full sample mostly replicate the meta-analytic averages across the 14 analyzed states, and focusing on one sample instead of 14 (or 16) allows for clearer model comparisons. Second (and most importantly), in the original analyses, two states were dropped because of small sample sizes that resulted in problems with model convergence. When testing additional models, the specific states in which estimation problems emerge differ across models, which means that any overall differences that result could be due to differences in the models or differences in which states provide estimates. Finally, by ignoring the state-level structure, no participants needed to be excluded due to residence in states for which sample sizes were small. Again, we note that we eventually do discuss results in each state individually in the next section. 
 
-The models we tested compare estimates across three dichotomous factors: (1) The original CLPM versus the potentially more appropriate RI-CLPM, (2) Models that include latent personality traits (with a complex measurement model) versus models that include only a single observed mean score for each trait, and (c) models that include all five traits simultaneously (and hence control for correlations among traits when predicting religiosity) versus models that include just one trait per model. The combination of these factors results in eight sets of estimates for each personality trait. Fit indices for all models are presented in Table \@ref(tab:fullFit). Consistent with @entringer_big_2023, we report Chi-square with degrees of freedom and p-value, along with CFI, RMSEA, and SRMR. 
+The models we tested compare estimates across three dichotomous modeling decisions: (1) The original CLPM versus the potentially more appropriate RI-CLPM, (2) Models that include latent personality traits (with a complex measurement model) versus models that include only a single observed mean score for each trait, and (c) models that include all five traits simultaneously (and hence control for correlations among traits when predicting religiosity) versus models that include just one trait per model. The combination of these factors results in eight sets of estimates for each personality trait. 
 
 ```{r fullFit, echo=FALSE, message=FALSE, warning=FALSE}
 
@@ -415,7 +418,139 @@ papaja::apa_table(finalFit,
 
 ```
 
-Evaluating the fit of these models is challenging, as the chi-square is sensitive to sample size and subtle misfit can lead to significant values with large sample sizes, and there are no unambiguous cutoffs for well-fitting models using the other indices. Recommended cutoffs for the CFI are typically either .90 or .95, and the recommend cutoff for the RMSEA and SRMR is typically .05. The CLPM is nested within the RI-CLPM, so the difference in fit between these pairs of models can be tested explicitly, though the large sample sizes make statistical significance testing overly sensitive. Other pairs of models are not nested and cannot be directly compared. 
+Fit indices for all models are presented in Table \@ref(tab:fullFit). Consistent with @entringer_big_2023, we report Chi-square with degrees of freedom and p-value, along with CFI, RMSEA, and SRMR. Evaluating the fit of these models is challenging, as the chi-square is sensitive to sample size and subtle misfit can lead to significant values with large sample sizes, and there are no unambiguous cutoffs for well-fitting models using the other indices. Recommended cutoffs for the CFI are typically either .90 or .95, and the recommend cutoff for the RMSEA and SRMR is typically .05. @entringer_big_2023 considered models with CFI values close to (and sometimes below) .90 as acceptable, however, we generally prefer the .95 cutoff. It is important to note that the CLPM is nested within the RI-CLPM, so the difference in fit between these pairs of models can be tested explicitly, though the large sample sizes make statistical significance testing overly sensitive. Other pairs of models are not nested and cannot be directly compared. 
+
+```{r measurement-fit, echo=FALSE, message=FALSE, warning=FALSE}
+## Get fit data for measurement model; referenced in text
+load(paste0(location, "/measurement.results.RData"))
+
+```
+
+Table \@ref(tab:fullFit) shows that these modeling decisions affect fit. Although RMSEA and SRMR values for the original model are acceptable, the CFI for the CLPM with latent variables and all traits included just clears the .90 criterion and does not reach the more stringent .95 threshold. These results are consistent with those from the original paper. Indeed, in the original paper, the CFI for the primary model was below the cutoff of .90 in 13 of 14 states. These fit indices could be cause for concern when interpreting the estimates from the models. 
+
+Notably, the RI-CLPM with latent variables and all traits included (shown in the second row of Table \@ref(tab:fullFit) also has a CFI value below .95 (even though the Chi-Square value is considerably---and significantly---lower for this model than for the CLPM). In fact, the CFI for a simple measurement model does not exceed the more stringent .95 cutoff, with a value of `r round(measurement.results[[2]]["cfi"], 2)`. This is also consistent with the results in the original paper, where the CFI for a measurement model specifying metric invariance across states had a CFI value of just .92. The fact that the fit of this unconstrained measurement model is not especially strong provides further justification to examine simpler models with less complicated measurement models. Misspecification in this part of the model could affect estimates of the structural parts. 
+
+Moving to the comparison of the CLPM and the RI-CLPM for the model with observed trait measures, the difference in fit indices is even clearer. In this case, the CFI for the CLPM is still a borderline acceptable `r round(finalFit[3, "CFI"], 2)` whereas in the RI-CLPM it is `r round(finalFit[4, "CFI"], 2)`. Moreover, the difference in Chi-square values for the two models is not just significant, but dramatic, dropping from `r round(finalFit[3, "ChiSq"], 2)` to `r round(finalFit[4, "ChiSq"], 2)` for models that differ by just 21 degrees of freedom. 
+
+
+
+```{r implied-cors, echo=FALSE, message=FALSE, warning=FALSE, fig.cap="Actual stability coefficients (solid line) and implied stability coefficients from the CLPM (short-dashed line) and RI-CLPM (long-dashed line)."}
+
+################################################################################
+## Compare pattern of correlations
+################################################################################
+
+load(paste0(location,
+            "corsForPlot.RData")
+     )
+
+
+
+aPlot <- ggplot(
+    data = corsForPlot[[1]],
+    aes(
+        x = Lag,
+        y = Stability,
+        group = Model,
+        linetype = Model
+    )
+) +
+    geom_smooth(formula = y ~ log(x), span = 2, color = "black") +
+        theme_bw() +
+        scale_y_continuous(limits = c(0, 1)) +
+        theme(legend.position = "none") +
+        ggtitle("Agreeableness") +
+        scale_x_continuous(breaks = c(4, 8, 12))
+
+cPlot <- ggplot(
+    data = corsForPlot[[2]],
+    aes(
+        x = Lag,
+        y = Stability,
+        group = Model,
+        linetype = Model
+    )
+) +
+    geom_smooth(formula=y~log(x), span = 2, color = "black") +
+        theme_bw() +
+        scale_y_continuous(limits = c(0, 1))+
+        theme(legend.position = "none") +
+        ggtitle("Conscientiousness") +
+        scale_x_continuous(breaks = c(4, 8, 12))
+
+ePlot <- ggplot(
+    data = corsForPlot[[3]],
+    aes(
+        x = Lag,
+        y = Stability,
+        group = Model,
+        linetype = Model
+    )
+) +
+    geom_smooth(formula=y~log(x), span = 2, color = "black") +
+        theme_bw() +
+        scale_y_continuous(limits = c(0, 1))+
+        theme(legend.position = "none") +
+        ggtitle("Extraversion") +
+        scale_x_continuous(breaks = c(4, 8, 12))
+
+nPlot <- ggplot(
+    data = corsForPlot[[4]],
+    aes(
+        x = Lag,
+        y = Stability,
+        group = Model,
+        linetype = Model
+    )
+) +
+    geom_smooth(formula=y~log(x), span = 2, color = "black") +
+        theme_bw() +
+        scale_y_continuous(limits = c(0, 1)) +
+        theme(legend.position = "none") +
+        ggtitle("Neuroticism") +
+        scale_x_continuous(breaks = c(4, 8, 12))
+
+oPlot <- ggplot(
+    data = corsForPlot[[5]],
+    aes(
+        x = Lag,
+        y = Stability,
+        group = Model,
+        linetype = Model
+    )
+) +
+    geom_smooth(formula=y~log(x), span = 2, color = "black") +
+        theme_bw() +
+        scale_y_continuous(limits = c(0, 1)) +
+        theme(legend.position = "none") +
+        ggtitle("Openness") +
+        scale_x_continuous(breaks = c(4, 8, 12))
+
+rPlot <- ggplot(
+    data = corsForPlot[[6]],
+    aes(
+        x = Lag,
+        y = Stability,
+        group = Model,
+        linetype = Model
+    )
+) +
+    geom_smooth(formula=y~log(x), span = 2, color = "black") +
+        theme_bw() +
+        scale_y_continuous(limits = c(0, 1))+
+        theme(legend.position = "none") +
+        ggtitle("Religiosity") +
+        scale_x_continuous(breaks = c(4, 8, 12))
+
+
+grid.arrange(aPlot, cPlot, ePlot, nPlot, oPlot, rPlot, nrow = 2)
+
+
+```
+
+It is easy to understand the source of misfit in the CLPM just by considering the implied stability coefficients from such a model and then comparing them to the actual correlations from the data. @lucas_why_2023 noted that a major problem with the CLPM is that the model implies that stability coefficients should decline quickly with increasing lags (especially when cross-lagged paths are small), yet actual stability coefficients for most variables are quite stable over increasingly long lags. This is also true in these data, as can be seen in Figure \@ref(fig:implied-cors). This figure plots actual stability coefficients for each variable across 4-, 8-, and 12-year intervals in the solid lines. Stability coefficients start out moderate for 4-year intervals, but decline only slightly across 8- and 12-year intervals. The implied stability coefficients from the CLPM (shown in the lines with short dashes), however, decline much faster than the actual stability coefficients, leading to a predicted stability of approximately half the actual stability for the 12-year intervals. In contrast, the RI-CLPM (shown in the lines with long dashes) reproduces the patterns of stability coefficients almost perfectly. The CLPM is poorly suited to describing patterns of stability, which means that the model is mis-specified. This mis-specification will then bias other parameters in the model. This same pattern of differences in fit indices emerges in the single-trait models, with the RI-CLPM consistently outperforming the CLPM, especially in the observed-trait models[^residuals]. In short, the fit indices suggest that the measurement model for the latent-trait models may not fit the data well. In addition, the RI-CLPM consistently fits better than the CLPM, which can be explained by the fact that the CLPM cannot account for the slow decline in stability over increasingly long lags. The choice to model all traits together versus separately cannot be informed by fit statistics. 
+
+[^residuals]: The fact that the difference between the CLPM and RI-CLPM is arguably not as large in the latent-variable models as in the observed-variable models highlights an interesting modeling decision by the authors that is not uncommon in latent-variable applications of the CLPM. Specifically, although the structural part of the model assumes that the autoregressive process and lagged associations include only lagged effects from the immediately prior wave, the item-specific residuals are allowed to correlate with item-specific residuals *from all other waves*. In other words, by omitting a random intercept or its equivalent, those who use the CLPM deny that there is any association between non-adjacent waves that can't be explained by the lag-1 associations, whereas the item-specific residuals have a more general, "trait-like" structure. It is not clear why expectations for the residuals would differ in this way. In any case, including these residual correlations in latent-trait models likely improves fit by accounting for at least some of the true-stable trait variance that the RI-CLPM models explicitly. However, if stable-trait variance is responsible for these associations, the model would still be mis-specified, despite the better fit. 
 
 
 ```{r fullPlot, echo=FALSE, message=FALSE, warning=FALSE, fig.cap="Estimated Lagged Effects of Personality on Religiosity"}
@@ -680,9 +815,7 @@ Importantly, Figure \@ref(fig:fullPlot) shows that our alternative models do not
 
 Finally, Figure \@ref(fig:fullPlot) shows that effects can even reverse direction depending on the chosen model specification. Most notably, although there was no significant effect of conscientiousness in the original study (a finding replicated in the full sample using the same model specification), this effect became significantly negative in one version of the RI-CLPM and significantly positive in the other three specifications of the CLPM. These examples show that conclusions about the lagged associations between personality traits and religiosity depend on the precise model specification. Indeed, conclusions about all five traits depend on which model specification is chosen (if the significance of the effect is used to guide interpretation), with the sign of the effect even changing for one of the five traits.
 
-@entringer_big_2023 found only one significant lagged association from religiosity to personality: the path from religiosity to agreeableness, which was estimated to be a small but significant .011. This effect was again replicated in our full-sample analysis (average standardized estimate = `r plotData %>% filter(trait == "agr", model == "clpm", type == "latent", variables == "all") %>% select(est.1) %>% round(3)`). However, the size and significance of this effect again varied considerably; two specifications of the CLPM resulted in considerably larger effects (with effect sizes comparable to the largest effects of personality on religion) and nonsignificantly negative associations in all specifications of the RI-CLPM. Again, when relying on the significance of the effect to guide conclusions, these would differ for three of the five traits assessed, and for two of these, the differences in the size of the estimates were considerable. 
-
-```{r fullPlot2, echo=FALSE, message=FALSE, warning=FALSE}
+```{r fullPlot2, echo=FALSE, message=FALSE, warning=FALSE, fig.cap="Estimated Lagged Effects of Religiosity on Personality"}
 
 plotData %>%
     ggplot(
@@ -710,6 +843,9 @@ plotData %>%
 
 
 ```
+
+@entringer_big_2023 found only one significant lagged association from religiosity to personality: the path from religiosity to agreeableness, which was estimated to be a small but significant .011. This effect was again replicated in our full-sample analysis (average standardized estimate = `r plotData %>% filter(trait == "agr", model == "clpm", type == "latent", variables == "all") %>% select(est.1) %>% round(3)`). However, as Figure \@ref(fig:fullPlot2) shows, the size and significance of this and other lagged effects again varied considerably; two specifications of the CLPM resulted in considerably larger effects (with effect sizes comparable to the largest effects of personality on religion) and nonsignificantly negative associations in all specifications of the RI-CLPM. Again, when relying on the significance of the effect to guide conclusions, these would differ for three of the five traits assessed, and for two of these, the differences in the size of the estimates were considerable. 
+
 
 
 # Disclosures

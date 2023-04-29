@@ -1,4 +1,5 @@
 ## Source model files
+source("scripts/measurementModel.R")
 source("scripts/originalModel.R")
 source("scripts/fullRiclpm.R")
 source("scripts/clpmObserved.R")
@@ -19,6 +20,26 @@ location <- "testResults"
 
 ## Set Results Location (comment when testing)
 location <- "results"
+
+
+################################################################################
+## Measurement Model
+################################################################################
+
+measurement.model <- sem(measurement_model,
+    missing = "FIML",
+    estimator = "MLR",
+    data = data
+)
+summary(measurement.model)
+fit.measurement <- fitMeasures(measurement.model)
+est.measurement <- standardizedSolution(measurement.model)
+measurement.results <- list(
+    summary(measurement.model),
+    fit.measurement,
+    est.measurement
+)
+save(measurement.results, paste0(location, "measurement.results.RData")
 
 
 ################################################################################
@@ -903,6 +924,7 @@ plotData %>%
 
 source("scripts/usefulFunctions.R")
 
+
 ## Get actual stabilities
 clpm.a.a <- summarizeR(cor(data[, c("agr05", "agr09", "agr13", "agr17")], use = "pair"))
 clpm.a.c <- summarizeR(cor(data[, c("cns05", "cns09", "cns13", "cns17")], use = "pair"))
@@ -986,6 +1008,18 @@ r.cors <- data.frame(
     )
 )
 
+corsForPlot <- list(
+    a.cors,
+    c.cors,
+    e.cors,
+    n.cors,
+    o.cors,
+    r.cors
+)
+
+save(corsForPlot,
+    file = paste0(location, "corsForPlot.RData")
+    )
 
 
 aPlot <- ggplot(
