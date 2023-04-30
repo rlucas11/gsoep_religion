@@ -1,0 +1,157 @@
+---
+title: "Supplement to: On the Robustness of Reciprocal Associations Between Personality and Religiosity in a German Sample"
+shorttitle: "Personality and Religion"
+author: 
+  - name: Richard E. Lucas
+    affiliation: 1
+    corresponding: yes    # Define only one corresponding author
+    address: "316 Physics Rd., Michigan State University, East Lansing, MI 48823"
+    email: "lucasri@msu.edu"
+  - name: Julia Rohrer
+    affiliation: 2
+affiliation:
+  - id: 1
+    institution: "Department of Psychology, Michigan State University"
+  - id: 2
+    institution: "Department of Psychology, University of Leipzig"
+
+header-includes:
+   - \usepackage{todonotes}
+   - \usepackage{setspace}
+   - \AtBeginEnvironment{tabular}{\singlespacing}
+   - \AtBeginEnvironment{lltable}{\singlespacing}
+   - \AtBeginEnvironment{ThreePartTable}{\singlespacing}
+   - \AtBeginEnvironment{tablenotes}{\doublespacing}
+   - \captionsetup[table]{font={stretch=1.5}}
+   - \captionsetup[figure]{font={stretch=1.5}}
+   - \raggedbottom
+
+bibliography:
+   - '/home/rich/Dropbox/MyLibraryZ2.bib'
+floatsintext: yes
+mask: no
+linenumbers: no
+documentclass: "apa6"
+classoption: "man"
+output: 
+  papaja::apa6_pdf:
+  fig_caption: yes
+
+---
+
+```{r setup, include=FALSE}
+## Load packages
+
+library(tidyverse)
+library(knitr)
+library(papaja)
+
+## Set options
+options(knitr.kable.NA='')
+
+```
+
+# State Specific Estimates and Convergence Problems
+
+```{r meta-table, echo=FALSE, message=FALSE, warning=FALSE}
+
+problemTable <- read_csv("results/metaCombo.csv")
+
+
+problemTable$Agreeableness <- paste0(
+    formatC(problemTable$agr_tr.cl, format = "f", digits = 2),
+    " (",
+    formatC(problemTable$agr_tr.cl.lb, format = "f", digits = 2),
+    ", ",
+    formatC(problemTable$agr_tr.cl.ub, format = "f", digits = 2),
+    ")"
+)
+
+problemTable$Conscientiousness <- paste0(
+    formatC(problemTable$cns_tr.cl, format = "f", digits = 2),
+    " (",
+    formatC(problemTable$cns_tr.cl.lb, format = "f", digits = 2),
+    ", ",
+    formatC(problemTable$cns_tr.cl.ub, format = "f", digits = 2),
+    ")"
+)
+
+problemTable$Extraversion <- paste0(
+    formatC(problemTable$ext_tr.cl, format = "f", digits = 2),
+    " (",
+    formatC(problemTable$ext_tr.cl.lb, format = "f", digits = 2),
+    ", ",
+    formatC(problemTable$ext_tr.cl.ub, format = "f", digits = 2),
+    ")"
+)
+
+problemTable$Neuroticism <- paste0(
+    formatC(problemTable$neu_tr.cl, format = "f", digits = 2),
+    " (",
+    formatC(problemTable$neu_tr.cl.lb, format = "f", digits = 2),
+    ", ",
+    formatC(problemTable$neu_tr.cl.ub, format = "f", digits = 2),
+    ")"
+)
+
+problemTable$Openness <- paste0(
+    formatC(problemTable$opn_tr.cl, format = "f", digits = 2),
+    " (",
+    formatC(problemTable$opn_tr.cl.lb, format = "f", digits = 2),
+    ", ",
+    formatC(problemTable$opn_tr.cl.ub, format = "f", digits = 2),
+    ")"
+)
+
+problemTable <- problemTable[,c(
+    "stateName",
+    "Model",
+    "Type",
+    "Traits",
+    "agr",
+    "Agreeableness",
+    "cns",
+    "Conscientiousness",
+    "ext",
+    "Extraversion",
+    "neu",
+    "Neuroticism",
+    "opn",
+    "Openness"
+)]
+    
+
+```
+
+```{r cla-table, echo=FALSE, message=FALSE, warning=FALSE}
+
+claTable <- problemTable %>%
+    filter(Model == "CLPM",
+           Type == "Latent",
+           Traits == "All")
+
+apa_table(claTable[,c(1,5:14)],
+          col.names = c("State",
+                        "Prob.",
+                        "Estimate",
+                        "Prob.",
+                        "Estimate",
+                        "Prob.",
+                        "Estimate",
+                        "Prob.",
+                        "Estimate",
+                        "Prob.",
+                        "Estimate"),
+          col_spanners = list(`Agreeableness` = c(2,3),
+                              `Conscientiousness` = c(4,5),
+                              `Extraversion` = c(6,7),
+                              `Neuroticism` = c(8,9),
+                              `Openness` = c(10,11)),
+          landscape = TRUE,
+          caption = "Estimates (with 95% confidence intervals) and convergence and estimation problems in the CLPM with latent traits and all traits modeled simultaneously")
+
+```
+
+\newpage 
+
+# References

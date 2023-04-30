@@ -169,7 +169,13 @@ restructureResults <- function(data, problems, model, type) {
             Traits = "All"
         ) %>%
         pivot_longer(
-            cols=agr.r1:opn.st.ub,
+            cols = c(starts_with("agr"),
+                     starts_with("cns"),
+                     starts_with("ext"),
+                     starts_with("neu"),
+                     starts_with("opn")
+                     ),
+            ##cols=agr.r1:opn.ri.r.ub,
             names_to = c("Trait", "Parameter"),
             names_pattern="([[:alpha:]]*)\\.(.*)"
         )
@@ -218,7 +224,13 @@ restructureResultsSingle <- function(data, problems, model, type) {
         ) %>%
         select(!contains("samplesize")) %>%
         pivot_longer(
-            cols = agr.r1:opn.st.ub,
+            cols = c(starts_with("agr"),
+                     starts_with("cns"),
+                     starts_with("ext"),
+                     starts_with("neu"),
+                     starts_with("opn")
+                     ),
+            ##cols = agr.r1:opn.ri.r.ub,
             names_to = c("Trait", "Parameter"),
             names_pattern = "([[:alpha:]]*)\\.(.*)"
         ) %>%

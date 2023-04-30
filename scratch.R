@@ -623,3 +623,160 @@ r.o.s <- extractParameterEstimatesSingle(
 
 
 finalFit <- rbind(fit, c.l.s, r.l.s, c.o.s, r.o.s)
+
+
+################################################################################
+## Meta-analysis full results
+################################################################################
+
+library(metafor)
+library(tidyverse)
+library(ggplot2)
+
+
+## Read Data
+results <- read_csv("data/combinedResults.csv")
+
+results %>%
+    filter(substr(Parameter, 1, 2)=="tr",
+           Model == "CLPM",
+           Type == "Latent",
+           Traits == "All") %>%
+    pivot_wider(
+        id_cols = c(state, stateName, select, samplesize, z.relig),
+        names_from = c(Trait, Parameter),
+        values_from = value
+    )
+
+
+metaFullResults <- results %>%
+    select(
+        stateName,
+        Model,
+        Type,
+        Traits,
+        Trait,
+        Parameter,
+        value
+    ) %>%
+    filter(substr(Parameter, 1, 2) == "tr") %>%
+        pivot_wider(
+            id_cols = c(stateName, Model, Type, Traits),
+            names_from = c(Trait, Parameter),
+            values_from = value
+        )
+    
+
+metaProblems <- results %>%
+    select(stateName,
+        Model,
+        Type,
+        Traits,
+        Trait,
+        select
+        ) %>%
+    group_by(Model, stateName, Type, Traits, Trait) %>%
+    summarize(problems = sum(is.na(select))) %>%
+    mutate(problem = case_when(problems == 0 ~ "No",
+                               problems > 0 ~ "Yes")
+           ) %>%
+    pivot_wider(
+        id_cols = c(stateName, Model, Type, Traits),
+        names_from = Trait,
+        values_from = problem
+    )
+                
+metaCombo <- left_join(
+    metaFullResults,
+    metaProblems,
+    by = c(
+        "stateName",
+        "Model",
+        "Type",
+        "Traits"
+    )
+)
+
+
+
+write_csv(metaCombo, "results/metaCombo.csv")
+
+           
+
+
+print(results %>%
+    filter(
+        Model == "RICLPM",
+        Type == "Latent",
+        Traits == "All",
+        stateName == "Bavaria"
+    ), n = 90)
+
+#### Table for supplement
+
+problemTable <- read_csv("results/metaCombo.csv")
+
+
+problemTable$Agreeableness <- paste0(
+    formatC(problemTable$agr_tr.cl, format = "f", digits = 2),
+    " (",
+    formatC(problemTable$agr_tr.cl.lb, format = "f", digits = 2),
+    ", ",
+    formatC(problemTable$agr_tr.cl.ub, format = "f", digits = 2),
+    ")"
+)
+
+problemTable$Conscientiousness <- paste0(
+    formatC(problemTable$cns_tr.cl, format = "f", digits = 2),
+    " (",
+    formatC(problemTable$cns_tr.cl.lb, format = "f", digits = 2),
+    ", ",
+    formatC(problemTable$cns_tr.cl.ub, format = "f", digits = 2),
+    ")"
+)
+
+problemTable$Extraversion <- paste0(
+    formatC(problemTable$ext_tr.cl, format = "f", digits = 2),
+    " (",
+    formatC(problemTable$ext_tr.cl.lb, format = "f", digits = 2),
+    ", ",
+    formatC(problemTable$ext_tr.cl.ub, format = "f", digits = 2),
+    ")"
+)
+
+problemTable$Neuroticism <- paste0(
+    formatC(problemTable$neu_tr.cl, format = "f", digits = 2),
+    " (",
+    formatC(problemTable$neu_tr.cl.lb, format = "f", digits = 2),
+    ", ",
+    formatC(problemTable$neu_tr.cl.ub, format = "f", digits = 2),
+    ")"
+)
+
+problemTable$Openness <- paste0(
+    formatC(problemTable$opn_tr.cl, format = "f", digits = 2),
+    " (",
+    formatC(problemTable$opn_tr.cl.lb, format = "f", digits = 2),
+    ", ",
+    formatC(problemTable$opn_tr.cl.ub, format = "f", digits = 2),
+    ")"
+)
+
+problemTable <- problemTable[,c(
+    "stateName",
+    "Model",
+    "Type",
+    "Traits",
+    "agr",
+    "Agreeableness",
+    "cns",
+    "Conscientiousness",
+    "ext",
+    "Extraversion",
+    "neu",
+    "Neuroticism",
+    "opn",
+    "Openness"
+)]
+
+    
