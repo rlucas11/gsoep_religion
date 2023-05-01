@@ -209,7 +209,7 @@ restructureResultsSingle <- function(data, problems, model, type) {
     for (i in c("agr", "cns", "ext", "neu", "opn")) {
         nTable[
             nTable$Trait == i &
-                !(nTable$state %in% warningsList[[i]]),
+                !(nTable$state %in% problems[[i]]),
             "select"
         ] <- 1
     }

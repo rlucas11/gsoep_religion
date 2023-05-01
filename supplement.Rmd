@@ -142,15 +142,236 @@ apa_table(claTable[,c(1,5:14)],
                         "Estimate",
                         "Prob.",
                         "Estimate"),
+          align = rep("r", 11),
           col_spanners = list(`Agreeableness` = c(2,3),
                               `Conscientiousness` = c(4,5),
                               `Extraversion` = c(6,7),
                               `Neuroticism` = c(8,9),
                               `Openness` = c(10,11)),
           landscape = TRUE,
+          font_size = "tiny",
           caption = "Estimates (with 95% confidence intervals) and convergence and estimation problems in the CLPM with latent traits and all traits modeled simultaneously")
 
 ```
+
+```{r rla-table, echo=FALSE, message=FALSE, warning=FALSE}
+
+rlaTable <- problemTable %>%
+    filter(Model == "RICLPM",
+           Type == "Latent",
+           Traits == "All")
+
+apa_table(rlaTable[,c(1,5:14)],
+          col.names = c("State",
+                        "Prob.",
+                        "Estimate",
+                        "Prob.",
+                        "Estimate",
+                        "Prob.",
+                        "Estimate",
+                        "Prob.",
+                        "Estimate",
+                        "Prob.",
+                        "Estimate"),
+          align = rep("r", 11),
+          col_spanners = list(`Agreeableness` = c(2,3),
+                              `Conscientiousness` = c(4,5),
+                              `Extraversion` = c(6,7),
+                              `Neuroticism` = c(8,9),
+                              `Openness` = c(10,11)),
+          landscape = TRUE,
+          font_size = "tiny",
+          caption = "Estimates (with 95% confidence intervals) and convergence and estimation problems in the RI-CLPM with latent traits and all traits modeled simultaneously")
+
+```
+
+```{r coa-table, echo=FALSE, message=FALSE, warning=FALSE}
+
+coaTable <- problemTable %>%
+    filter(Model == "CLPM",
+           Type == "Observed",
+           Traits == "All")
+
+apa_table(coaTable[,c(1,5:14)],
+          col.names = c("State",
+                        "Prob.",
+                        "Estimate",
+                        "Prob.",
+                        "Estimate",
+                        "Prob.",
+                        "Estimate",
+                        "Prob.",
+                        "Estimate",
+                        "Prob.",
+                        "Estimate"),
+          align = rep("r", 11),
+          col_spanners = list(`Agreeableness` = c(2,3),
+                              `Conscientiousness` = c(4,5),
+                              `Extraversion` = c(6,7),
+                              `Neuroticism` = c(8,9),
+                              `Openness` = c(10,11)),
+          landscape = TRUE,
+          font_size = "tiny",
+          caption = "Estimates (with 95% confidence intervals) and convergence and estimation problems in the CLPM with observed measures and all traits modeled simultaneously")
+
+```
+
+```{r roa-table, echo=FALSE, message=FALSE, warning=FALSE}
+
+roaTable <- problemTable %>%
+    filter(Model == "RICLPM",
+           Type == "Observed",
+           Traits == "All")
+
+apa_table(roaTable[,c(1,5:14)],
+          col.names = c("State",
+                        "Prob.",
+                        "Estimate",
+                        "Prob.",
+                        "Estimate",
+                        "Prob.",
+                        "Estimate",
+                        "Prob.",
+                        "Estimate",
+                        "Prob.",
+                        "Estimate"),
+          align = rep("r", 11),
+          col_spanners = list(`Agreeableness` = c(2,3),
+                              `Conscientiousness` = c(4,5),
+                              `Extraversion` = c(6,7),
+                              `Neuroticism` = c(8,9),
+                              `Openness` = c(10,11)),
+          landscape = TRUE,
+          font_size = "tiny",
+          caption = "Estimates (with 95% confidence intervals) and convergence and estimation problems in the RI-CLPM with observed measures and all traits modeled simultaneously")
+
+```
+
+```{r cls-table, echo=FALSE, message=FALSE, warning=FALSE}
+
+clsTable <- problemTable %>%
+    filter(Model == "CLPM",
+           Type == "Latent",
+           Traits == "Single")
+
+apa_table(clsTable[,c(1,5:14)],
+          col.names = c("State",
+                        "Prob.",
+                        "Estimate",
+                        "Prob.",
+                        "Estimate",
+                        "Prob.",
+                        "Estimate",
+                        "Prob.",
+                        "Estimate",
+                        "Prob.",
+                        "Estimate"),
+          align = rep("r", 11),
+          col_spanners = list(`Agreeableness` = c(2,3),
+                              `Conscientiousness` = c(4,5),
+                              `Extraversion` = c(6,7),
+                              `Neuroticism` = c(8,9),
+                              `Openness` = c(10,11)),
+          landscape = TRUE,
+          font_size = "tiny",
+          caption = "Estimates (with 95% confidence intervals) and convergence and estimation problems in the CLPM with latent traits and individual traits modeled separately")
+
+```
+
+```{r rls-table, echo=FALSE, message=FALSE, warning=FALSE}
+
+rlsTable <- problemTable %>%
+    filter(Model == "RICLPM",
+           Type == "Latent",
+           Traits == "Single")
+
+apa_table(rlsTable[,c(1,5:14)],
+          col.names = c("State",
+                        "Prob.",
+                        "Estimate",
+                        "Prob.",
+                        "Estimate",
+                        "Prob.",
+                        "Estimate",
+                        "Prob.",
+                        "Estimate",
+                        "Prob.",
+                        "Estimate"),
+          align = rep("r", 11),
+          col_spanners = list(`Agreeableness` = c(2,3),
+                              `Conscientiousness` = c(4,5),
+                              `Extraversion` = c(6,7),
+                              `Neuroticism` = c(8,9),
+                              `Openness` = c(10,11)),
+          landscape = TRUE,
+          font_size = "tiny",
+          caption = "Estimates (with 95% confidence intervals) and convergence and estimation problems in the RI-CLPM with latent traits and individual traits modeled separately")
+
+```
+
+```{r cos-table, echo=FALSE, message=FALSE, warning=FALSE}
+
+cosTable <- problemTable %>%
+    filter(Model == "CLPM",
+           Type == "Observed",
+           Traits == "Single")
+
+apa_table(cosTable[,c(1,5:14)],
+          col.names = c("State",
+                        "Prob.",
+                        "Estimate",
+                        "Prob.",
+                        "Estimate",
+                        "Prob.",
+                        "Estimate",
+                        "Prob.",
+                        "Estimate",
+                        "Prob.",
+                        "Estimate"),
+          align = rep("r", 11),
+          col_spanners = list(`Agreeableness` = c(2,3),
+                              `Conscientiousness` = c(4,5),
+                              `Extraversion` = c(6,7),
+                              `Neuroticism` = c(8,9),
+                              `Openness` = c(10,11)),
+          landscape = TRUE,
+          font_size = "tiny",
+          caption = "Estimates (with 95% confidence intervals) and convergence and estimation problems in the CLPM with observed measures and individual traits modeled separately")
+
+```
+
+```{r ros-table, echo=FALSE, message=FALSE, warning=FALSE}
+
+rosTable <- problemTable %>%
+    filter(Model == "RICLPM",
+           Type == "Observed",
+           Traits == "Single")
+
+apa_table(rosTable[,c(1,5:14)],
+          col.names = c("State",
+                        "Prob.",
+                        "Estimate",
+                        "Prob.",
+                        "Estimate",
+                        "Prob.",
+                        "Estimate",
+                        "Prob.",
+                        "Estimate",
+                        "Prob.",
+                        "Estimate"),
+          align = rep("r", 11),
+          col_spanners = list(`Agreeableness` = c(2,3),
+                              `Conscientiousness` = c(4,5),
+                              `Extraversion` = c(6,7),
+                              `Neuroticism` = c(8,9),
+                              `Openness` = c(10,11)),
+          landscape = TRUE,
+          font_size = "tiny",
+          caption = "Estimates (with 95% confidence intervals) and convergence and estimation problems in the RI-CLPM with observed measures and individual traits modeled separately")
+
+```
+
+
 
 \newpage 
 

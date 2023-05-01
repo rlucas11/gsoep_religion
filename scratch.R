@@ -638,9 +638,9 @@ library(ggplot2)
 results <- read_csv("data/combinedResults.csv")
 
 results %>%
-    filter(substr(Parameter, 1, 2)=="tr",
+    filter(substr(Parameter, 1, 2)=="rt",
            Model == "CLPM",
-           Type == "Latent",
+           Type == "Observed",
            Traits == "All") %>%
     pivot_wider(
         id_cols = c(state, stateName, select, samplesize, z.relig),
@@ -675,7 +675,7 @@ metaProblems <- results %>%
         Trait,
         select
         ) %>%
-    group_by(Model, stateName, Type, Traits, Trait) %>%
+    group_by(Trait, Traits, Model, stateName, Type) %>%
     summarize(problems = sum(is.na(select))) %>%
     mutate(problem = case_when(problems == 0 ~ "No",
                                problems > 0 ~ "Yes")
@@ -686,6 +686,8 @@ metaProblems <- results %>%
         values_from = problem
     )
                 
+
+
 metaCombo <- left_join(
     metaFullResults,
     metaProblems,
@@ -714,6 +716,7 @@ print(results %>%
 
 #### Table for supplement
 
+library(tidyverse)
 problemTable <- read_csv("results/metaCombo.csv")
 
 
