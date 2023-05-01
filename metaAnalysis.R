@@ -132,6 +132,8 @@ for (i in 1:nrow(varLoop)) {
     metaCombinedResults[i, "ub"] <- as.numeric(tempOut$ci.ub)
 }
 
+write_csv(metaCombinedResults, "results/metaCombinedResults.csv")
+
 metaCombinedResults %>%
     filter(
         effect == "rt.cl"
@@ -215,6 +217,8 @@ for (i in 1:nrow(varLoop)) {
     metaModResults[i, "mod.lb"] <- as.numeric(tempOut$ci.lb[[2]])
     metaModResults[i, "mod.ub"] <- as.numeric(tempOut$ci.ub[[2]])
 }
+
+write_csv(metaModResults, "results/metaModResults.csv")
 
 metaModResults %>%
     filter(

@@ -858,8 +858,83 @@ In addition, estimates for three of the four other effects differed depending on
 
 ## Meta-analysis Across Federal States
 
-As noted previously, the results from the full-sample analyses mostly replicate the average effects from the meta-analysis of results across the 14 federal states analyzed in @entringer_big_2023. By focusing on the full sample, comparison across models was simplified, and the effect of any state-specific model estimation problems could be eliminated. However, using this full-sample approach, we could not replicate the state-level contextual moderator effects, so we also conducted state-level analyses to examine how modeling choices affect state-level religiosity as a moderator of the lagged effects. 
+As noted previously, the results from the full-sample analyses mostly replicate the average effects from the meta-analysis of results across the 14 federal states analyzed in @entringer_big_2023. By focusing on the full sample, comparisons across models were simplified, and the effect of any state-specific model estimation problems could be eliminated. However, using this full-sample approach, it is not possible to replicate the state-level contextual moderator analyses, so we also conducted state-level analyses to examine how modeling choices affect state-level religiosity as a moderator of the lagged effects. 
 
+Assessing how model choice affects results across states is challenging, however, as estimation and convergence problems occur at different rates across different models. Even in the original paper, responses from two states (Bremen and Saarland) were dropped from the analyses due to estimation problems in the CLPM. Our own analyses replicated these problems in these two states, as well as in one additional state not identified in the original analyses. Specifically, although estimates could be obtained for Hamburg, some variances were estimated to be negative. Additional problems (including negative variances, non-positive-definite matrices, and lack of convergence) were encountered with other model specifications, including the CLPM with latent variables and each trait modeled separately and the RI-CLPM with latent variables traits modeled separately or together. Notably, no estimation or convergence problems were encountered with any model (even those in the two states that were omitted from the original paper) that included observed variables instead of latent variables for the Big Five. This is further evidence that the complex measurement model causes problems and that the simpler observed-variable models should be preferred. A full list of parameter estimates for the paths from personality to religion and religion to personality, along with a list of estimation and convergence problems are included in Tables 1 through 16 of the supplement. 
+
+Because of these estimation problems, we rely only on the four observed-variable models when examining the effects of state-level religiosity on the lagged paths. Specifically, we first tested each model in each state and then used meta-analytic procedures to test whether state-level religiosity moderated these paths in each model. Parameter estimates and 95% confidence intervals are presented in Figure \@ref(fig:moderator-meta-rt) for the paths from personality to religiosity and Figure \@ref(fig:moderator-meta-tr) for the paths from religiosity to personality. 
+
+```{r moderator-meta-rt, echo=FALSE, message=FALSE, warning=FALSE, fig.cap = "Meta-analytic results for state-level religiosity as a moderator of the lagged effect of traits on religiosity"}
+
+## Load Results
+metaModResults <- read_csv("results/metaModResults.csv")
+
+metaModResults %>%
+    filter(
+        effect == "rt.cl",
+        type == "Observed"
+    ) %>%
+    ggplot(
+        aes(
+            x = trait,
+            y = mod.est,
+            ymin = mod.lb,
+            ymax = mod.ub,
+            color = model,
+            shape = variables
+        )
+    ) +
+    geom_point(position = position_dodge(width = 0.75), size = 2) +
+    geom_errorbar(width = .05, position = position_dodge(width = 0.75)) +
+    coord_flip() +
+    theme_bw() +
+    scale_color_grey() +
+    theme(
+        panel.grid.major.y = element_blank(),
+        panel.grid.minor = element_blank()
+        ) +
+    scale_y_continuous(limits = c(-.08, .08))
+
+
+```
+
+In the original paper, @entringer_big_2023 found moderating effects of state-level religiosity for the paths from openness and conscientiousness to religiosity. Figure \@ref(fig:moderator-meta-rt) shows that both of these effects were replicated when the CLPM was used and all traits were modeled simultaneously. This was true even though we focus on the model that uses observed variables for the Big Five traits, whereas Entringer et al. modeled these as latent variables. However, as was true for the simple lagged effects, these results varied depending on precisely which model specification was used. In the case of openness, both version of the CLPM resulted in significant moderating effects, but neither version of the RI-CLPM effect did. For the conscientiousness effect, when all five traits were modeled simultaneously, both the CLPM and RI-CLPM resulted in significant moderating effects. When conscientiousness was examined on its own, however, these effects were not significant. Moderating effects for the other three traits were consistently small and nonsignificant across the four model specifications. 
+
+@entringer_big_2023 also found moderating effects of state-level religiosity for the paths from religiosity to openness, but the paths to the other traits were not significant. Figure \@ref(fig:moderator-meta-tr) shows that this one path also emerged in our version of this model. Again, h
+
+
+```{r moderator-meta-tr, echo=FALSE, message=FALSE, warning=FALSE, fig.cap = "Meta-analytic results for state-level religiosity as a moderator of the lagged effect of religiosity on traits"}
+
+metaModResults %>%
+    filter(
+        effect == "tr.cl",
+        type == "Observed"
+    ) %>%
+    ggplot(
+        aes(
+            x = trait,
+            y = mod.est,
+            ymin = mod.lb,
+            ymax = mod.ub,
+            color = model,
+            linetype = type,
+            shape = variables
+        )
+    ) +
+    geom_point(position = position_dodge(width = 0.75), size = 2) +
+    geom_errorbar(width = .05, position = position_dodge(width = 0.75)) +
+    coord_flip() +
+    theme_bw() +
+    scale_color_grey() +
+    theme(
+        panel.grid.major.y = element_blank(),
+        panel.grid.minor = element_blank()
+    ) +
+    scale_y_continuous(limits = c(-.08, .08))
+
+
+
+```
 
 
 # Disclosures
