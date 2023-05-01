@@ -258,3 +258,116 @@ metaModResults %>%
 
 ggsave("figures/tr.cl.mod.png")
 
+
+
+################################################################################
+## Setup Tables of Estimates and Problems for Supplement
+################################################################################
+
+## Read Data
+results <- read_csv("data/combinedResults.csv")
+
+## Predicting Religion From Trait
+metaFullResultsRt <- results %>%
+    select(
+        stateName,
+        Model,
+        Type,
+        Traits,
+        Trait,
+        Parameter,
+        value
+    ) %>%
+    filter(substr(Parameter, 1, 2) == "rt") %>%
+        pivot_wider(
+            id_cols = c(stateName, Model, Type, Traits),
+            names_from = c(Trait, Parameter),
+            values_from = value
+        )
+    
+
+metaProblemsRt <- results %>%
+    select(stateName,
+        Model,
+        Type,
+        Traits,
+        Trait,
+        select
+        ) %>%
+    group_by(Trait, Traits, Model, stateName, Type) %>%
+    summarize(problems = sum(is.na(select))) %>%
+    mutate(problem = case_when(problems == 0 ~ "No",
+                               problems > 0 ~ "Yes")
+           ) %>%
+    pivot_wider(
+        id_cols = c(stateName, Model, Type, Traits),
+        names_from = Trait,
+        values_from = problem
+    )
+                
+
+metaComboRt <- left_join(
+    metaFullResultsRt,
+    metaProblemsRt,
+    by = c(
+        "stateName",
+        "Model",
+        "Type",
+        "Traits"
+    )
+)
+
+write_csv(metaComboRt, "results/metaComboRt.csv")
+
+
+## Predicting Trait From Religion
+metaFullResultsTr <- results %>%
+    select(
+        stateName,
+        Model,
+        Type,
+        Traits,
+        Trait,
+        Parameter,
+        value
+    ) %>%
+    filter(substr(Parameter, 1, 2) == "tr") %>%
+        pivot_wider(
+            id_cols = c(stateName, Model, Type, Traits),
+            names_from = c(Trait, Parameter),
+            values_from = value
+        )
+    
+
+metaProblemsTr <- results %>%
+    select(stateName,
+        Model,
+        Type,
+        Traits,
+        Trait,
+        select
+        ) %>%
+    group_by(Trait, Traits, Model, stateName, Type) %>%
+    summarize(problems = sum(is.na(select))) %>%
+    mutate(problem = case_when(problems == 0 ~ "No",
+                               problems > 0 ~ "Yes")
+           ) %>%
+    pivot_wider(
+        id_cols = c(stateName, Model, Type, Traits),
+        names_from = Trait,
+        values_from = problem
+    )
+                
+
+metaComboTr <- left_join(
+    metaFullResultsTr,
+    metaProblemsTr,
+    by = c(
+        "stateName",
+        "Model",
+        "Type",
+        "Traits"
+    )
+)
+
+write_csv(metaComboTr, "results/metaComboTr.csv")
