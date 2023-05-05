@@ -960,7 +960,7 @@ There are at least two reasons for concern about this complex measurement model.
 
 A second concern is that the latent-variable models often led to estimation and convergence problems even for the relatively simple CLPM, but especially for the RI-CLPM. These problems meant that participants from two states needed to be excluded from the analyses in the original study, and many more had to be excluded from our reanalysis. In contrast, when observed variables were modeled, no estimation or convergence problems emerged for any of the tested models in any of the 16 federal states. Although neither the fit nor convergence issues is definitive proof that the measurement model included in these analyses is fundamentally misspecified, together they provide cause for concern. In such cases, robustness across alternative specifications is desirable before strong conclusions are drawn, and that robustness did not emerge across the alternative specifications we tested. Indeed, fundamentally different conclusions about the links between personality and religiosity would result from the different model specifications. 
 
-## Residualized Predictors
+## Controlling for Other Traits
 
 A second concern has to do with the fact that @entringer_big_2023 chose to model all traits simultaneously when examining lagged effects. This means that each lagged effect reflects the association between the unique variance in that trait and religiosity, after controlling for all other traits. Entringer et al. did not justify this decision other than to note that it is a common practice. However, this decision is not without consequences. Most notably, it comes with important challenges regarding interpretation. 
 
