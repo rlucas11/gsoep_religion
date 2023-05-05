@@ -715,3 +715,16 @@ problemTable <- problemTable[,c(
 )]
 
     
+################################################################################
+## Regression Test for Discussion
+################################################################################
+
+source("scripts/latentRegression.R")
+source("scripts/aRegression.R")
+source("scripts/cRegression.R")
+
+regModel <- sem(big5Regression, data)
+summary(regModel, rsquare = TRUE)
+
+cModel <- sem(cRegression, data)
+summary(cModel, rsquare = TRUE)
