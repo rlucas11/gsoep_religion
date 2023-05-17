@@ -1,6 +1,6 @@
 ---
 title: "On the Robustness of Reciprocal Associations Between Personality and Religiosity in a German Sample"
-short title: "Personality and Religion"
+shorttitle: "Personality and Religion"
 author: 
   - name: Richard E. Lucas
     affiliation: 1
