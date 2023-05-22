@@ -16,7 +16,7 @@ source("scripts/riclpmUniObserved.R")
 ## data <- data |>
 ##     mutate(select = sample(c(1:20), size = 1, replace = TRUE)) |>
 ##     filter(select == 1)
-location <- "testResults"
+## location <- "testResults"
 
 ## Set Results Location (comment when testing)
 location <- "results"
@@ -801,8 +801,6 @@ extractParameterEstimatesSingle <- function(results,
     return(result)
 }
 
-location <- "testResults"
-location <- "results"
 
 ## Load results for each set of models
 load(paste0(location, "/clpm.latent.results.RData"))
@@ -1118,5 +1116,5 @@ rPlot <- ggplot(
         ggtitle("Religiosity") +
         scale_x_continuous(breaks = c(4, 8, 12))
 
-
-grid.arrange(aPlot, cPlot, ePlot, nPlot, oPlot, rPlot, nrow = 2)
+## The manuscript file runs the code below; no need to run here
+## grid.arrange(aPlot, cPlot, ePlot, nPlot, oPlot, rPlot, nrow = 2)
