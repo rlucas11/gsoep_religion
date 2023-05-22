@@ -39,7 +39,9 @@ measurement.results <- list(
     fit.measurement,
     est.measurement
 )
-save(measurement.results, paste0(location, "measurement.results.RData")
+save(measurement.results,
+     file = paste0(location, "measurement.results.RData")
+     )
 
 
 ################################################################################
