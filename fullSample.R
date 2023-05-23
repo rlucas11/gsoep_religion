@@ -40,7 +40,7 @@ measurement.results <- list(
     est.measurement
 )
 save(measurement.results,
-     file = paste0(location, "measurement.results.RData")
+     file = paste0(location, "/measurement.results.RData")
      )
 
 
@@ -1018,7 +1018,7 @@ corsForPlot <- list(
 )
 
 save(corsForPlot,
-    file = paste0(location, "corsForPlot.RData")
+    file = paste0(location, "/corsForPlot.RData")
     )
 
 

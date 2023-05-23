@@ -70,7 +70,7 @@ library(stringr)
 options(knitr.kable.NA='')
 
 ## Change this for final version
-location <- "testResults"
+location <- "results"
 
 ```
 
@@ -186,9 +186,6 @@ In their original paper, @entringer_big_2023 focused on results from each federa
 The models we tested compare estimates across three dichotomous modeling decisions: (1) The original CLPM versus the potentially more appropriate RI-CLPM, (2) Models that include latent personality traits (with a complex measurement model) versus models that include only a single observed mean score for each trait, and (c) models that include all five traits simultaneously (and hence control for correlations among traits when predicting religiosity) versus models that include just one trait per model. The combination of these factors results in eight sets of estimates for each personality trait. For models that included latent traits for all five traits simultaneously, we used the same measurement model specification included in the original paper. 
 
 ```{r fullFit, echo=FALSE, message=FALSE, warning=FALSE}
-
-## Change this for final paper
-location <- "testResults"
 
 ## Initialize df
 fit <- data.frame(
@@ -459,7 +456,7 @@ Moving to the comparison of the CLPM and the RI-CLPM for the model with observed
 ################################################################################
 
 load(paste0(location,
-            "corsForPlot.RData")
+            "/corsForPlot.RData")
      )
 
 
@@ -711,8 +708,6 @@ extractParameterEstimatesSingle <- function(results,
     return(result)
 }
 
-location <- "testResults"
-#location <- "results"
 
 ## Load results for each set of models
 load(paste0(location, "/clpm.latent.results.RData"))
