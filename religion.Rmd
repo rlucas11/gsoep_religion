@@ -107,7 +107,7 @@ We first simply examine the correlations between religiosity and each of the Big
 
 # Methods
 
-This paper uses data from the German Socio-Economic Panel (SOEP) study, which assessed the Big Five personality traits and religiosity four times, at four-year intervals. The inclusion of four waves of assessment allows for the use of both the CLPM and the more complex RI-CLPM. @entringer_big_2023 provided detailed code for their analyses, however, they did not provide code to extract and clean data from the raw data files. Thus, as an additional test of the reproducibility of the analyses from the description provided in the text, we developed our own code for extracting and cleaning the data based on the decision rules reported in the text. We also relied on a more recent release of the dataset (Version 37, versus Version 35 used in the original paper). As we discuss in more detail below, these differences mean that the exact number of participants included in the final samples and the precise estimates from the original model were not perfectly reproduced. However, both the final sample sizes and results are quite close to those from the original paper (see below for details), and all substantive conclusions from the original paper were supported in analyses that use the same model. Thus we proceeded with our robustness checks using the sample we extracted. Our full code for extracting, cleaning, and analyzing these data is available at [https://osf.io/uyb7p/](https://osf.io/uyb7p/). 
+This paper uses data from the German Socio-Economic Panel (SOEP) study, which assessed the Big Five personality traits and religiosity four times, at four-year intervals. The inclusion of four waves of assessment allows for the use of both the CLPM and the more complex RI-CLPM. @entringer_big_2023 provided detailed code for their analyses, however, they did not provide code to extract and clean data from the raw data files. Thus, as an additional test of the reproducibility of the analyses from the description provided in the text, we developed our own code for extracting and cleaning the data based on the decision rules reported in the text. We also relied on a more recent release of the dataset (Version 37, versus Version 35 used in the original paper, though this should not impact the sample, as the variables of interest were not included in the additional two waves). As we discuss in more detail below, the exact number of participants included in the final samples and the precise estimates from the original model were not perfectly reproduced. However, both the final sample sizes and results are quite close to those from the original paper (see below for details), and all substantive conclusions from the original paper were supported in analyses that use the same model. Thus we proceeded with our robustness checks using the sample we extracted. Our full code for extracting, cleaning, and analyzing these data is available at [https://osf.io/uyb7p/](https://osf.io/uyb7p/). 
 
 ## Participants
 
@@ -208,8 +208,8 @@ fit[1, 1:6] <- clpm.latent.results[[1]][c(
         "chisq",
         "df",
         "pvalue",
-        "cfi",
-        "rmsea",
+        "cfi.robust",
+        "rmsea.robust",
         "srmr"
         )]
 fit[1, 7:10] <- c(
@@ -223,8 +223,8 @@ fit[2, 1:6] <- riclpm.latent.results[[1]][c(
         "chisq",
         "df",
         "pvalue",
-        "cfi",
-        "rmsea",
+        "cfi.robust",
+        "rmsea.robust",
         "srmr"
         )]
 fit[2, 7:10] <- c(
@@ -240,8 +240,8 @@ fit[3, 1:6] <- clpm.observed.results[[1]][c(
         "chisq",
         "df",
         "pvalue",
-        "cfi",
-        "rmsea",
+        "cfi.robust",
+        "rmsea.robust",
         "srmr"
         )]
 fit[3, 7:10] <- c(
@@ -256,8 +256,8 @@ fit[4, 1:6] <- riclpm.observed.results[[1]][c(
         "chisq",
         "df",
         "pvalue",
-        "cfi",
-        "rmsea",
+        "cfi.robust",
+        "rmsea.robust",
         "srmr"
         )]
 fit[4, 7:10] <- c(
@@ -289,8 +289,8 @@ for (i in 1:5) {
         "chisq",
         "df",
         "pvalue",
-        "cfi",
-        "rmsea",
+        "cfi.robust",
+        "rmsea.robust",
         "srmr"
         )]
     c.l.s[i, 7] <- traits[i]
@@ -319,8 +319,8 @@ for (i in 1:5) {
         "chisq",
         "df",
         "pvalue",
-        "cfi",
-        "rmsea",
+        "cfi.robust",
+        "rmsea.robust",
         "srmr"
         )]
     r.l.s[i, 7] <- traits[i]
@@ -349,8 +349,8 @@ for (i in 1:5) {
         "chisq",
         "df",
         "pvalue",
-        "cfi",
-        "rmsea",
+        "cfi.robust",
+        "rmsea.robust",
         "srmr"
         )]
     c.o.s[i, 7] <- traits[i]
@@ -379,8 +379,8 @@ for (i in 1:5) {
         "chisq",
         "df",
         "pvalue",
-        "cfi",
-        "rmsea",
+        "cfi.robust",
+        "rmsea.robust",
         "srmr"
         )]
     r.o.s[i, 7] <- traits[i]
@@ -433,7 +433,7 @@ papaja::apa_table(finalFit,
 
 ### Model Fit
 
-Fit indexes for all models are presented in Table \@ref(tab:fullFit). Consistent with @entringer_big_2023, we report chi-square with degrees of freedom and p-value, along with CFI, RMSEA, and SRMR. Evaluating the fit of these models is challenging, as the chi-square is sensitive to sample size and subtle misfit can lead to significant values with large sample sizes, and there are no unambiguous cutoffs for well-fitting models using the other indexes. Recommended cutoffs for the CFI are typically either .90 or .95, and the recommend cutoff for the RMSEA and SRMR is typically .05. @entringer_big_2023 considered models with CFI values close to (and frequently below) .90 as acceptable, but we generally prefer the .95 cutoff. It is important to note that the CLPM is nested within the RI-CLPM, so the difference in fit between these pairs of models can be tested explicitly, though the large sample sizes make statistical significance testing overly sensitive. Other pairs of models are not nested and cannot be directly compared using the chi-square difference. 
+Fit indexes for all models are presented in Table \@ref(tab:fullFit). Consistent with @entringer_big_2023, we report chi-square with degrees of freedom and p-value, along with robust CFI, robust RMSEA, and SRMR. Evaluating the fit of these models is challenging, as the chi-square is sensitive to sample size and subtle misfit can lead to significant values with large sample sizes, and there are no unambiguous cutoffs for well-fitting models using the other indexes. Recommended cutoffs for the CFI are typically either .90 or .95, and the recommend cutoff for the RMSEA and SRMR is typically .05. @entringer_big_2023 considered models with CFI values close to (and frequently below) .90 as acceptable, but we generally prefer the .95 cutoff. It is important to note that the CLPM is nested within the RI-CLPM, so the difference in fit between these pairs of models can be tested explicitly, though the large sample sizes make statistical significance testing overly sensitive. Other pairs of models are not nested and cannot be directly compared using the chi-square difference. 
 
 ```{r measurement-fit, echo=FALSE, message=FALSE, warning=FALSE}
 ## Get fit data for measurement model; referenced in text
