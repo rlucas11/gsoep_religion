@@ -14,8 +14,14 @@ affiliation:
     institution: "Department of Psychology, Michigan State University"
   - id: 2
     institution: "Wilhelm Wundt Institute for Psychology, Leipzig University"
-
-
+authornote: |
+  
+  The entire dataset is freely available for scientific use from the German Institute for Economic Research (DIW): https://www.diw.de/en/diw_01.c.601584.en/data_access.html
+  
+  Ethical permission for the study was granted by the Scientific Advisory Board of the DIW Berlin, Germany.
+  
+  The authors declare that they have no conflicts of interest related to this research.
+  
 abstract: |
   **Objective:** @entringer_big_2023 used longitudinal data from a German panel study to examine reciprocal causal effects between personality and religiosity, along with cultural moderators of these effects. The current paper examines the robustness of the original effects to alternative model specifications. 
   
