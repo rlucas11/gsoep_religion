@@ -12,7 +12,7 @@ A list of variables needed for the cleaning script to run is included in the "in
 
 The code is set up to use the STATA files provided by the SOEP. 
 
-
+**Note:** The paper uses SOEP data files that are only available to EU users. The international version does not include the federal state variable that is necessary for some analyses, and it does not include all participants from the EU version. Therefore, if you only have access to the international version, you will not be able to duplicate all analyses. The code can be edited to remove references to the federal state variable, and then all the analyses in the [fullsample.R](fullSample.R) can be run, but the results will not perfectly match those reported in the paper (though they should be very close).
 
 ## Guide to Code
 
