@@ -728,3 +728,161 @@ summary(regModel, rsquare = TRUE)
 
 cModel <- sem(cRegression, data)
 summary(cModel, rsquare = TRUE)
+
+
+################################################################################
+## starts
+################################################################################
+
+source("~/Projects/code-generator/buildMplus.R")
+
+
+################################################################################
+## RICLPM, Observed, Single Trait
+################################################################################
+
+traitModelNames <- c(
+    "tr051", "tr091", "tr131", "tr171",
+    "tr052", "tr092", "tr132", "tr172",
+    "tr053", "tr093", "tr133", "tr173",
+    "trMean05", "trMean09", "trMean13", "trMean17", "trMiss",
+    "relig05_orig", "relig09_orig", "relig13_orig", "relig17_orig",
+    "relig05", "relig09", "relig13", "relig17"
+)
+
+
+## Agreeableness
+
+agr <- data %>%
+    select(contains("agr"), contains("relig"))
+names(agr) <- traitModelNames
+
+agrTrait <- agr %>%
+    select(contains("Mean"), contains("relig"))
+names(agrTrait) <- c(
+    paste0("x", c(1:4)),
+    paste0("oldRelig", c(1:4)),
+    paste0("y", c(1:4))
+)
+
+test <- run_starts_mplus(
+    agrTrait,
+    4,
+    1:4,
+    title="agrStarts"
+)
+
+test <- run_arts_mplus(
+    agrTrait,
+    4,
+    1:4,
+    title="agrArts"
+)
+
+
+## Conscientiousness
+cns <- data %>%
+    select(contains("cns"), contains("relig"))
+names(cns) <- traitModelNames
+
+
+cnsTrait <- cns %>%
+    select(contains("Mean"), contains("relig"))
+names(cnsTrait) <- c(
+    paste0("x", c(1:4)),
+    paste0("oldRelig", c(1:4)),
+    paste0("y", c(1:4))
+)
+
+test <- run_starts_mplus(
+    cnsTrait,
+    4,
+    1:4
+)
+
+test <- run_arts_mplus(
+    agrTrait,
+    4,
+    1:4
+)
+
+
+
+## Extraversion
+ext <- data %>%
+    select(contains("ext"), contains("relig"))
+names(ext) <- traitModelNames
+
+extTrait <- ext %>%
+    select(contains("Mean"), contains("relig"))
+names(extTrait) <- c(
+    paste0("x", c(1:4)),
+    paste0("oldRelig", c(1:4)),
+    paste0("y", c(1:4))
+)
+
+test <- run_starts_mplus(
+    extTrait,
+    4,
+    1:4,
+    title="extStarts"
+)
+
+test <- run_arts_mplus(
+    extTrait,
+    4,
+    1:4
+)
+
+
+## Neuroticism
+neu <- data %>%
+    select(contains("neu"), contains("relig"))
+names(neu) <- traitModelNames
+neuFit <- sem(riclpmUniObserved,
+    missing = "FIML",
+    estimator = "MLR",
+    data = neu,
+    em.h1.iter.max = 20000
+)
+est.neu.riclpm.obs <- standardizedSolution(neuFit,
+    type = "std.all", se = TRUE, zstat = TRUE,
+    pvalue = TRUE, ci = TRUE, level = .95, output = "text"
+)
+fit.neu.riclpm.obs <- fitMeasures(neuFit)
+neu.riclpm.obs.results <- list(
+    est.neu.riclpm.obs,
+    fit.neu.riclpm.obs
+)
+
+## Openness
+opn <- data %>%
+    select(contains("opn"), contains("relig"))
+names(opn) <- traitModelNames
+opnFit <- sem(riclpmUniObserved,
+    missing = "FIML",
+    estimator = "MLR",
+    data = opn,
+    em.h1.iter.max = 20000
+)
+est.opn.riclpm.obs <- standardizedSolution(opnFit,
+    type = "std.all", se = TRUE, zstat = TRUE,
+    pvalue = TRUE, ci = TRUE, level = .95, output = "text"
+)
+fit.opn.riclpm.obs <- fitMeasures(opnFit)
+opn.riclpm.obs.results <- list(
+    est.opn.riclpm.obs,
+    fit.opn.riclpm.obs
+)
+
+single.riclpm.obs.results <- list(
+    agr.riclpm.obs.results,
+    cns.riclpm.obs.results,
+    ext.riclpm.obs.results,
+    neu.riclpm.obs.results,
+    opn.riclpm.obs.results
+)
+save(single.riclpm.obs.results,
+    file = paste0(location, "/single.riclpm.obs.results.RData")
+)
+
