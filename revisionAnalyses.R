@@ -384,6 +384,8 @@ write_csv(data, "data/filteredRevision.csv")
 ################################################################################
 
 source("scripts/revisionModels.R")
+source("~/Projects/code-generator/buildMplus.R")
+library(lavaan)
 
 data <- read_csv("data/filteredRevision.csv")
 data <- data[,c(88:120)]
@@ -396,7 +398,15 @@ names(agr) <- c(
     paste0("y", 1:8)
 )
 
+
+
 MplusAutomation::prepareMplusData(agr, "data/agr.dat")
+
+agrMplus <- run_starts_mplus(agr,
+    8,
+    xWaves = c(1, 3, 5, 7, 8),
+    yWaves = c(1, 2, 3, 4, 5, 6, 7, 8)
+)
 
 agrFit <- sem(startsUniObserved,
     missing = "FIML",
@@ -423,7 +433,14 @@ names(ext) <- c(
     paste0("y", 1:8)
 )
 
-MplusAutomation::prepareMplusData(ext, "data/ext.dat")
+extMplus <- MplusAutomation::prepareMplusData(ext, "data/ext.dat")
+run_starts_mplus(ext,
+    8,
+    xWaves = c(1, 3, 5, 7, 8),
+    yWaves = c(1, 2, 3, 4, 5, 6, 7, 8)
+)
+
+
 
 ## Extraversion
 extFit <- sem(startsUniObserved,
@@ -453,6 +470,12 @@ names(cns) <- c(
 )
 
 MplusAutomation::prepareMplusData(cns, "data/cns.dat")
+run_starts_mplus(cns,
+    8,
+    xWaves = c(1, 3, 5, 7, 8),
+    yWaves = c(1, 2, 3, 4, 5, 6, 7, 8),
+    analysis="MODEL=NOCOVARIANCES;\nCOVERAGE=.001;\nITERATIONS=10000;"
+)
 
 
 ## Neuroticism
@@ -465,12 +488,26 @@ names(neu) <- c(
 
 MplusAutomation::prepareMplusData(neu, "data/neu.dat")
 
+run_starts_mplus(neu,
+    8,
+    xWaves = c(1, 3, 5, 7, 8),
+    yWaves = c(1, 2, 3, 4, 5, 6, 7, 8),
+    analysis="MODEL=NOCOVARIANCES;\nCOVERAGE=.001;\nITERATIONS=10000;"
+)
+
+
 ## Openness
 opn <- data %>%
     select(contains("opn") | contains("relig"))
-names(neu) <- c(
+names(opn) <- c(
     paste0("x", c(1, 3, 5, 7, 8)),
     paste0("y", 1:8)
 )
 
 MplusAutomation::prepareMplusData(opn, "data/opn.dat")
+
+run_starts_mplus(opn,
+    8,
+    xWaves = c(1, 3, 5, 7, 8),
+    yWaves = c(1, 2, 3, 4, 5, 6, 7, 8)
+)
