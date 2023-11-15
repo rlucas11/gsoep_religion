@@ -384,10 +384,12 @@ write_csv(data, "data/filteredRevision.csv")
 ################################################################################
 
 source("scripts/revisionModels.R")
+
 source("~/Projects/code-generator/buildMplus.R")
 library(lavaan)
 
 data <- read_csv("data/filteredRevision.csv")
+allItems <- data
 data <- data[,c(88:120)]
 
 ## Agreeableness
@@ -407,6 +409,25 @@ agrMplus <- run_starts_mplus(agr,
     xWaves = c(1, 3, 5, 7, 8),
     yWaves = c(1, 2, 3, 4, 5, 6, 7, 8)
 )
+
+agrItems <- allItems[,agrNames]
+
+names(agrItems) <- paste0("x",
+    c(1, 3, 5, 7, 8),
+    c(
+        rep("a", 5),
+        rep("b", 5),
+        rep("c", 5)
+    )
+)
+                          
+
+test <- run_startsx_mplus(agrItems,
+                          8,
+                          xWaves = c(1, 3, 5, 7, 8),
+                          xIndicators = 3,
+                          analysis="MODEL=NOCOVARIANCES;\nCOVERAGE=.001;\nITERATIONS=20000;")
+
 
 agrFit <- sem(startsUniObserved,
     missing = "FIML",
@@ -439,6 +460,25 @@ run_starts_mplus(ext,
     xWaves = c(1, 3, 5, 7, 8),
     yWaves = c(1, 2, 3, 4, 5, 6, 7, 8)
 )
+
+extItems <- allItems[,extNames]
+
+names(extItems) <- paste0("x",
+    c(1, 3, 5, 7, 8),
+    c(
+        rep("a", 5),
+        rep("b", 5),
+        rep("c", 5)
+    )
+)
+                          
+
+test <- run_startsx_mplus(extItems,
+                          8,
+                          xWaves = c(1, 3, 5, 7, 8),
+                          xIndicators = 3,
+                          analysis="MODEL=NOCOVARIANCES;\nCOVERAGE=.001;\nITERATIONS=20000;")
+
 
 
 
