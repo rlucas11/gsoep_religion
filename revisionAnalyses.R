@@ -383,7 +383,7 @@ write_csv(data, "data/filteredRevision.csv")
 ## Start here if already cleaned data once
 ################################################################################
 
-source("scripts/revisionModels.R")
+## source("scripts/revisionModels.R")
 
 source("~/Projects/code-generator/buildMplus.R")
 library(lavaan)
@@ -392,7 +392,46 @@ data <- read_csv("data/filteredRevision.csv")
 allItems <- data
 data <- data[,c(88:120)]
 
+## Names of all variables
+varNames <- c(
+    paste0(
+        c(rep("cns", 5), rep("ext", 5), rep("agr", 5), rep("opn", 5), rep("neu", 5)),
+        rep(c("05", "09", "13", "17", "19"), 5),
+        rep("01", 18),
+        c(rep("", 5), rep("", 5), rep("r", 5), rep("", 5), rep("", 5))
+    ),
+    paste0(
+        c(rep("agr", 5), rep("cns", 5), rep("ext", 5), rep("opn", 5), rep("neu", 5)),
+        rep(c("05", "09", "13", "17", "19"), 5),
+        rep("02", 18),
+        c(rep("", 5), rep("r", 5), rep("", 5), rep("", 5), rep("", 5))
+    ),
+    paste0(
+        c(rep("cns", 5), rep("ext", 5), rep("agr", 5), rep("opn", 5), rep("neu", 5)),
+        rep(c("05", "09", "13", "17", "19"), 5),
+        rep("03", 18),
+        c(rep("", 5), rep("r", 5), rep("", 5), rep("", 5), rep("r", 5))
+    ),
+    paste0("relig", c("05", "07", "09", "11", "13", "15", "17", "19")),
+    paste0("relig", c("05", "07", "09", "11", "13", "15", "17", "19"), "r")
+)
+
+
+## Select variable specific sets of names
+agrNames <- varNames[grep("agr", varNames)]
+cnsNames <- varNames[grep("cns", varNames)]
+extNames <- varNames[grep("ext", varNames)]
+neuNames <- varNames[grep("neu", varNames)]
+opnNames <- varNames[grep("opn", varNames)]
+relNames <- varNames[grep("rel", varNames)][1:8] ## Only select reverse-scored
+
+
+################################################################################
+## Trait analyses
+################################################################################
+
 ## Agreeableness
+## Get data
 agr <- data %>%
     select(contains("agr") | contains("relig"))
 names(agr) <- c(
@@ -400,33 +439,63 @@ names(agr) <- c(
     paste0("y", 1:8)
 )
 
+## MplusAutomation::prepareMplusData(agr, "data/agr.dat")
 
-
-MplusAutomation::prepareMplusData(agr, "data/agr.dat")
-
+## Run starts
 agrMplus <- run_starts_mplus(agr,
     8,
     xWaves = c(1, 3, 5, 7, 8),
     yWaves = c(1, 2, 3, 4, 5, 6, 7, 8)
 )
 
-agrItems <- allItems[,agrNames]
+religMplus <- run_startsy_mplus(
+    agr,
+    8
+)
 
-names(agrItems) <- paste0("x",
-    c(1, 3, 5, 7, 8),
-    c(
-        rep("a", 5),
-        rep("b", 5),
-        rep("c", 5)
+## Run starts with latent variables
+agrItems <- allItems %>%
+    select(
+        all_of(agrNames),
+        contains("relig")
+    )
+
+names(agrItems) <- c(
+    paste0(
+        "x",
+        c(1, 3, 5, 7, 8),
+        c(
+            rep("a", 5),
+            rep("b", 5),
+            rep("c", 5)
+        )
+    ),
+    paste0(
+        "y",
+        rep(1:8, 2),
+        rep(c("_orig", ""), each = 8)
     )
 )
+    
                           
 
-test <- run_startsx_mplus(agrItems,
-                          8,
-                          xWaves = c(1, 3, 5, 7, 8),
-                          xIndicators = 3,
-                          analysis="MODEL=NOCOVARIANCES;\nCOVERAGE=.001;\nITERATIONS=20000;")
+## Univariate
+agrStartsLatent <- run_startsx_mplus(agrItems,
+    8,
+    xWaves = c(1, 3, 5, 7, 8),
+    xIndicators = 3,
+    analysis = "MODEL=NOCOVARIANCES;\nCOVERAGE=.001;\nITERATIONS=20000;"
+)
+
+## Bivariate
+agrStartsLatent <- run_starts_mplus(agrItems,
+    8,
+    xWaves = c(1, 3, 5, 7, 8),
+    yWaves = c(1, 2, 3, 4, 5, 6, 7, 8),
+    xIndicators = 3,
+    yIndicators = 1,
+    analysis = "MODEL=NOCOVARIANCES;\nCOVERAGE=.001;\nITERATIONS=20000;"
+)
 
 
 agrFit <- sem(startsUniObserved,

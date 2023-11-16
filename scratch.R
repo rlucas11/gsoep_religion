@@ -886,3 +886,9 @@ save(single.riclpm.obs.results,
     file = paste0(location, "/single.riclpm.obs.results.RData")
 )
 
+
+library(MplusAutomation)
+temp <- readModels("mplus/startsx.out")
+
+load("results/clpm.latent.results.RData")
+load("results/clpm.latent.states.aggregat
