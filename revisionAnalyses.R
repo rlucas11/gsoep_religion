@@ -387,13 +387,14 @@ write_csv(data, "data/filteredRevision.csv")
 
 source("~/Projects/code-generator/buildMplus.R")
 library(lavaan)
+library(tidyverse)
 
 data <- read_csv("data/filteredRevision.csv")
 allItems <- data
 data <- data[,c(88:120)]
 
 ## Names of all variables
-varNames <- c(
+itemNames <- c(
     paste0(
         c(rep("cns", 5), rep("ext", 5), rep("agr", 5), rep("opn", 5), rep("neu", 5)),
         rep(c("05", "09", "13", "17", "19"), 5),
@@ -418,12 +419,12 @@ varNames <- c(
 
 
 ## Select variable specific sets of names
-agrNames <- varNames[grep("agr", varNames)]
-cnsNames <- varNames[grep("cns", varNames)]
-extNames <- varNames[grep("ext", varNames)]
-neuNames <- varNames[grep("neu", varNames)]
-opnNames <- varNames[grep("opn", varNames)]
-relNames <- varNames[grep("rel", varNames)][1:8] ## Only select reverse-scored
+agrNames <- itemNames[grep("agr", itemNames)]
+cnsNames <- itemNames[grep("cns", itemNames)]
+extNames <- itemNames[grep("ext", itemNames)]
+neuNames <- itemNames[grep("neu", itemNames)]
+opnNames <- itemNames[grep("opn", itemNames)]
+relNames <- itemNames[grep("rel", itemNames)][1:8] ## Only select reverse-scored
 
 
 ################################################################################
@@ -524,7 +525,8 @@ names(ext) <- c(
 )
 
 extMplus <- MplusAutomation::prepareMplusData(ext, "data/ext.dat")
-run_starts_mplus(ext,
+
+extMplus <- run_starts_mplus(ext,
     8,
     xWaves = c(1, 3, 5, 7, 8),
     yWaves = c(1, 2, 3, 4, 5, 6, 7, 8)
@@ -579,7 +581,8 @@ names(cns) <- c(
 )
 
 MplusAutomation::prepareMplusData(cns, "data/cns.dat")
-run_starts_mplus(cns,
+
+cnsMplus <- run_starts_mplus(cns,
     8,
     xWaves = c(1, 3, 5, 7, 8),
     yWaves = c(1, 2, 3, 4, 5, 6, 7, 8),
@@ -597,11 +600,11 @@ names(neu) <- c(
 
 MplusAutomation::prepareMplusData(neu, "data/neu.dat")
 
-run_starts_mplus(neu,
+neuMplus <- run_starts_mplus(neu,
     8,
     xWaves = c(1, 3, 5, 7, 8),
     yWaves = c(1, 2, 3, 4, 5, 6, 7, 8),
-    analysis="MODEL=NOCOVARIANCES;\nCOVERAGE=.001;\nITERATIONS=10000;"
+    analysis="MODEL=NOCOVARIANCES;\nCOVERAGE=.001;\nITERATIONS=30000;"
 )
 
 
@@ -615,7 +618,39 @@ names(opn) <- c(
 
 MplusAutomation::prepareMplusData(opn, "data/opn.dat")
 
-run_starts_mplus(opn,
+opnMplus <- run_starts_mplus(opn,
+    8,
+    xWaves = c(1, 3, 5, 7, 8),
+    yWaves = c(1, 2, 3, 4, 5, 6, 7, 8)
+)
+
+
+## ARTS
+agrArts <- run_arts_mplus(agr,
+    8,
+    xWaves = c(1, 3, 5, 7, 8),
+    yWaves = c(1, 2, 3, 4, 5, 6, 7, 8)
+)
+
+extArts <- run_arts_mplus(ext,
+    8,
+    xWaves = c(1, 3, 5, 7, 8),
+    yWaves = c(1, 2, 3, 4, 5, 6, 7, 8)
+)
+
+cnsArts <- run_arts_mplus(cns,
+    8,
+    xWaves = c(1, 3, 5, 7, 8),
+    yWaves = c(1, 2, 3, 4, 5, 6, 7, 8)
+)
+
+neuArts <- run_arts_mplus(neu,
+    8,
+    xWaves = c(1, 3, 5, 7, 8),
+    yWaves = c(1, 2, 3, 4, 5, 6, 7, 8)
+)
+
+opnArts <- run_arts_mplus(opn,
     8,
     xWaves = c(1, 3, 5, 7, 8),
     yWaves = c(1, 2, 3, 4, 5, 6, 7, 8)
