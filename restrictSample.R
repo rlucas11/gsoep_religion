@@ -52,3 +52,5 @@ data[which(data$agrMiss < 12 &
     data$relMiss < 4), "missingSelect"] <- 1
 
 data <- filter(data, missingSelect == 1)
+
+write_csv(data, "data/filteredData.csv")
