@@ -17,6 +17,10 @@ traitModelNames <- c(
 ## Load model
 source('scripts/dpm.R')
 
+## Set Results Location (change when testing)
+location <- "results"
+
+
 ################################################################################
 ## Trait analyses
 ################################################################################
