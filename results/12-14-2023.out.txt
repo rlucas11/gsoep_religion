@@ -1,0 +1,32 @@
+This is lavaan 0.6-16
+lavaan is FREE software! Please report any bugs.
+
+Attaching package: ‘lavaan’
+
+The following object is masked from ‘package:psych’:
+
+    cor2cov
+
+Rows: 55583 Columns: 92
+── Column specification ───────────────────────────────────────────────────────────────────
+Delimiter: ","
+dbl (92): pid, sex, gebjahr, psample, cns0501, cns0901, cns1301, cns1701, ext0501, ext0...
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+Rows: 103460 Columns: 40
+── Column specification ───────────────────────────────────────────────────────────────────
+Delimiter: ","
+dbl (40): pid, bula_h_1984, bula_h_1985, bula_h_1986, bula_h_1987, bula_h_1988, bula_h_...
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+Rows: 46316 Columns: 101
+── Column specification ──────────────────────────────────────────────────────────────────────────────────────────
+Delimiter: ","
+dbl (101): pid, sex, gebjahr, psample, cns0501, cns0901, cns1301, cns1701, ext0501, ext0901, ext1301, ext1701,...
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+Warning message:
+In sink() : no sink to remove
