@@ -210,7 +210,7 @@ d.o.s <- extractParameterEstimatesSingleDpm(
 )
 
 
-location <- "testResults"
+#location <- "testResults"
 load(paste0(location, "/single.dpm.latent.results.RData"))
 d.l.s <- extractParameterEstimatesSingle(
     single.dpm.latent.results,
@@ -252,18 +252,17 @@ plotDataFinal %>%
             linetype = type
         )
     ) +
-    geom_point(position = position_dodge(width = 0.75), size=2) +
+    geom_point(position = position_dodge(width = 0.75), size = 2) +
     geom_errorbar(width = .05, position = position_dodge(width = 0.75)) +
     coord_flip() +
     theme_bw() +
-    scale_color_grey() +
-    scale_color_manual(values=c("grey", "black")) +
+    scale_color_manual(values = c("grey", "black")) +
     theme(
         panel.grid.major.y = element_blank(),
         panel.grid.minor = element_blank()
     ) +
     scale_y_continuous(limits = c(-.08, .08)) +
-    facet_wrap(vars(direction))
+    facet_wrap(vars(factor(direction, levels = c("tr", "rt"))))
 
 ggsave("test.png")
 
