@@ -85,13 +85,13 @@ A common goal in personality research is to identify robust associations between
 
 Recently, @entringer_big_2023 conducted such an examination, investigating the links between the Big Five personality traits and religiosity in a very large German sample. This research was motivated both by prior theories meant to explain how personality can shape religiosity and by theories that posit that religiosity can affect personality. Considering the effects of personality on religiosity, for instance, a niche-picking perspective suggests that people who have personality traits that are consistent with the behaviors that are typically exhibited in religious contexts should gravitate towards these religious contexts. In addition, the Sociocultural Norm Perspective [@eck_sociocultural_2022] posits that personality traits like agreeableness, conscientiousness, and (low) openness to experience produce normative behaviors; when religiosity is normative in a culture, then these traits should cause greater religiosity. Considering the effects of religiosity on personality, complementary theories suggest that religiosity itself can impact these same traits, as religious contexts also promote or even enforce behaviors and views that are consistent with traits like agreeableness and conscientiousness. 
 
-To test these ideas, @entringer_big_2023 relied on a widely used approach for examining reciprocal causal effects in panel data: the cross-lagged panel model [CLPM, @heise_causal_1970]. In the CLPM, each variable (in this case, personality and religiosity) at each occasion is predicted from the same variables assessed at prior waves. With additional assumptions (e.g., no unobserved confounders), lagged associations from one variable to the other (e.g., from Time 1 personality to Time 2 religiosity) can be interpreted as causal effects. @entringer_big_2023 found evidence for mutual causal effects of agreeableness on religiosity and religiosity on agreeableness. Moreover, the religiosity of the region in which respondents lived moderated the links between some personality traits and religion, including the effects of openness and conscientious on religiosity and religiosity on openness. 
+To test these ideas, @entringer_big_2023 relied on a widely used approach for examining reciprocal causal effects in panel data: the cross-lagged panel model [CLPM, @heise_causal_1970]. In the CLPM, each variable (in this case, personality and religiosity) at each occasion is predicted from the same variables assessed at prior waves. With additional assumptions (e.g., no unobserved confounders), lagged associations from one variable to the other (e.g., from Time 1 personality to Time 2 religiosity) can be interpreted as causal effects. @entringer_big_2023 found evidence for mutual causal effects of agreeableness on religiosity and religiosity on agreeableness, as well as causal effects of openness and religiosity on religiosity and religiosity on openness. Moreover, the religiosity of the region in which respondents lived moderated the links between some personality traits and religion, including the effects of openness and conscientious on religiosity and religiosity on openness. 
 
 Entringer et al.'s [-@entringer_big_2023] study had a number of desirable features that make it especially well-suited to examining questions about reciprocal associations between personality and religiosity. First, the authors used a very large panel study with four waves of assessment over a period of twelve years. These features should contribute to the robustness of the results. Moreover, the authors used a sophisticated latent-variable version of the CLPM that accounts for measurement error, which can help reduce the likelihood of spurious lagged associations [@lucas_why_2023]. In addition, the authors examined these associations separately in different German federal states that varied in overall religiosity, which allowed them to examine theoretically relevant contextual moderators of these associations. Finally, the authors conducted many robustness checks to support their primary findings. 
 
 ## Questions About Robustness
 
-Despite these strengths, however, there are reasons to question the robustness of the support for reciprocal causal effects between personality and religiosity. First, when examining these reciprocal effects, @entringer_big_2023 relied solely on the traditional CLPM, which only includes lagged associations with variables assessed at the immediately prior wave. The use of the CLPM has been championed on the grounds that it tests "between-person prospective effects" [@orth_testing_2021], whereas some alternative models do not. However, it is questionable whether these between-person causal effects are clearly defined [see @lucas_why_2023, for an argument against this interpretation]. Moreover, it is unlikely that the CLPM can appropriately test such effects even if they could be defined. This is because a critical assumption underlying the CLPM is that there are no sources of stability in the measures of interest beyond the two that are included in the model: the autoregressive effects reflecting the stability of each variable and the lagged effects between variables. If stable-trait variance also exists in the measures being modeled, then this assumption is violated and the CLPM results in bias lagged associations [@heise_causal_1970]. This bias would invalidate the interpretation of the lagged paths as estimates of the causal effects (regardless of whether those effects are described as between-person or within-person effects). 
+Despite these strengths, however, there are reasons to question the robustness of the support for reciprocal causal effects between personality and religiosity. First, when examining these reciprocal effects, @entringer_big_2023 relied solely on the traditional CLPM, which only includes lagged associations with variables assessed at the immediately prior wave. A critical assumption underlying the CLPM is that there are no sources of stability in the measures of interest beyond the two that are included in the model: the autoregressive effects reflecting the stability of each variable and the lagged effects between variables. If stable-trait variance also exists in the measures being modeled, then this assumption is violated and the CLPM results in bias lagged associations [@heise_causal_1970]. This bias would invalidate the interpretation of the lagged paths as estimates of the causal effects (regardless of whether those effects are described as between-person or within-person effects). 
 
 Recently, @lucas_why_2023 used simulations to show that this problem is quite severe; spurious lagged associations can be found as often as 100% of the time in realistic scenarios (e.g., when there is just a moderate amount of stable-trait variance, when the stable-trait variance from the two waves is moderately correlated, when sample sizes are moderate to large, and when multiple waves of assessment are included). The size of the bias found in these simulations is high relative to the size of the estimated effects reported by @entringer_big_2023. Notably, two strengths of Entringer et al.'s study (the very large sample size and the use of a four-wave design) can actually increase the likelihood of finding spurious lagged effects [@lucas_why_2023].
 
@@ -109,9 +109,9 @@ Perhaps more importantly, very small effect sizes may simply reflect biases indu
 
 In many ways, Entringer et al.'s [-@entringer_big_2023] paper represents a model example of an attempt to answer the questions they set out to address. They were clear about the causal effects in which they were interested and they carefully described their approach. They shared all code for reproducing their analyses, and they took many steps to ensure the robustness of their results. Nonetheless, additional questions can be raised about effect sizes, model complexity, the decision to model all five personality traits simultaneously, and---most importantly---the decision to use a traditional CLPM instead of a model that accounts for additional sources of stability. The goal of the current analysis is to test the robustness of these results to alternative specifications. 
 
-We first simply examine the correlations between religiosity and each of the Big Five traits when each is aggregated across all waves. This provides a simple index of effect size that helps establish whether any lagged causal effects accumulate over time. Next, we test a series of models that examine the robustness of the results reported in @entringer_big_2023. Specifically, after first replicating their results, we then test all possible combinations of three model modifications. We compare models where the Big Five traits are modeled as latent-traits (using the same measurement model in the original paper, including secondary loadings) versus when they are modeled as observed variables. We compare models where the Big Five traits are entered simultaneously as predictors to those where separate models are run for each trait individually. Finally, we compare the CLPM to the random-intercept cross-lagged panel model [RI-CLPM, @hamaker_critique_2015], which includes a random intercept to account for stable-trait variance. Combining each pair of comparisons results in eight separate models with results for each of the Big Five traits. In addition, @entringer_big_2023 examined the moderating contextual effect of state-level religiosity. We also test these moderating effects for each of the Big Five traits. The results will then be compared for robustness.
+We first simply examine the correlations between religiosity and each of the Big Five traits when each is aggregated across all waves. This provides a simple index of effect size that helps establish whether any lagged causal effects accumulate over time (at least in a simple way). Next, we test a series of models that examine the robustness of the results reported in @entringer_big_2023. Specifically, after first replicating their results, we then test all possible combinations of three model modifications. We compare models where the Big Five traits are modeled as latent-traits (using the same measurement model in the original paper, including secondary loadings) versus when they are modeled as observed variables. We compare models where the Big Five traits are entered simultaneously as predictors to those where separate models are run for each trait individually. Finally, we compare the CLPM to the random-intercept cross-lagged panel model [RI-CLPM, @hamaker_critique_2015], which includes a random intercept to account for stable-trait variance. Combining each pair of comparisons results in eight separate models with results for each of the Big Five traits. In addition, @entringer_big_2023 examined the moderating contextual effect of state-level religiosity. We also test these moderating effects for each of the Big Five traits. The results will then be compared for robustness.
 
-Although debates about the merits of the CLPM have (at least in the psychological literature) typically focused on the comparison between the CLPM and RI-CLPM [@hamaker_critique_2015; @lucas_why_2023; @ludtke_comparison_2022], alternative models do exist. For instance, versions of the dynamic panel model [DPM, @dishop_tutorial_2021] address the possible existence of stable-trait variance (and other stable confounders) in a slightly different way than the RI-CLPM [see @murayama_thinking_2022]. One objection that has been raised about the RI-CLPM is that when the random intercept is included, the dynamic processes are modeled using residualized scores, which means that the stable trait variance for one variable is not allowed to affect change in the other [@orth_testing_2021]. The DPM, in contrast, does not residualize wave-specific variance when examining the dynamic processes, which means that links between stable-trait variance for one variable and change in another can be examined. Because debates about the CLPM have primarily focused on the RI-CLPM as an alternative, we highlight these comparisons in this paper. We do, however, report results of the DPM as supplemental analyses. 
+Although debates about the merits of the CLPM have (at least in the psychological literature) typically focused on the comparison between the CLPM and RI-CLPM [@hamaker_critique_2015; @lucas_why_2023; @ludtke_comparison_2022], alternative models do exist. For instance, versions of the dynamic panel model [DPM, @dishop_tutorial_2021] address the possible existence of stable-trait variance (and other time-invariant confounders) in a slightly different way than the RI-CLPM [see @murayama_thinking_2022]. Indeed, one objection that has been raised about the RI-CLPM is that when the random intercept is included, the dynamic processes are modeled using residualized scores, which means that the stable trait variance for one variable is not allowed to affect change in the other [@orth_testing_2021]. The DPM, in contrast, does not residualize wave-specific variance when examining the dynamic processes, which means that links between stable-trait variance for one variable and change in another can be examined. Because debates about the CLPM have primarily emphasized the RI-CLPM as an alternative, we focus on these comparisons in this paper. We do, however, report results of the DPM as supplemental analyses. 
 
 # Methods
 
@@ -178,9 +178,9 @@ Consistent with the original report, we focus on two measures: A single-item mea
 
 ## Analytic Strategy
 
-For the primary analyses, all combinations of models that vary on three dimensions: latent versus observed, single-trait versus simultaneous inclusion of all traits, and CLPM versus RI-CLPM. For the latent-variable models, we relied on the same measurement model that @entringer_big_2023 used (which included correlated residuals between the same item in different waves). Consistent with the original analyses, for latent variable models that included all traits simultaneously, three cross-loadings were also added (details of the measurement-model specification are included in the original paper and in our code on our OSF site). For observed-variable models, the three items for each trait were averaged to create a single score for each trait in each year.
+For the primary analyses, we tested all combinations of models that vary on three dimensions: latent versus observed, single-trait versus simultaneous inclusion of all traits, and CLPM versus RI-CLPM. For the latent-variable models, we relied on the same measurement model that @entringer_big_2023 used (which included correlated residuals between the same item in different waves). Consistent with the original analyses, for latent variable models that included all traits simultaneously, three cross-loadings were also added (details of the measurement-model specification are included in the original paper and in our code on our OSF site). For observed-variable models, the three items for each trait were averaged to create a single score for each trait in each year.
 
-To specify a CLPM, each trait at each wave is predicted from the same trait and religiosity at the prior wave, and religiosity at each wave is predicted from religiosity and the trait scores at the prior wave. Each trait was allowed to correlate with religiosity at the first wave and residuals for traits and religiosity were allowed to correlate at later waves [check this]. For models that include all traits simultaneously, all Big Five traits were allowed to correlate within each wave, but lagged paths between traits were not included. 
+To specify a CLPM, each trait at each wave was predicted from the same trait and religiosity at the prior wave, and religiosity at each wave was predicted from religiosity and the trait scores at the prior wave. Correlations between each trait and religiosity at the first wave were freed, and residuals for traits and religiosity were allowed to correlate at later waves [check this]. For models that include all traits simultaneously, all Big Five traits were allowed to correlate within each wave, but lagged paths between traits were not included. 
 
 The RI-CLPM is similar to the CLPM, but with an added random-intercept for each trait and for religiosity [@hamaker_critique_2015]. Specifically, scores for each variable (i.e., a specific trait or religiosity) were specified to load on a corresponding latent trait representing the random intercept (with loadings fixed to 1), and a residual was estimated for each variable at each wave. The autoregressive and cross-lagged paths were then modeled using these residualized scores. In both the CLPM and RI-CLPM, stability coefficients and cross-lagged paths were constrained to be equal across waves. Details of the model specifications are included in the project repository on the corresponding OSF site. 
 
@@ -967,6 +967,286 @@ metaModResults %>%
 
 ```
 
+## Supplemental Analyses: The Dynamic Panel Model
+
+Debates about the utility and potential problems of the standard CLPM have often focused on the RI-CLPM as a potentially preferable alternative [e.g., @hamaker_critique_2015, @hamaker_within-between_2023, @lucas_why_2023, @ludtke_comparison_2022]. Concerns have been raised, however, about the way that the RI-CLPM residualizes wave-specific variance when examining dynamic processes [e.g., @orth_testing_2021]. Specifically, it has been claimed by critics of the RI-CLPM, that this feature changes the question being asked, and it prevents researchers from examining whether stable traits predict change in an outcome. Although we disagree with @orth_testing_2021 and other critics that this feature of the RI-CLPM fundamentally changes the nature of the question that is being asked [see @lucas_why_2023], it is possible to examine alternative models that address concerns about time-invariant confounders in different ways. 
+
+One notable alternative to the RI-CLPM is the DPM, which does not residualize occasion-specific variance when examining dynamic processes over time. Instead, in the DPM, any effects of time-invariant predictors are specified to flow through each occasion when predicting change in the outcome variable, while still accounting for the trait-like associations between non-adjacent waves (see the online supplement for a diagram of this model, the code we used to run it, and detailed results). We initially tried running a model that with all five traits included simultaneously (with observed variables), but the model did not converge [^convergence]. Therefore, in these supplemental analyses, we focused on comparing the results from the original paper to observed-variable and latent-variable versions of the DPM. 
+
+
+
+[^convergence]: Convergence problems often emerge with more sophisticated versions of the RI-CLPM such as the Stable Trait, Autoregressive Trait, State model, but less has been published about potential issues with the DPM. Given that all of these models need at least three waves of data for identification, the fact that convergence problems emerged in models with just four waves of data is not surprising. 
+
+```{r dpmPlots, echo=FALSE, message=FALSE, warning=FALSE, fig.cap = "Comparing results of the observed-variable and latent-variable versions of the Dynamic Panel Model to the original results."}
+
+## Setup labels
+traitLabels <- matrix(
+    c(
+        "agr", "a",
+        "cns", "c",
+        "ext", "e",
+        "neu", "n",
+        "opn", "o"
+    ),
+    nrow = 5, ncol = 2, byrow = TRUE
+)
+
+
+#### Functions to extract and summarize
+#### For models with all traits
+## Extract averages across multiple waves
+extractAvg <- function(results, trait) {
+    pLabel <- paste0(
+        "c_r",
+        trait
+    )
+    pLabel2 <- paste0(
+        "c_",
+        trait,
+        "r"
+    )
+    ## Religion predicted from trait
+    agg <- results %>%
+        filter(label == pLabel) %>%
+        select(est.std, ci.lower, ci.upper) %>%
+        summarise(
+            est = mean(est.std),
+            ci.lower = mean(ci.lower),
+            ci.upper = mean(ci.upper)
+        )
+    ## Trait predicted from religion
+    agg2 <- results %>%
+        filter(label == pLabel2) %>%
+        select(est.std, ci.lower, ci.upper) %>%
+        summarise(
+            est = mean(est.std),
+            ci.lower = mean(ci.lower),
+            ci.upper = mean(ci.upper)
+        )
+    return(c(agg, agg2))
+}
+
+## Extract results from full set
+extractParameterEstimates <- function(results,
+                                      model,
+                                      type,
+                                      variables) {
+    result <- data.frame(
+        est = numeric(),
+        ci.lower = numeric(),
+        ci.upper = numeric(),
+        est.1 = numeric(),
+        ci.lower.1 = numeric(),
+        ci.upper.1 = numeric(),
+        trait = character(),
+        model = character(),
+        type = character(),
+        variables = character()
+    )
+    for (i in 1:nrow(traitLabels)) {
+        trait <- traitLabels[i, 2]
+        result[i, ] <- c(
+            extractAvg(results, trait),
+            traitLabels[i,1],
+            model,
+            type,
+            variables
+        )
+    }
+    return(result)
+}
+
+#### Functions to extract results
+#### These are for single-trait models
+## Extract average values across waves
+extractAvgSingle <- function(results) {
+    ## Religion predicted from trait
+    agg <- results %>%
+        filter(label == "cl_t") %>%
+        select(est.std, ci.lower, ci.upper) %>%
+        summarise(
+            est = mean(est.std),
+            ci.lower = mean(ci.lower),
+            ci.upper = mean(ci.upper)
+        )
+    ## Trait predicted from religion
+    agg2 <- results %>%
+        filter(label == "cl_r") %>%
+        select(est.std, ci.lower, ci.upper) %>%
+        summarise(
+            est = mean(est.std),
+            ci.lower = mean(ci.lower),
+            ci.upper = mean(ci.upper)
+        )
+    return(c(agg, agg2))
+}
+
+extractAvgSingleDpm <- function(results) {
+    ## Religion predicted from trait
+    agg <- results %>%
+        filter(label == "c") %>%
+        select(est.std, ci.lower, ci.upper) %>%
+        summarise(
+            est = mean(est.std),
+            ci.lower = mean(ci.lower),
+            ci.upper = mean(ci.upper)
+        )
+    ## Trait predicted from religion
+    agg2 <- results %>%
+        filter(label == "d") %>%
+        select(est.std, ci.lower, ci.upper) %>%
+        summarise(
+            est = mean(est.std),
+            ci.lower = mean(ci.lower),
+            ci.upper = mean(ci.upper)
+        )
+    return(c(agg, agg2))
+}
+
+
+## Extract estimates across all models
+extractParameterEstimatesSingle <- function(results,
+                                            model,
+                                            type,
+                                            variables) {
+    result <- data.frame(
+        est = numeric(),
+        ci.lower = numeric(),
+        ci.upper = numeric(),
+        est.1 = numeric(),
+        ci.lower.1 = numeric(),
+        ci.upper.1 = numeric(),
+        trait = character(),
+        model = character(),
+        type = character(),
+        variables = character()
+    )
+    for (i in 1:nrow(traitLabels)) {
+        trait <- traitLabels[i, 2]
+        result[i, ] <- c(
+            extractAvgSingle(results[[i]][[1]]),
+            traitLabels[i,1],
+            model,
+            type,
+            variables
+        )
+    }
+    return(result)
+}
+
+## Extract estimates across all models
+## For DPM
+extractParameterEstimatesSingleDpm <- function(results,
+                                            model,
+                                            type,
+                                            variables) {
+    result <- data.frame(
+        est = numeric(),
+        ci.lower = numeric(),
+        ci.upper = numeric(),
+        est.1 = numeric(),
+        ci.lower.1 = numeric(),
+        ci.upper.1 = numeric(),
+        trait = character(),
+        model = character(),
+        type = character(),
+        variables = character()
+    )
+    for (i in 1:nrow(traitLabels)) {
+        trait <- traitLabels[i, 2]
+        result[i, ] <- c(
+            extractAvgSingleDpm(results[[i]][[1]]),
+            traitLabels[i,1],
+            model,
+            type,
+            variables
+        )
+    }
+    return(result)
+}
+
+## Set location of results
+location <- "results"
+
+## Load results for each set of models
+load(paste0(location, "/clpm.latent.results.RData"))
+results.c.l.a <- clpm.latent.results[2][[1]]
+c.l.a <- extractParameterEstimates(
+    results.c.l.a,
+    "clpm",
+    "latent",
+    "all"
+)
+
+load(paste0(location, "/single.dpm.obs.results.RData"))
+d.o.s <- extractParameterEstimatesSingleDpm(
+    single.dpm.obs.results,
+    "dpm",
+    "observed",
+    "single"
+)
+
+
+#location <- "testResults"
+load(paste0(location, "/single.dpm.latent.results.RData"))
+d.l.s <- extractParameterEstimatesSingle(
+    single.dpm.latent.results,
+    "dpm",
+    "latent",
+    "single"
+)
+
+
+
+
+
+
+## Collect data from all models
+plotData <- rbind(
+    c.l.a,
+    d.o.s,
+    d.l.s
+)
+
+## Brute force restructure
+plotData1 <- plotData[,c("est", "ci.lower", "ci.upper", "trait", "model", "type", "variables")]
+plotData1$direction <- "tr"
+plotData2 <- plotData[,c("est.1", "ci.lower.1", "ci.upper.1", "trait", "model", "type", "variables")]
+names(plotData2) <- c("est", "ci.lower", "ci.upper", "trait", "model", "type", "variables")
+plotData2$direction <- "rt"
+
+plotDataFinal <- rbind(plotData1, plotData2)
+
+
+plotDataFinal %>%
+    ggplot(
+        aes(
+            x = trait,
+            y = est,
+            ymin = ci.lower,
+            ymax = ci.upper,
+            color = model,
+            linetype = type
+        )
+    ) +
+    geom_point(position = position_dodge(width = 0.75), size = 2) +
+    geom_errorbar(width = .05, position = position_dodge(width = 0.75)) +
+    coord_flip() +
+    theme_bw() +
+    scale_color_manual(values = c("grey", "black")) +
+    theme(
+        panel.grid.major.y = element_blank(),
+        panel.grid.minor = element_blank()
+    ) +
+    scale_y_continuous(limits = c(-.08, .08)) +
+    facet_wrap(vars(factor(direction, levels = c("tr", "rt"))))
+
+
+
+```
+
+Figure \@ref(fig:dpmPlots) shows the results of these analyses, with the paths from personality to religion in the left panel and the paths from religion to personality in the right. Consistent with the earlier model comparisons, the results from the original paper are not robust across these alternative specifications. None of the four significant average effects reported in the original paper (effects from agreeableness and openness to religiosity and effects from religiosity to agreeableness and extraversion) were significant when the DPM was used to model these associations. Indeed, the estimates from the estimates from the single-variable versions of the RI-CLPM. Thus, despite concerns that the RI-CLPM fundamentally changes the question that is being asked (as compared to the simpler CLPM), results from the DPM (a model that is not subject to these critiques) results in estimates that are generally closer to those from the RI-CLPM than the CLPM. 
+
 # Discussion
 
 Psychologists and other social scientists are often interested in the ways that personality affects real-world outcomes along with the reciprocal links between real-world experiences and personality change. Because personality is relatively stable over time and difficult to manipulate, experimental evidence that can inform theories about these processes is often difficult, if not impossible, to obtain. In these situations, longitudinal data analyzed with appropriate quantitative methods can often be the best choice for describing and understanding change and reciprocal effects [though see @rohrer_these_2021]. 
@@ -979,11 +1259,13 @@ Although Entringer et al.'s [-@entringer_big_2023] study has a number of importa
 
 The first issue we raised was in regard the complexity of the model that was used in the original study. This original model included items as indicators of latent Big Five personality traits, and it modeled all traits simultaneously. To be sure, this approach is defensible, and it has some advantages over alternatives. Most importantly, in models like the standard CLPM, the existence of measurement error can lead to spurious lagged effects [@lucas_why_2023]. This is because correctly estimating the lagged effect of a predictor on an outcome after controlling for the prior wave of the outcome requires precise measurement of that outcome at the prior wave [@westfall_statistically_2016]. If outcomes are measured with error, lagged effects can emerge solely due to incomplete control of scores at the prior wave. Using latent variables helps address this concern. Indeed, in our analyses, there were certain lagged effects that emerged only when the observed-variable version of the CLPM was used, but not when the latent-variable version was used (e.g., the lagged effects from conscientiousness and extraversion on religiosity and the lagged effects of religiosity on conscientiousness; see Figures \@ref(fig:fullPlot) and \@ref(fig:fullPlot2)). These effects should be interpreted cautiously, as they could be spurious. Notably, although the existence of measurement error can also lead to spurious lagged effects in the RI-CLPM [@lucas_why_2023], no effects emerged in the observed-variable version of the RI-CLPM that did not also emerge in the latent-variable version. 
 
-Although modeling latent traits has some advantages, it also comes at the cost of model complexity and possible increases in model misspecification. Especially when all five traits are modeled simultaneously, it is important for items to relate strongly to the latent-trait that they are designed to measure and not to other traits. If there are exceptions, clear and robust secondary loadings need to be identified and modeled. The authors of the original paper carefully considered the measurement model and tested for measurement invariance across federal states. It is still possible, however, that some important secondary loadings were omitted or even that some of those that were included capitalize on chance in the current sample and do not reflect the true underlying associations among items and constructs. If the measurement model is incorrectly specified, then the structural parts of the model can be affected [@rhemtulla_worse_2020]. 
+Although modeling latent traits has some advantages, it also comes at the cost of model complexity and possible increases in model misspecification, especially when all five traits are modeled simultaneously. It is important for items to relate strongly to the latent-trait that they are designed to measure and not to other traits. If there are exceptions, clear and robust secondary loadings need to be identified and modeled. The authors of the original paper carefully considered the measurement model and tested for measurement invariance across federal states. It is still possible, however, that some important secondary loadings were omitted or even that some of those that were included capitalize on chance in the current sample and do not reflect the true underlying associations among items and constructs. If the measurement model is incorrectly specified, then the structural parts of the model can be affected [@rhemtulla_worse_2020]. 
 
 There are at least two reasons to be cautious when interpreting results that rely on this complex measurement model. First, the models in the original study did not fit especially well, with CFI values typically falling below the standard .90 threshold. All models in our reanalysis that included latent traits---including an unconstrained measurement model---resulted in CFI values that were below the more stringent standard of .95. @entringer_big_2023 defended the relatively low CFI values in their study by noting that the CFI for correctly specified models declines as the number of observed variables in the model increases [e.g., @kenny_effect_2003]. However, Kenny and McCoach showed that this effect becomes less pronounced as sample sizes increase, and the largest sample sizes in their paper (and those they reviewed) were around 1,000, compared to over 40,000 in the current study. Moreover, Kenny and McCoach also showed that the RMSEA decreases (implying better fit) for *incorrectly* specified models as the number of observed variables increases (they did not report simulation results for SRMR). Thus, the discrepancy between the CFI and the RMSEA (and SRMR) is difficult to interpret. It is impossible to tell whether the relatively low CFIs result from the large number of observed variables or a misspecified model. This is further reason to use robustness across alternative specifications as a guide when interpreting parameter estimates. 
 
 A second issue is that the latent-variable models often led to estimation and convergence problems even for the relatively simple CLPM, but especially for the RI-CLPM. These problems meant that participants from two states needed to be excluded from the analyses in the original study, and many more had to be excluded from our reanalysis. In contrast, when observed variables were modeled, no estimation or convergence problems emerged for any of the tested models in any of the 16 federal states. Although neither the fit nor convergence issues is definitive proof that the measurement model used in these analyses is misspecified, together they suggest that some caution is warranted when interpreting results that rely on this measurement model. In such cases, robustness across alternative specifications is desirable before strong conclusions are drawn, and that robustness did not emerge across the alternative specifications we tested. Indeed, fundamentally different conclusions about the links between personality and religiosity would result from the different model specifications. 
+
+Finally, it is important to note that concerns about measurement error and the spurious effects that might result can be addressed in the single-variable latent-trait models, models that are subject to fewer concerns about model complexity. Even when focusing just on the comparison between these simpler models and the original model, results were not robust. 
 
 ## Controlling for Other Traits
 
