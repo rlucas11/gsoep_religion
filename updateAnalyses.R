@@ -5,8 +5,8 @@ sink(fileName, type="message")
 ## Run once
 ## source('cleaning.R')
 
-## Setup (load data and packages); run each time you run analyses
-source('analysisSetup.R')
+## ## Setup (load data and packages); run each time you run analyses
+## source('analysisSetup.R')
 
 ## Restrict sample to those with at least one item per construct
 ## source('restrictSample.R')
@@ -54,7 +54,9 @@ source('analysisSetup.R')
 ## source("metaAnalysis.R")
 
 ## Revision Analyses
-source("revisionAnalyses.R")
+## source("revisionAnalyses.R")
+
+source("fullSample.rev.R ")
 
 ## Rerun manuscript file
 ## rmarkdown::render('religion.Rmd')
