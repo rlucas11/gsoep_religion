@@ -91,19 +91,21 @@ Entringer et al.'s [-@entringer_big_2023] study had a number of desirable featur
 
 ## Questions About Robustness
 
-Despite these strengths, however, there are reasons to question the robustness of the support for reciprocal causal effects between personality and religiosity. First, when examining these reciprocal effects, @entringer_big_2023 relied solely on the traditional CLPM, which only includes lagged associations with variables assessed at the immediately prior wave. A critical assumption underlying the CLPM is that there are no sources of stability in the measures of interest beyond the two that are included in the model: the autoregressive effects reflecting the stability of each variable and the lagged effects between variables. If stable-trait variance also exists in the measures being modeled, then this assumption is violated and the CLPM results in bias lagged associations [@heise_causal_1970]. This bias would invalidate the interpretation of the lagged paths as estimates of the causal effects (regardless of whether those effects are described as between-person or within-person effects). 
+Despite these strengths, however, there are reasons to question the robustness of the support for reciprocal causal effects between personality and religiosity. First, when examining these reciprocal effects, @entringer_big_2023 relied solely on the traditional CLPM, which only includes lagged associations with variables assessed at the immediately prior wave. A critical assumption underlying the CLPM is that there are no sources of stability in the measures of interest beyond the two that are included in the model: the autoregressive effects reflecting the stability of each variable and the lagged effects between variables. If stable-trait variance also exists in the measures being modeled, then this assumption is violated and the CLPM results in bias lagged associations [@heise_causal_1970]. This bias would invalidate the interpretation of the lagged paths as estimates of the causal effects. 
 
 Recently, @lucas_why_2023 used simulations to show that this problem is quite severe; spurious lagged associations can be found as often as 100% of the time in realistic scenarios (e.g., when there is just a moderate amount of stable-trait variance, when the stable-trait variance from the two waves is moderately correlated, when sample sizes are moderate to large, and when multiple waves of assessment are included). The size of the bias found in these simulations is high relative to the size of the estimated effects reported by @entringer_big_2023. Notably, two strengths of Entringer et al.'s study (the very large sample size and the use of a four-wave design) can actually increase the likelihood of finding spurious lagged effects [@lucas_why_2023].
 
 A second issue is that @entringer_big_2023 chose to model all five traits simultaneously when predicting changes in religiosity. Although the Big Five traits are hypothesized to be relatively independent, in empirical data they are usually not. Thus, when modeling all traits simultaneously, estimated paths from personality to religiosity reflect associations that persist after controlling for all other personality traits. The decision to control for correlated variables comes with interpretational challenges, however, as the association can only be interpreted as an association between religiosity and the variance that is not shared with other traits [@lynam_perils_2006]. The nomological networks surrounding specific constructs are rarely developed using residualized trait scores, and thus, the conceptual connections between this residualized variable and the hypothetical construct it is meant to assess are not always clear. @entringer_big_2023 justified their decision to simultaneously model all five traits by noting that this decision is consistent with prior research. While such comparability is often desirable, it does not mean that the analytic choice is substantively justified. Because of the interpretational challenges, our preference is to interpret unadjusted associations; but at the very least, robustness across modeling choices is important to consider. 
 
+The decision to include all trait simultaneously---and to do so using latent traits---also adds to model complexity, and if that complexity does not accurately reflect the underlying data generating processes, then this can affect parameter estimates. Although researchers might hope that the items of their measures load cleanly on the factor to which the item belongs (and not to any other), this is not always the case in practice. In such cases, allowing for secondary loadings may be necessary to improve model fit (as was true in the original analyses), though questions can remain about whether such post hoc modifications capitalize on chance. Moreover, if the measurement model that is chosen does not fit well, then this misspecification can bias the structural parameters [e.g., lagged effects, see @rhemtulla_worse_2020]. In these cases, questions about the robustness of estimates (especially estimates that are very small in size) can be raised. In the current study, we compare the latent-variable model used by Entringer et al. (which included three cross-loadings and allowed residuals of identical items to be correlated over time) to a simpler observed-variable model that includes only the observed mean scores for each personality trait measure. 
+
+It is also important to note that the increased model complexity leads to greater potential for errors in the misspecification of the model. @entringer_big_2023 noted in the paper that they intended to include all cross-sectional correlations among the Big Five traits in their model. However, these paths were not explicitly specified in the model code. Lavaan, the program used for this analyses does have default settings that add correlations between latent variables, even when not explicitly specified. However, it appears that these default settings only add such paths for purely endogenous variables (i.e., those that predict but are not themselves predicted by any other variables) and purely exogenous variables (i.e. those that are predicted but do not themselves predict other variables), but not for those that are both predictors and outcomes. Thus, it appears in the original analyses, cross-sectional correlations were only included for the first and last waves. Because the Big Five are often correlated with one another, excluding these paths may affect both model fit and other estimated parameters in the model. 
+
 A final issue is in regard to the size of the effects that @entringer_big_2023 found. The authors foreshadow this issue early in the paper, noting that lagged effects are typically much smaller than cross-sectional effects and that prior cross-sectional correlations should often provide an upper bound on the size of any lagged associations[^assumptions]. They argue that because the correlations between personality and religiosity tend to be small (e.g., around .19 in their review), the lagged effects should be even smaller. Indeed, the observed lagged effects in their study were quite small, with maximum standardized regression coefficients of .039. The estimated moderator effects they found were similarly small in size.
 
 [^assumptions]: It is important to note that although this would be true under certain very plausible assumptions, the lagged effects could potentially be larger than the aggregated effect if there were negative autoregressive effects or unobserved confounders with associations with the opposite sign. 
 
-Although we agree that small effects can sometimes be important, such effects provide challenges for interpretation. First, just because effects that are small in size can be important in some contexts does not mean that they are always important; justification for why a particular small effect is important is needed [@anvari_not_2021]. One common defense of the importance of small effects is that these effects accumulate over time. However, this would usually mean that aggregated between-person correlations should themselves be reasonably large in size. @entringer_big_2023 did not report zero-order correlations either within waves or after aggregating personality and religiosity across the 12-year period. 
-
-Perhaps more importantly, very small effect sizes may simply reflect biases induced by subtle model misspecification or residual confounding rather than true underlying effects. For instance, although Entringer et al.'s [-@entringer_big_2023] decision to model latent personality factors when examining reciprocal associations has the desirable feature of removing measurement error, it also comes with a cost in terms of model complexity. Although researchers might hope that the items of their measures load cleanly on the factor to which the item belongs (and not to any other), this is not always the case in practice. In such cases, allowing for secondary loadings may be necessary to improve model fit, though questions can remain about whether such post hoc modifications capitalize on chance. Moreover, if the measurement model that is chosen does not fit well, then this misspecification can bias the structural parameters [e.g., lagged effects, see @rhemtulla_worse_2020]. In these cases, questions about the robustness of estimates (especially estimates that are very small in size) can be raised. In the current study, we compare the latent-variable model used by Entringer et al. (which included three cross-loadings and allowed residuals of identical items to be correlated over time) to a simpler observed-variable model that includes only the observed mean scores for each personality trait measure. 
+Although we agree that small effects can sometimes be important, such effects provide challenges for interpretation. First, just because effects that are small in size can be important in some contexts does not mean that they are always important; justification for why a particular small effect is important is needed [@anvari_not_2021]. One common defense of the importance of small effects is that these effects accumulate over time. However, this would usually mean that aggregated between-person correlations should themselves be reasonably large in size. @entringer_big_2023 did not report zero-order correlations either within waves or after aggregating personality and religiosity across the 12-year period. Perhaps more importantly, very small effect sizes may simply reflect biases induced by subtle model misspecification or residual confounding rather than true underlying effects. Thus, each of the model specification issues that we have highlighted---even if they reflect just minor misspecification---could account for the very small observed effects. Again, in such cases, robustness to alternative specification provides an important check on the influence of these factors. 
 
 ## The Present Study
 
@@ -219,8 +221,8 @@ fit <- data.frame(
 )
 
 ## Load results for each set of models
-load(paste0(location, "/clpm.latent.results.RData"))
-fit[1, 1:6] <- clpm.latent.results[[1]][c(
+load(paste0(location, "/measurement.results.rev.RData"))
+fit[1, 1:6] <- measurement.results[[2]][c(
         "chisq",
         "df",
         "pvalue",
@@ -229,13 +231,16 @@ fit[1, 1:6] <- clpm.latent.results[[1]][c(
         "srmr"
         )]
 fit[1, 7:10] <- c(
-        NA,
-        "clpm",
-        "latent",
-        "all")
+    NA,
+    "Measurement",
+    "Latent",
+    "All"
+)
 
-load(paste0(location, "/riclpm.latent.results.RData"))
-fit[2, 1:6] <- riclpm.latent.results[[1]][c(
+
+load(paste0(location, "/clpm.latent.results.RData"))
+clpm.latent.results.original <- clpm.latent.results
+fit[2, 1:6] <- clpm.latent.results.original[[1]][c(
         "chisq",
         "df",
         "pvalue",
@@ -244,15 +249,13 @@ fit[2, 1:6] <- riclpm.latent.results[[1]][c(
         "srmr"
         )]
 fit[2, 7:10] <- c(
-    NA,
-    "riclpm",
-    "latent",
-    "all"
-)
+        NA,
+        "CLPM*",
+        "Latent",
+        "All")
 
-
-load(paste0(location, "/clpm.observed.results.RData"))
-fit[3, 1:6] <- clpm.observed.results[[1]][c(
+load(paste0(location, "/clpm.latent.results.rev.RData"))
+fit[3, 1:6] <- clpm.latent.results[[1]][c(
         "chisq",
         "df",
         "pvalue",
@@ -261,14 +264,14 @@ fit[3, 1:6] <- clpm.observed.results[[1]][c(
         "srmr"
         )]
 fit[3, 7:10] <- c(
-    NA,
-    "clpm",
-    "observed",
-    "all"
-)
+        NA,
+        "CLPM",
+        "Latent",
+        "All")
 
-load(paste0(location, "/riclpm.observed.results.RData"))
-fit[4, 1:6] <- riclpm.observed.results[[1]][c(
+
+load(paste0(location, "/riclpm.latent.results.rev.RData"))
+fit[4, 1:6] <- riclpm.latent.results[[1]][c(
         "chisq",
         "df",
         "pvalue",
@@ -278,9 +281,42 @@ fit[4, 1:6] <- riclpm.observed.results[[1]][c(
         )]
 fit[4, 7:10] <- c(
     NA,
-    "riclpm",
-    "observed",
-    "all"
+    "RI-CLPM",
+    "Latent",
+    "All"
+)
+
+
+load(paste0(location, "/clpm.observed.results.RData"))
+fit[5, 1:6] <- clpm.observed.results[[1]][c(
+        "chisq",
+        "df",
+        "pvalue",
+        "cfi.robust",
+        "rmsea.robust",
+        "srmr"
+        )]
+fit[5, 7:10] <- c(
+    NA,
+    "CLPM",
+    "Observed",
+    "All"
+)
+
+load(paste0(location, "/riclpm.observed.results.RData"))
+fit[6, 1:6] <- riclpm.observed.results[[1]][c(
+        "chisq",
+        "df",
+        "pvalue",
+        "cfi.robust",
+        "rmsea.robust",
+        "srmr"
+        )]
+fit[6, 7:10] <- c(
+    NA,
+    "RI-CLPM",
+    "Observed",
+    "All"
 )
 
 ## List traits for loop in single-trait models
@@ -310,9 +346,9 @@ for (i in 1:5) {
         "srmr"
         )]
     c.l.s[i, 7] <- traits[i]
-    c.l.s[i, 8] <- "clpm"
-    c.l.s[i, 9] <- "latent"
-    c.l.s[i, 10] <- "single"
+    c.l.s[i, 8] <- "CLPM"
+    c.l.s[i, 9] <- "Latent"
+    c.l.s[i, 10] <- "Single"
 }
     
 
@@ -340,9 +376,9 @@ for (i in 1:5) {
         "srmr"
         )]
     r.l.s[i, 7] <- traits[i]
-    r.l.s[i, 8] <- "riclpm"
-    r.l.s[i, 9] <- "latent"
-    r.l.s[i, 10] <- "single"
+    r.l.s[i, 8] <- "RI-CLPM"
+    r.l.s[i, 9] <- "Latent"
+    r.l.s[i, 10] <- "Single"
 }
 
 
@@ -370,8 +406,8 @@ for (i in 1:5) {
         "srmr"
         )]
     c.o.s[i, 7] <- traits[i]
-    c.o.s[i, 8] <- "clpm"
-    c.o.s[i, 9] <- "observed"
+    c.o.s[i, 8] <- "CLPM"
+    c.o.s[i, 9] <- "Observed"
     c.o.s[i, 10] <- "single"
 }
 
@@ -400,9 +436,9 @@ for (i in 1:5) {
         "srmr"
         )]
     r.o.s[i, 7] <- traits[i]
-    r.o.s[i, 8] <- "riclpm"
-    r.o.s[i, 9] <- "observed"
-    r.o.s[i, 10] <- "single"
+    r.o.s[i, 8] <- "RI-CLPM"
+    r.o.s[i, 9] <- "Observed"
+    r.o.s[i, 10] <- "Single"
 }
 
 ## Combine different models
@@ -416,10 +452,10 @@ finalFit <- finalFit[,c("model", "type", "variables", "trait",
 finalFit$model <- toupper(finalFit$model)
 finalFit$type <- str_to_title(finalFit$type)
 finalFit$variables <- str_to_title(finalFit$variables)
-finalFit[c(6:9,
-           11:14,
-           16:19,
-           21:24),
+finalFit[c(8:11,
+           13:16,
+           18:21,
+           23:26),
          c("model",
            "type",
            "variables")]  <- NA
@@ -436,12 +472,12 @@ names(finalFit) <- c("Model",
                      "SRMR")
 
 papaja::apa_table(finalFit,
-                  midrules=c(1,2,3,4,9,14,19),
+                  midrules=c(1,2,3,4,5,6,11,16,21),
                   digits=c(NA, NA, NA, NA, 2, 0, 3, 2, 2, 2),
                   align=rep("r", 10),
                   format.args=list(na_string=""),
                   caption="Fit indexes for full sample models.",
-                  note="Agr = Agreableness; Con = Conscientiousness; Ext = Extraversion; Neu = Neuroticism; Opn = Openness.")
+                  note="Agr = Agreableness; Con = Conscientiousness; Ext = Extraversion; Neu = Neuroticism; Opn = Openness. The * for the first CLPM indicates that not all within-wave correlations among the Big Five traits were included, as specified in the original paper. The other multi-trait models include these correlations.")
 
 
 
@@ -457,13 +493,13 @@ load(paste0(location, "/measurement.results.RData"))
 
 ```
 
+First, Table \@ref(tab:fullFit) shows that the unconstrained measurement model fits reasonably well, though the CFI does not exceed the more stringent .95 criterion. Importantly, the second and third lines compare the model from the original paper, which only included within-wave correlations between religiosity and each of the Big Five traits for the first and last waves[^df], and a modified model that allowed for correlations among the traits in all four waves. As can be seen in this figure, the change in chi-square is quite dramatic for a difference of just 20 degrees of freedom. An examination of the estimated correlations shows why freeing these paths is necessary: Of the 40 estimated correlations, 38 are significant, and many are in the range of .40 to .60, with maximum correlations among traits or their wave-specific residuals of .67. Because omitting these correlations is a form of model misspecification that can affect the rest of the parameter estimates, we include them in all multi-trait models, though we do compare the lagged effects from the original model to this more appropriate one. 
 
-Table \@ref(tab:fullFit) shows that these modeling decisions affect fit. Although RMSEA and SRMR values for the original model are acceptable, the CFI for the CLPM with latent variables and all traits included just clears the .90 criterion and does not reach the more stringent .95 threshold. These results are consistent with those from the original paper. Indeed, in the original paper, the CFI for the primary model was even below the cutoff of .90 in 13 of 14 states. These fit indexes suggest some caution is necessary when interpreting the estimates from the models. 
+[^df]: The code used to test these models in the original paper does not explicitly include correlations among the traits for any of the waves. However, the 'SEM' command from the Lavaan program has default settings that will add some correlations, but not others. In this case, it appears that the SEM command adds correlations among the traits for the purely exogenous variable (those in the first wave) and the purely exogenous variables (those in the last wave) but not the variables that serve both as predictors and outcomes. Thus, 20 additional correlations are estimated when these correlations are specified explicitly. 
 
-Notably, the RI-CLPM with latent variables and all traits included (shown in the second row of Table \@ref(tab:fullFit) also has a CFI value below .95 (even though the Chi-Square value is considerably---and significantly---lower for this model than for the CLPM). In fact, even the CFI for a simple measurement model does not exceed the more stringent .95 cutoff, with a value of `r round(measurement.results[[2]]["cfi"], 2)`. This is also consistent with the results in the original paper, where the CFI for a measurement model specifying metric invariance across states had a CFI value of just .92. The fact that the fit of this unconstrained measurement model is not especially strong provides further justification to examine simpler models with less complicated measurement models. Misspecification in the measurement model could affect estimates of the structural parts, including the lagged effects of interest [@rhemtulla_worse_2020]. 
+Table \@ref(tab:fullFit) shows that the primary modeling decisions affect fit. Although RMSEA and SRMR values for the original model are acceptable, the CFI for the CLPM with latent variables and all traits included does not reach the more stringent .95 threshold. These results are consistent with those from the original paper. Indeed, in the original paper, the CFI for the primary model was even below the cutoff of .90 in 13 of 14 states (though it appears that these models did not allow for within-wave correlations among the Big Five traits, which, as noted above, detrimentally affects fit). These fit indexes suggest some caution is necessary when interpreting the estimates from the models. In contrast, the RI-CLPM with latent variables and all traits included (shown in the third row of Table \@ref(tab:fullFit) exceeds even the more stringent recommended standards for all fit indices, and the Chi-Square value is considerably---and significantly---lower for this model than for the CLPM. 
 
-Moving to the comparison of the CLPM and the RI-CLPM for the model with observed trait measures, the difference in fit indexes is even clearer. In this case, the CFI for the CLPM is still a borderline acceptable `r round(finalFit[3, "CFI"], 2)` whereas for the RI-CLPM it is `r round(finalFit[4, "CFI"], 2)`. Moreover, the difference in Chi-square values for the two models is not just significant, but dramatic, dropping from `r round(finalFit[3, "ChiSq"], 2)` to `r round(finalFit[4, "ChiSq"], 2)` for models that differ by just 21 degrees of freedom. 
-
+Moving to the comparison of the CLPM and the RI-CLPM for the models with observed trait measures, the difference in fit indexes is even clearer. In this case, the CFI for the CLPM is still a borderline acceptable `r round(finalFit[3, "CFI"], 2)` whereas for the RI-CLPM it is `r round(finalFit[4, "CFI"], 2)`. Moreover, the difference in Chi-square values for the two models is not just significant, but dramatic, dropping from `r round(finalFit[3, "ChiSq"], 2)` to `r round(finalFit[4, "ChiSq"], 2)` for models that differ by just 21 degrees of freedom. 
 
 
 ```{r implied-cors, echo=FALSE, message=FALSE, warning=FALSE, fig.cap="Actual stability coefficients (solid line) and implied stability coefficients from the CLPM (short-dashed line) and RI-CLPM (long-dashed line)."}
@@ -644,7 +680,8 @@ extractAvg <- function(results, trait) {
 extractParameterEstimates <- function(results,
                                       model,
                                       type,
-                                      variables) {
+                                      variables,
+                                      correlations) {
     result <- data.frame(
         est = numeric(),
         ci.lower = numeric(),
@@ -655,7 +692,8 @@ extractParameterEstimates <- function(results,
         trait = character(),
         model = character(),
         type = character(),
-        variables = character()
+        variables = character(),
+        correlations = character()
     )
     for (i in 1:nrow(traitLabels)) {
         trait <- traitLabels[i, 2]
@@ -664,7 +702,8 @@ extractParameterEstimates <- function(results,
             traitLabels[i,1],
             model,
             type,
-            variables
+            variables,
+            correlations
         )
     }
     return(result)
@@ -699,7 +738,8 @@ extractAvgSingle <- function(results) {
 extractParameterEstimatesSingle <- function(results,
                                             model,
                                             type,
-                                            variables) {
+                                            variables,
+                                            correlations) {
     result <- data.frame(
         est = numeric(),
         ci.lower = numeric(),
@@ -710,7 +750,8 @@ extractParameterEstimatesSingle <- function(results,
         trait = character(),
         model = character(),
         type = character(),
-        variables = character()
+        variables = character(),
+        correlations = character()
     )
     for (i in 1:nrow(traitLabels)) {
         trait <- traitLabels[i, 2]
@@ -719,7 +760,8 @@ extractParameterEstimatesSingle <- function(results,
             traitLabels[i,1],
             model,
             type,
-            variables
+            variables,
+            correlations
         )
     }
     return(result)
@@ -729,20 +771,33 @@ extractParameterEstimatesSingle <- function(results,
 ## Load results for each set of models
 load(paste0(location, "/clpm.latent.results.RData"))
 results.c.l.a <- clpm.latent.results[2][[1]]
+orig <- extractParameterEstimates(
+    results.c.l.a,
+    "clpm",
+    "latent",
+    "all",
+    "no"
+)
+
+## Load results for each set of models
+load(paste0(location, "/clpm.latent.results.rev.RData"))
+results.c.l.a <- clpm.latent.results[2][[1]]
 c.l.a <- extractParameterEstimates(
     results.c.l.a,
     "clpm",
     "latent",
-    "all"
+    "all",
+    "yes"
 )
 
-load(paste0(location, "/riclpm.latent.results.RData"))
+load(paste0(location, "/riclpm.latent.results.rev.RData"))
 results.r.l.a <- riclpm.latent.results[2][[1]]
 r.l.a <- extractParameterEstimates(
     results.r.l.a,
     "riclpm",
     "latent",
-    "all"
+    "all",
+    "yes"
 )
 
 load(paste0(location, "/clpm.observed.results.RData"))
@@ -751,7 +806,8 @@ c.o.a <- extractParameterEstimates(
     results.c.o.a,
     "clpm",
     "observed",
-    "all"
+    "all",
+    "yes"
 )
 
 load(paste0(location, "/riclpm.observed.results.RData"))
@@ -760,7 +816,8 @@ r.o.a <- extractParameterEstimates(
     results.r.o.a,
     "riclpm",
     "observed",
-    "all"
+    "all",
+    "yes"
 )
 
 load(paste0(location, "/single.clpm.latent.results.RData"))
@@ -768,7 +825,8 @@ c.l.s <- extractParameterEstimatesSingle(
     single.clpm.latent.results,
     "clpm",
     "latent",
-    "single"
+    "single",
+    "yes"
 )
 
 load(paste0(location, "/single.riclpm.latent.results.RData"))
@@ -776,7 +834,8 @@ r.l.s <- extractParameterEstimatesSingle(
     single.riclpm.latent.results,
     "riclpm",
     "latent",
-    "single"
+    "single",
+    "yes"
 )
 
 load(paste0(location, "/single.clpm.obs.results.RData"))
@@ -784,7 +843,8 @@ c.o.s <- extractParameterEstimatesSingle(
     single.clpm.obs.results,
     "clpm",
     "observed",
-    "single"
+    "single",
+    "yes"
 )
 
 load(paste0(location, "/single.riclpm.obs.results.RData"))
@@ -792,13 +852,15 @@ r.o.s <- extractParameterEstimatesSingle(
     single.riclpm.obs.results,
     "riclpm",
     "observed",
-    "single"
+    "single",
+    "yes"
 )
 
 
 
 ## Collect data from all models
 plotData <- rbind(
+    orig,
     c.l.a,
     r.l.a,
     c.o.a,
@@ -810,16 +872,42 @@ plotData <- rbind(
 )
 
 
-plotData %>%
+## Brute force restructure
+plotData1 <- plotData[,c("est", "ci.lower", "ci.upper", "trait", "model", "type", "variables")]
+plotData1$direction <- "tr"
+plotData2 <- plotData[,c("est.1", "ci.lower.1", "ci.upper.1", "trait", "model", "type", "variables")]
+names(plotData2) <- c("est", "ci.lower", "ci.upper", "trait", "model", "type", "variables")
+plotData2$direction <- "rt"
+plotDataFinal <- rbind(plotData1, plotData2)
+
+## Update names and labels for final figure
+names(plotDataFinal) <- c("Est",
+                          "ci.lower",
+                          "ci.upper",
+                          "Trait",
+                          "Model",
+                          "Type",
+                          "Variables",
+                          "Direction")
+plotDataFinal$Model <- toupper(plotDataFinal$Model)
+plotDataFinal$Type <- str_to_title(plotDataFinal$Type)
+plotDataFinal$Variables <- str_to_title(plotDataFinal$Variables)
+
+
+directionLabeller <- as_labeller(c("tr" = "Trait -> Religion",
+                                   "rt" = "Religion -> Trait"))
+
+plotDataFinal %>%
+    filter(Direction == "tr") %>%
     ggplot(
         aes(
-            x = trait,
-            y = est,
+            x = Trait,
+            y = Est,
             ymin = ci.lower,
             ymax = ci.upper,
-            color = model,
-            linetype = type,
-            shape = variables
+            color = Model,
+            linetype = Type,
+            shape = Variables
         )
     ) +
     geom_point(position = position_dodge(width = 0.75), size=2) +
@@ -832,7 +920,8 @@ plotData %>%
         panel.grid.major.y = element_blank(),
         panel.grid.minor = element_blank()
     ) +
-    scale_y_continuous(limits = c(-.08, .08))
+    scale_y_continuous(limits = c(-.15, .15)) 
+
 
 
 
@@ -840,13 +929,15 @@ plotData %>%
 
 ### Estimates of Lagged Associations
 
-Consistent with the original paper, our focus is on the cross-lagged paths from each trait to religiosity and from religiosity to each trait. Figure \@ref(fig:fullPlot) presents the estimated cross-lagged paths from each personality trait to religiosity for each of the eight tested models. Results from the CLPM are presented in grey lines, whereas results for the RI-CLPM are presented as black lines. Results from the latent-variable models are included as solid lines whereas results for the observed-variable models are presented as dashed lines. Finally results for models that include all five traits simultaneously are labeled with triangles, whereas those that model each trait individually are labeled with circles. Bars represent 95% confidence intervals for the standardized parameter estimates. Because the standardized estimates vary slightly across waves, we follow @entringer_big_2023 and present the average of these estimates.
+Consistent with the original paper, our focus is on the cross-lagged paths from each trait to religiosity and from religiosity to each trait. Figure \@ref(fig:fullPlot) presents the estimated cross-lagged paths from each personality trait to religiosity for each of the eight tested models. Results from the CLPM are presented in grey lines, whereas results for the RI-CLPM are presented as black lines. Results from the latent-variable models are included as solid lines whereas results for the observed-variable models are presented as dashed lines. Finally results for models that include all five traits simultaneously are labeled with triangles, whereas those that model each trait individually are labeled with circles. Bars represent 95% confidence intervals for the standardized parameter estimates. Because the standardized estimates vary slightly across waves, we follow @entringer_big_2023 and present the average of these estimates. Note that there are two points for the CLPM with latent variables and all traits modeled simultaneously (the original model), one as fit in the original paper and one that allows for within-wave correlations between each pair of Big Five traits. Although allowing for these correlations results in considerably better model fit, the similarity in estimates that results shows that this modeling decision has little effect on the parameter estimates (at least for the CLPM). 
 
 Before describing the results, it is important to acknowledge that the confidence intervals for estimates from the RI-CLPM models are generally considerably larger than those for the CLPM. This pattern is not unique to these data or these model specifications. The RI-CLPM is equivalent to a multilevel model that separates between-person associations from within-person associations, and estimates of the within-person parts of these models often have less bias at the cost of reduced efficiency [see @allison2009fixed, for an explanation]. Because of this, we highlight both the significance of the effect and the parameter estimates when comparing results across models. 
 
-Figure \@ref(fig:fullPlot) shows that conclusions about the lagged effects of personality on religiosity would differ depending on which model was used. Indeed, there is no effect that emerges consistently across all model specifications. For instance, the largest effect from @entringer_big_2023 was the lagged association between agreeableness and religiosity, which had an average standardized effect of 0.039. The comparable model from Figure \@ref(fig:fullPlot) is the CLPM with latent traits and all traits modeled simultaneously, which resulted in an identical average standardized effect of `r plotData %>% filter(trait == "agr", model == "clpm", type == "latent", variables == "all") %>% select(est) %>% round(3)`. This estimate was very similar when the RI-CLPM was used, when latent variables were modeled, and when all traits were included simultaneously. However, estimated effects were smaller (frequently about half the size) and sometimes nonsignificant in the other model specifications. This association between agreeableness and religiosity was the most robust of the effects we examined, and even it varied in size and significance across model specifications. 
+Figure \@ref(fig:fullPlot) shows that conclusions about the lagged effects of personality on religiosity would differ depending on which model was used. Indeed, there is no effect that emerges consistently across all model specifications: The effect of each trait is significant in at least one model, and none is significant across all specifications. For instance, the largest effect from @entringer_big_2023 was the lagged association between agreeableness and religiosity, which had an average standardized effect of 0.039. The comparable model from Figure \@ref(fig:fullPlot) is the CLPM with latent traits and all traits modeled simultaneously, which resulted in a very similar average standardized effect of `r plotData %>% filter(trait == "agr", model == "clpm", type == "latent", variables == "all") %>% select(est) %>% round(3)`[^alternative]. This estimate was similar, significant, and even slightly larger when the RI-CLPM was used, but only when latent variables were modeled, and when all traits were included simultaneously. Estimated effects were smaller (frequently about half the size) and sometimes nonsignificant in the other model specifications. This association between agreeableness and religiosity was the most robust of the effects we examined, and even it varied in size and significance across model specifications. 
 
-Importantly, Figure \@ref(fig:fullPlot) shows that our alternative models do not always result in reduced effect sizes relative to what was reported in @entringer_big_2023. For instance, in the original study, the lagged effect of neuroticism on religiosity was a nonsignificant .011. In our reanalysis, we found similar average estimate of `r plotData %>% filter(trait == "neu", model == "clpm", type == "latent", variables == "all") %>% select(est) %>% round(3)` with the same model specification in the full sample. However, the size and significance of the effect varied considerably across specifications. Most notably, the RI-CLPM resulted in estimated lagged effects that were close in size (though not always significant) to the lagged effect of agreeableness, which was the largest effect found in the original study and a primary finding that was highlighted in the discussion. It is sometimes claimed that using the RI-CLPM necessarily results in smaller estimates of lagged effects than the CLPM [e.g., @asendorpf_modeling_2021], but this is not correct. @lucas_why_2023 showed that if stable-trait variance exists in the measures, results from the CLPM can underestimate the true lagged effects. Although neuroticism received little attention in Entringer et al.'s [-@entringer_big_2023] original report, the lagged path from neuroticism to religiosity is one of the largest effects found when the arguably more appropriate RI-CLPM is used. 
+[^alternative]: Note that the estimate was actually identical when we tested a model that only included the within-wave correlations between each pair of Big Five traits for the first and last wave, as in the original paper. 
+
+Importantly, Figure \@ref(fig:fullPlot) shows that our alternative models do not always result in reduced effect sizes relative to what was reported in @entringer_big_2023. For instance, in the original study, the lagged effect of neuroticism on religiosity was a nonsignificant .011. In our reanalysis, we found similar average estimate of `r plotData %>% filter(trait == "neu", model == "clpm", type == "latent", variables == "all") %>% select(est) %>% round(3)` with an almost identical model specification in the full sample. However, the size and significance of the effect varied across specifications. Most notably, the RI-CLPM resulted in estimated lagged effects that were close in size (though not always significant) to the lagged effect of agreeableness, which was the largest effect found in the original study and a primary finding that was highlighted in the discussion. It is sometimes claimed that using the RI-CLPM necessarily results in smaller estimates of lagged effects than the CLPM [e.g., @asendorpf_modeling_2021], but this is not correct. @lucas_why_2023 showed that if stable-trait variance exists in the measures, results from the CLPM can underestimate the true lagged effects. Although neuroticism received little attention in Entringer et al.'s [-@entringer_big_2023] original report, the lagged path from neuroticism to religiosity is one of the largest effects found when the arguably more appropriate RI-CLPM is used. 
 
 When relying on statistical significance as a criterion for evaluating replication across the original analysis and our full-sample analysis, a single discrepancy arose: the path from openness to religiosity was nonsignificant in the original analyses but significant in our reanalysis. However, the estimate itself was virtually identical. Specifically, the estimate for the path from openness to religiosity was -0.013 in the original analysis versus `r plotData %>% filter(trait == "opn", model == "clpm", type == "latent", variables == "all") %>% select(est) %>% round(3)` in ours. This does not seem like a consequential difference. 
 
@@ -854,16 +945,17 @@ Finally, Figure \@ref(fig:fullPlot) shows that effects can even reverse directio
 
 ```{r fullPlot2, echo=FALSE, message=FALSE, warning=FALSE, fig.cap="Estimated Lagged Effects of Religiosity on Personality"}
 
-plotData %>%
+plotDataFinal %>%
+    filter(Direction == "rt") %>%
     ggplot(
         aes(
-            x = trait,
-            y = est.1,
-            ymin = ci.lower.1,
-            ymax = ci.upper.1,
-            color = model,
-            linetype = type,
-            shape = variables
+            x = Trait,
+            y = Est,
+            ymin = ci.lower,
+            ymax = ci.upper,
+            color = Model,
+            linetype = Type,
+            shape = Variables
         )
     ) +
     geom_point(position = position_dodge(width = 0.75), size=2) +
@@ -876,13 +968,14 @@ plotData %>%
         panel.grid.major.y = element_blank(),
         panel.grid.minor = element_blank()
     ) +
-    scale_y_continuous(limits = c(-.08, .08))
+    scale_y_continuous(limits = c(-.15, .15)) 
+
 
 
 
 ```
 
-Turning to the lagged paths from religiosity to personality, @entringer_big_2023 found only one significant effect: the path from religiosity to agreeableness, which was estimated to be a small but significant 0.011. The size and significance of this effect was again replicated in our full-sample analysis (average standardized estimate = `r plotData %>% filter(trait == "agr", model == "clpm", type == "latent", variables == "all") %>% select(est.1) %>% round(3)`). However, as Figure \@ref(fig:fullPlot2) shows, the size and significance of this lagged effect again varied considerably; two specifications of the CLPM resulted in considerably larger effects for the path from religiosity to agreeableness (with effect sizes comparable to the largest effects of personality on religion), whereas nonsignificantly negative associations emerged in all specifications of the RI-CLPM. 
+Turning to the lagged paths from religiosity to personality, @entringer_big_2023 found only one significant effect: the path from religiosity to agreeableness, which was estimated to be a small but significant 0.011. The size and significance of this effect was again replicated in our full-sample analysis (average standardized estimate = `r plotData %>% filter(trait == "agr", model == "clpm", type == "latent", variables == "all") %>% select(est.1) %>% round(3)`). However, Figure \@ref(fig:fullPlot2) shows, the size and significance of this lagged effect again varied considerably; two specifications of the CLPM resulted in considerably larger effects for the path from religiosity to agreeableness (with effect sizes comparable to the largest effects of personality on religion), whereas nonsignificantly negative associations emerged in all specifications of the RI-CLPM. 
 
 In addition, estimates for three of the four other effects differed depending on which model specification was used. For instance, the lagged effects of religiosity on openness and conscientiousness---effects that were not significant in the original paper---were significant in both the observed-variable CLPM models. There was also one effect that was significant in the full sample that was not significant when using the same model in the original study: the lagged effect of religiosity on extraversion. The effect was a non-significant .004 in the original paper, whereas it was a significant (though only slightly larger) `r plotData %>% filter(trait == "ext", model == "clpm", type == "latent", variables == "all") %>% select(est.1) %>% round(3)` in the current analyses. Again, as was true with the paths from personality to religiosity, conclusions about the paths from religiosity to personality vary depending on which model specification one chooses. 
 
@@ -890,28 +983,50 @@ In addition, estimates for three of the four other effects differed depending on
 
 As noted previously, the results from the full-sample analyses mostly replicate the average effects from the meta-analysis of results across the 14 federal states analyzed in @entringer_big_2023. By focusing on the full sample, comparisons across models were simplified, and the effect of any state-specific model estimation problems could be eliminated. We also conducted state-level analyses to examine how modeling choices affect state-level religiosity as a moderator of the lagged effects. 
 
-Assessing how model choice affects results across states is challenging, however, as estimation and convergence problems occur at different rates across different states and different models. Even in the original paper, responses from two states (Bremen and Saarland) were dropped from the analyses due to estimation problems in the CLPM. Our own analyses replicated these problems in these two states, as well as in one additional state not identified as problematic in the original analyses. Specifically, although estimates could be obtained for Hamburg, some variances were estimated to be negative. Additional problems (including negative variances, non-positive-definite matrices, and lack of convergence) were encountered with other model specifications, including the CLPM with latent variables and each trait modeled separately and the RI-CLPM with latent variables traits modeled separately or together. Notably, no estimation or convergence problems were encountered with any model (even those in the two states that were omitted from the original paper) that included observed variables instead of latent variables for the Big Five. This is further evidence that the complex measurement model causes problems and that the simpler observed-variable models should be preferred. A full list of parameter estimates for the cross-lagged paths along with a list of estimation and convergence problems are included in Tables 1 through 16 of the supplement. 
+Assessing how model choice affects results across states is challenging, however, as estimation and convergence problems occur at different rates across different states and different models. Even in the original paper, responses from two states (Bremen and Saarland) were dropped from the analyses due to estimation problems in the CLPM. Our own analyses replicated these problems in these two states, as well as in one additional state not identified as problematic in the original analyses. Specifically, although estimates could be obtained for Hamburg, some variances were estimated to be negative. Additional problems (including negative variances, non-positive-definite matrices, and lack of convergence) were encountered with other model specifications, including the CLPM with latent variables and each trait modeled separately and the RI-CLPM with latent traits modeled separately or together. Notably, no estimation or convergence problems were encountered with any model (even those in the two states that were omitted from the original paper) that included observed variables instead of latent variables for the Big Five. This is further evidence that the complex measurement model causes problems and that the simpler observed-variable models should be preferred. A full list of parameter estimates for the cross-lagged paths along with a list of estimation and convergence problems are included in Tables 1 through 16 of the supplement. 
 
-Because of these estimation problems, we rely only on the four observed-variable models when examining the effects of state-level religiosity on the lagged paths. Specifically, we first tested each model in each state and then used meta-analytic procedures to test whether state-level religiosity moderated these paths in each model. Parameter estimates and 95% confidence intervals are presented in Figure \@ref(fig:moderator-meta-rt) for the paths from personality to religiosity and Figure \@ref(fig:moderator-meta-tr) for the paths from religiosity to personality. 
+Because of these estimation problems, we rely only on the four observed-variable models when examining the effects of state-level religiosity on the lagged paths. Specifically, we first tested each model in each state and then used meta-analytic procedures to test whether state-level religiosity moderated these paths in each model. Parameter estimates and 95% confidence intervals are presented in Figure \@ref(fig:moderator-meta) (left panel for the paths from personality to religiosity and right panel for the paths from religiosity to personality). 
 
-```{r moderator-meta-rt, echo=FALSE, message=FALSE, warning=FALSE, fig.cap = "Meta-analytic results for state-level religiosity as a moderator of the lagged effect of traits on religiosity"}
+```{r moderator-meta, echo=FALSE, message=FALSE, warning=FALSE, fig.cap = "Meta-analytic results for state-level religiosity as a moderator of the lagged effect of traits on religiosity"}
 
 ## Load Results
 metaModResults <- read_csv("results/metaModResults.csv")
 
+## Update names and labels for final figure
+names(metaModResults) <- c("Trait",
+                           "Effect",
+                           "Model",
+                           "Type",
+                           "Variables",
+                           "est",
+                           "se",
+                           "lb",
+                           "ub",
+                           "Est",
+                           "mod.se",
+                           "mod.lb",
+                           "mod.ub")
+metaModResults$Model <- toupper(metaModResults$Model)
+metaModResults$Type <- str_to_title(metaModResults$Type)
+metaModResults$Variables <- str_to_title(metaModResults$Variables)
+metaModResults$Trait <- toupper(metaModResults$Trait)
+
+directionLabeller <- as_labeller(c("rt.cl" = "Trait -> Religion",
+                                   "tr.cl" = "Religion -> Trait"))
+
+
 metaModResults %>%
     filter(
-        effect == "rt.cl",
-        type == "Observed"
+        Type == "Observed"
     ) %>%
     ggplot(
         aes(
-            x = trait,
-            y = mod.est,
+            x = Trait,
+            y = Est,
             ymin = mod.lb,
             ymax = mod.ub,
-            color = model,
-            shape = variables
+            color = Model,
+            shape = Variables
         )
     ) +
     geom_point(position = position_dodge(width = 0.75), size = 2) +
@@ -924,58 +1039,27 @@ metaModResults %>%
         panel.grid.major.y = element_blank(),
         panel.grid.minor = element_blank()
         ) +
-    scale_y_continuous(limits = c(-.08, .08))
+    scale_y_continuous(limits = c(-.08, .08)) +
+    facet_wrap(vars(factor(Effect, levels = c("rt.cl", "tr.cl"))),
+               labeller = directionLabeller)
+    
 
 
 ```
 
-In the original paper, @entringer_big_2023 found moderating effects of state-level religiosity for the paths from openness and conscientiousness to religiosity. Figure \@ref(fig:moderator-meta-rt) shows that both of these effects were replicated when the CLPM was used and all traits were modeled simultaneously. This was true even though we focus on the model that uses observed variables for the Big Five traits, whereas Entringer et al. modeled these as latent variables. However, as was true for the simple lagged effects, these results varied depending on precisely which model specification was used. In the case of openness, both version of the CLPM resulted in significant moderating effects, but neither version of the RI-CLPM effect did. For the conscientiousness effect, when all five traits were modeled simultaneously, both the CLPM and RI-CLPM resulted in significant moderating effects. When conscientiousness was examined on its own, however, these effects were not significant. Moderating effects for the other three traits were consistently small and nonsignificant across the four model specifications. 
+In the original paper, @entringer_big_2023 found moderating effects of state-level religiosity for the paths from openness and conscientiousness to religiosity. The left panel of Figure \@ref(fig:moderator-meta) shows that both of these effects were replicated when the CLPM was used and all traits were modeled simultaneously. This was true even though we focus on the model that uses observed variables for the Big Five traits, whereas Entringer et al. modeled these as latent variables. However, as was true for the simple lagged effects, these results varied depending on precisely which model specification was used. In the case of openness, both version of the CLPM resulted in significant moderating effects, but neither version of the RI-CLPM effect did. For the conscientiousness effect, when all five traits were modeled simultaneously, both the CLPM and RI-CLPM resulted in significant moderating effects. When conscientiousness was examined on its own, however, these effects were not significant. Moderating effects for the other three traits were consistently small and nonsignificant across the four model specifications. 
 
-@entringer_big_2023 also found moderating effects of state-level religiosity for the paths from religiosity to openness, but the paths to the other traits were not significant. Figure \@ref(fig:moderator-meta-tr) shows that this one significant path also emerged in our version of this model. Again, however, when the RI-CLPM was used, the meta-analytic effect became nonsignificant (and indeed, the sign of this nonsignificant effect reversed). Thus, consistent with the full-sample analyses, we found no moderating effects of state-level religiosity that consistently emerged across model specifications. 
-
-
-```{r moderator-meta-tr, echo=FALSE, message=FALSE, warning=FALSE, fig.cap = "Meta-analytic results for state-level religiosity as a moderator of the lagged effect of religiosity on traits"}
-
-metaModResults %>%
-    filter(
-        effect == "tr.cl",
-        type == "Observed"
-    ) %>%
-    ggplot(
-        aes(
-            x = trait,
-            y = mod.est,
-            ymin = mod.lb,
-            ymax = mod.ub,
-            color = model,
-            linetype = type,
-            shape = variables
-        )
-    ) +
-    geom_point(position = position_dodge(width = 0.75), size = 2) +
-    geom_errorbar(width = .05, position = position_dodge(width = 0.75)) +
-    coord_flip() +
-    theme_bw() +
-    scale_color_grey() +
-    theme(
-        panel.grid.major.y = element_blank(),
-        panel.grid.minor = element_blank()
-    ) +
-    scale_y_continuous(limits = c(-.08, .08))
+@entringer_big_2023 also found moderating effects of state-level religiosity for the paths from religiosity to openness, but the paths to the other traits were not significant. The right panel of Figure \@ref(fig:moderator-meta) shows that this one significant path also emerged in our version of this model. Again, however, when the RI-CLPM was used, the meta-analytic effect became nonsignificant (and indeed, the sign of this nonsignificant effect reversed). Thus, consistent with the full-sample analyses, we found no moderating effects of state-level religiosity that consistently emerged across model specifications. 
 
 
-
-```
 
 ## Supplemental Analyses: The Dynamic Panel Model
 
 Debates about the utility and potential problems of the standard CLPM have often focused on the RI-CLPM as a potentially preferable alternative [e.g., @hamaker_critique_2015, @hamaker_within-between_2023, @lucas_why_2023, @ludtke_comparison_2022]. Concerns have been raised, however, about the way that the RI-CLPM residualizes wave-specific variance when examining dynamic processes [e.g., @orth_testing_2021]. Specifically, it has been claimed by critics of the RI-CLPM, that this feature changes the question being asked, and it prevents researchers from examining whether stable traits predict change in an outcome. Although we disagree with @orth_testing_2021 and other critics that this feature of the RI-CLPM fundamentally changes the nature of the question that is being asked [see @lucas_why_2023], it is possible to examine alternative models that address concerns about time-invariant confounders in different ways. 
 
-One notable alternative to the RI-CLPM is the DPM, which does not residualize occasion-specific variance when examining dynamic processes over time. Instead, in the DPM, any effects of time-invariant predictors are specified to flow through each occasion when predicting change in the outcome variable, while still accounting for the trait-like associations between non-adjacent waves (see the online supplement for a diagram of this model, the code we used to run it, and detailed results). We initially tried running a model that with all five traits included simultaneously (with observed variables), but the model did not converge [^convergence]. Therefore, in these supplemental analyses, we focused on comparing the results from the original paper to observed-variable and latent-variable versions of the DPM. 
+One notable alternative to the RI-CLPM is the DPM, which does not residualize occasion-specific variance when examining dynamic processes over time. Instead, in the DPM, any effects of time-invariant predictors are specified to flow through each occasion when predicting change in the outcome variable, while still accounting for the trait-like associations between non-adjacent waves (see the online supplement for a diagram of this model, the code we used to run it, and detailed results). We initially tried running a model that with all five traits included simultaneously (with observed variables), but the model did not converge [^convergence]. Therefore, in these supplemental analyses, we focused on selecting one set of model specifications across which the three model types could be compared. Specifically, we compared the results of the latent-variable model with each trait examined as a separate model across the CLPM, RI-CLPM, and DPM. 
 
-
-
-[^convergence]: Convergence problems often emerge with more sophisticated versions of the RI-CLPM such as the Stable Trait, Autoregressive Trait, State model, but less has been published about potential issues with the DPM. Given that all of these models need at least three waves of data for identification, the fact that convergence problems emerged in models with just four waves of data is not surprising. 
+[^convergence]: Convergence problems often emerge with more complex versions of the RI-CLPM such as the Stable Trait, Autoregressive Trait, State model, but less has been published about potential issues with the DPM. Given that all of these models need at least three waves of data for identification, the fact that convergence problems emerged in models with just four waves of data is not surprising. 
 
 ```{r dpmPlots, echo=FALSE, message=FALSE, warning=FALSE, fig.cap = "Comparing results of the observed-variable and latent-variable versions of the Dynamic Panel Model to the original results."}
 
@@ -1169,7 +1253,7 @@ extractParameterEstimatesSingleDpm <- function(results,
 location <- "results"
 
 ## Load results for each set of models
-load(paste0(location, "/clpm.latent.results.RData"))
+load(paste0(location, "/clpm.latent.results.rev.RData"))
 results.c.l.a <- clpm.latent.results[2][[1]]
 c.l.a <- extractParameterEstimates(
     results.c.l.a,
@@ -1177,14 +1261,35 @@ c.l.a <- extractParameterEstimates(
     "latent",
     "all"
 )
+c.l.a$model <- "CLPM Original"
 
-load(paste0(location, "/single.dpm.obs.results.RData"))
-d.o.s <- extractParameterEstimatesSingleDpm(
-    single.dpm.obs.results,
-    "dpm",
-    "observed",
+load(paste0(location, "/single.clpm.latent.results.RData"))
+c.l.s <- extractParameterEstimatesSingle(
+    single.clpm.latent.results,
+    "clpm",
+    "latent",
     "single"
 )
+c.l.s$model <- "CLPM"
+
+
+load(paste0(location, "/single.riclpm.latent.results.RData"))
+r.l.s <- extractParameterEstimatesSingle(
+    single.riclpm.latent.results,
+    "riclpm",
+    "latent",
+    "single"
+)
+r.l.s$model <- "RI-CLPM"
+
+
+## load(paste0(location, "/single.dpm.obs.results.RData"))
+## d.o.s <- extractParameterEstimatesSingleDpm(
+##     single.dpm.obs.results,
+##     "dpm",
+##     "observed",
+##     "single"
+## )
 
 
 #location <- "testResults"
@@ -1195,7 +1300,7 @@ d.l.s <- extractParameterEstimatesSingle(
     "latent",
     "single"
 )
-
+d.l.s$model <- "DPM"
 
 
 
@@ -1204,9 +1309,11 @@ d.l.s <- extractParameterEstimatesSingle(
 ## Collect data from all models
 plotData <- rbind(
     c.l.a,
-    d.o.s,
+    c.l.s,
+    r.l.s,
     d.l.s
 )
+
 
 ## Brute force restructure
 plotData1 <- plotData[,c("est", "ci.lower", "ci.upper", "trait", "model", "type", "variables")]
@@ -1216,36 +1323,58 @@ names(plotData2) <- c("est", "ci.lower", "ci.upper", "trait", "model", "type", "
 plotData2$direction <- "rt"
 
 plotDataFinal <- rbind(plotData1, plotData2)
+names(plotDataFinal) <- c("Est",
+                          "ci.lower",
+                          "ci.upper",
+                          "Trait",
+                          "Model",
+                          "Type",
+                          "Variables",
+                          "Direction")
+
+plotDataFinal$Model2 <- factor(plotDataFinal$Model,
+                               levels = c("CLPM Original",
+                                          "CLPM",
+                                          "RI-CLPM",
+                                          "DPM"
+                                          )
+                            )
+
+
+directionLabeller <- as_labeller(c("tr" = "Trait -> Religion",
+                                   "rt" = "Religion -> Trait"))
 
 
 plotDataFinal %>%
     ggplot(
         aes(
-            x = trait,
-            y = est,
+            x = Trait,
+            y = Est,
             ymin = ci.lower,
             ymax = ci.upper,
-            color = model,
-            linetype = type
+            colour = Model2
         )
     ) +
     geom_point(position = position_dodge(width = 0.75), size = 2) +
     geom_errorbar(width = .05, position = position_dodge(width = 0.75)) +
     coord_flip() +
     theme_bw() +
-    scale_color_manual(values = c("grey", "black")) +
+    scale_colour_grey(start = .7, end = 0) +
+#    scale_color_manual(values = c("grey", "black")) +
     theme(
         panel.grid.major.y = element_blank(),
         panel.grid.minor = element_blank()
     ) +
     scale_y_continuous(limits = c(-.08, .08)) +
-    facet_wrap(vars(factor(direction, levels = c("tr", "rt"))))
+    facet_wrap(vars(factor(Direction, levels = c("tr", "rt"))),
+               labeller=directionLabeller)
+
 
 
 
 ```
 
-Figure \@ref(fig:dpmPlots) shows the results of these analyses, with the paths from personality to religion in the left panel and the paths from religion to personality in the right. Consistent with the earlier model comparisons, the results from the original paper are not robust across these alternative specifications. None of the four significant average effects reported in the original paper (effects from agreeableness and openness to religiosity and effects from religiosity to agreeableness and extraversion) were significant when the DPM was used to model these associations. Indeed, the estimates from the estimates from the single-variable versions of the RI-CLPM. Thus, despite concerns that the RI-CLPM fundamentally changes the question that is being asked (as compared to the simpler CLPM), results from the DPM (a model that is not subject to these critiques) results in estimates that are generally closer to those from the RI-CLPM than the CLPM. 
+Figure \@ref(fig:dpmPlots) shows the results of these analyses, with the paths from personality to religion in the left panel and the paths from religion to personality in the right. Consistent with the earlier model comparisons, the results from the original paper are not robust across these alternative specifications. None of the four significant average effects reported in the original paper (effects from agreeableness and openness to religiosity and effects from religiosity to agreeableness and extraversion) were significant when the DPM was used to model these associations. Indeed, the estimates from the DPM are generally (though not always) consistent with estimates from the RI-CLPM. Thus, despite concerns that the RI-CLPM fundamentally changes the question that is being asked (as compared to the simpler CLPM), results from the DPM (a model that is not subject to these critiques) results in estimates that are generally closer to those from the RI-CLPM than the CLPM. 
 
 # Discussion
 
@@ -1257,7 +1386,7 @@ Although Entringer et al.'s [-@entringer_big_2023] study has a number of importa
 
 ## Measurement Models and Model Complexity
 
-The first issue we raised was in regard the complexity of the model that was used in the original study. This original model included items as indicators of latent Big Five personality traits, and it modeled all traits simultaneously. To be sure, this approach is defensible, and it has some advantages over alternatives. Most importantly, in models like the standard CLPM, the existence of measurement error can lead to spurious lagged effects [@lucas_why_2023]. This is because correctly estimating the lagged effect of a predictor on an outcome after controlling for the prior wave of the outcome requires precise measurement of that outcome at the prior wave [@westfall_statistically_2016]. If outcomes are measured with error, lagged effects can emerge solely due to incomplete control of scores at the prior wave. Using latent variables helps address this concern. Indeed, in our analyses, there were certain lagged effects that emerged only when the observed-variable version of the CLPM was used, but not when the latent-variable version was used (e.g., the lagged effects from conscientiousness and extraversion on religiosity and the lagged effects of religiosity on conscientiousness; see Figures \@ref(fig:fullPlot) and \@ref(fig:fullPlot2)). These effects should be interpreted cautiously, as they could be spurious. Notably, although the existence of measurement error can also lead to spurious lagged effects in the RI-CLPM [@lucas_why_2023], no effects emerged in the observed-variable version of the RI-CLPM that did not also emerge in the latent-variable version. 
+The first issue we raised was in regard the complexity of the model that was used in the original study. This original model included items as indicators of latent Big Five personality traits, and it modeled all traits simultaneously. To be sure, this approach is defensible, and it has some advantages over alternatives. Most importantly, in models like the standard CLPM, the existence of measurement error can lead to spurious lagged effects [@lucas_why_2023]. This is because correctly estimating the lagged effect of a predictor on an outcome after controlling for the prior wave of the outcome requires precise measurement of that outcome at the prior wave [@westfall_statistically_2016]. If outcomes are measured with error, lagged effects can emerge solely due to incomplete control of scores at the prior wave. Using latent variables helps address this concern. Indeed, in our analyses, there were certain lagged effects that emerged only when the observed-variable version of the CLPM was used, but not when the latent-variable version was used (e.g., the lagged effects from conscientiousness and extraversion on religiosity and the lagged effects of religiosity on conscientiousness; see Figure \@ref(fig:fullPlot)). These effects should be interpreted cautiously, as they could be spurious. Notably, although the existence of measurement error can also lead to spurious lagged effects in the RI-CLPM [@lucas_why_2023], no effects emerged in the observed-variable version of the RI-CLPM that did not also emerge in the latent-variable version. 
 
 Although modeling latent traits has some advantages, it also comes at the cost of model complexity and possible increases in model misspecification, especially when all five traits are modeled simultaneously. It is important for items to relate strongly to the latent-trait that they are designed to measure and not to other traits. If there are exceptions, clear and robust secondary loadings need to be identified and modeled. The authors of the original paper carefully considered the measurement model and tested for measurement invariance across federal states. It is still possible, however, that some important secondary loadings were omitted or even that some of those that were included capitalize on chance in the current sample and do not reflect the true underlying associations among items and constructs. If the measurement model is incorrectly specified, then the structural parts of the model can be affected [@rhemtulla_worse_2020]. 
 
