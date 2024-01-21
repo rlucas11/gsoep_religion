@@ -891,4 +891,11 @@ library(MplusAutomation)
 temp <- readModels("mplus/startsx.out")
 
 load("results/clpm.latent.results.RData")
-load("results/clpm.latent.states.aggregat
+
+oldFit <- read_csv("results/clpm.latent.states.aggregated.fit.csv")
+oldFitR <- read_csv("results/riclpm.latent.states.aggregated.fit.csv")
+
+oldEst <- read_csv("results/clpm.latent.states.aggregated.estimates.csv")
+
+
+source("scripts/originalModelNoTraitIndicators.R") ## Lavaan model name: model1_mod2
