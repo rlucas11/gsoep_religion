@@ -6,10 +6,10 @@ sink(fileName, type="message")
 ## source('cleaning.R')
 
 ## ## Setup (load data and packages); run each time you run analyses
-source('analysisSetup.R')
+## source('analysisSetup.R')
 
 ## Restrict sample to those with at least one item per construct
-source('restrictSample.R')
+## source('restrictSample.R')
 
 ## Testing (comment out when running actual analysis)
 ## This creates random state data and will only run through the first 3

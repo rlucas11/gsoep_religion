@@ -1,3 +1,14 @@
+################################################################################
+## Setup
+################################################################################
+
+library(tidyverse)
+library(lavaan)
+
+## Read cleaned data
+data <- read_csv("data/filteredData.csv")
+
+
 ## Source model files
 source("scripts/fullRiclpm.rev.R")      ## Lavaan model name is 'model1_riclpmMod
 
