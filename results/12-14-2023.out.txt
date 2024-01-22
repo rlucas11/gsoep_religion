@@ -30,3 +30,137 @@ dbl (101): pid, sex, gebjahr, psample, cns0501, cns0901, cns1301, cns1701, ext05
 ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
 Warning message:
 In sink() : no sink to remove
+also installing the dependencies ‘credentials’, ‘zip’, ‘gitcreds’, ‘httr2’, ‘ini’, ‘gert’, ‘gh’, ‘whisker’, ‘downlit’, ‘xopen’, ‘brew’, ‘usethis’, ‘pkgdown’, ‘profvis’, ‘rcmdcheck’, ‘remotes’, ‘roxygen2’, ‘rversions’, ‘sessioninfo’, ‘urlchecker’
+
+trying URL 'https://cran.rstudio.com/bin/macosx/big-sur-arm64/contrib/4.3/credentials_2.0.1.tgz'
+Content type 'application/x-gzip' length 219062 bytes (213 KB)
+==================================================
+downloaded 213 KB
+
+trying URL 'https://cran.rstudio.com/bin/macosx/big-sur-arm64/contrib/4.3/zip_2.3.0.tgz'
+Content type 'application/x-gzip' length 205148 bytes (200 KB)
+==================================================
+downloaded 200 KB
+
+trying URL 'https://cran.rstudio.com/bin/macosx/big-sur-arm64/contrib/4.3/gitcreds_0.1.2.tgz'
+Content type 'application/x-gzip' length 95947 bytes (93 KB)
+==================================================
+downloaded 93 KB
+
+trying URL 'https://cran.rstudio.com/bin/macosx/big-sur-arm64/contrib/4.3/httr2_1.0.0.tgz'
+Content type 'application/x-gzip' length 543197 bytes (530 KB)
+==================================================
+downloaded 530 KB
+
+trying URL 'https://cran.rstudio.com/bin/macosx/big-sur-arm64/contrib/4.3/ini_0.3.1.tgz'
+Content type 'application/x-gzip' length 13591 bytes (13 KB)
+==================================================
+downloaded 13 KB
+
+trying URL 'https://cran.rstudio.com/bin/macosx/big-sur-arm64/contrib/4.3/gert_2.0.1.tgz'
+Content type 'application/x-gzip' length 1921671 bytes (1.8 MB)
+==================================================
+downloaded 1.8 MB
+
+trying URL 'https://cran.rstudio.com/bin/macosx/big-sur-arm64/contrib/4.3/gh_1.4.0.tgz'
+Content type 'application/x-gzip' length 102106 bytes (99 KB)
+==================================================
+downloaded 99 KB
+
+trying URL 'https://cran.rstudio.com/bin/macosx/big-sur-arm64/contrib/4.3/whisker_0.4.1.tgz'
+Content type 'application/x-gzip' length 65982 bytes (64 KB)
+==================================================
+downloaded 64 KB
+
+trying URL 'https://cran.rstudio.com/bin/macosx/big-sur-arm64/contrib/4.3/downlit_0.4.3.tgz'
+Content type 'application/x-gzip' length 111741 bytes (109 KB)
+==================================================
+downloaded 109 KB
+
+trying URL 'https://cran.rstudio.com/bin/macosx/big-sur-arm64/contrib/4.3/xopen_1.0.0.tgz'
+Content type 'application/x-gzip' length 22859 bytes (22 KB)
+==================================================
+downloaded 22 KB
+
+trying URL 'https://cran.rstudio.com/bin/macosx/big-sur-arm64/contrib/4.3/brew_1.0-8.tgz'
+Content type 'application/x-gzip' length 73826 bytes (72 KB)
+==================================================
+downloaded 72 KB
+
+trying URL 'https://cran.rstudio.com/bin/macosx/big-sur-arm64/contrib/4.3/usethis_2.2.2.tgz'
+Content type 'application/x-gzip' length 876913 bytes (856 KB)
+==================================================
+downloaded 856 KB
+
+trying URL 'https://cran.rstudio.com/bin/macosx/big-sur-arm64/contrib/4.3/pkgdown_2.0.7.tgz'
+Content type 'application/x-gzip' length 735900 bytes (718 KB)
+==================================================
+downloaded 718 KB
+
+trying URL 'https://cran.rstudio.com/bin/macosx/big-sur-arm64/contrib/4.3/profvis_0.3.8.tgz'
+Content type 'application/x-gzip' length 202892 bytes (198 KB)
+==================================================
+downloaded 198 KB
+
+trying URL 'https://cran.rstudio.com/bin/macosx/big-sur-arm64/contrib/4.3/rcmdcheck_1.4.0.tgz'
+Content type 'application/x-gzip' length 170034 bytes (166 KB)
+==================================================
+downloaded 166 KB
+
+trying URL 'https://cran.rstudio.com/bin/macosx/big-sur-arm64/contrib/4.3/remotes_2.4.2.1.tgz'
+Content type 'application/x-gzip' length 396641 bytes (387 KB)
+==================================================
+downloaded 387 KB
+
+trying URL 'https://cran.rstudio.com/bin/macosx/big-sur-arm64/contrib/4.3/roxygen2_7.2.3.tgz'
+Content type 'application/x-gzip' length 933607 bytes (911 KB)
+==================================================
+downloaded 911 KB
+
+trying URL 'https://cran.rstudio.com/bin/macosx/big-sur-arm64/contrib/4.3/rversions_2.1.2.tgz'
+Content type 'application/x-gzip' length 65297 bytes (63 KB)
+==================================================
+downloaded 63 KB
+
+trying URL 'https://cran.rstudio.com/bin/macosx/big-sur-arm64/contrib/4.3/sessioninfo_1.2.2.tgz'
+Content type 'application/x-gzip' length 184678 bytes (180 KB)
+==================================================
+downloaded 180 KB
+
+trying URL 'https://cran.rstudio.com/bin/macosx/big-sur-arm64/contrib/4.3/urlchecker_1.0.1.tgz'
+Content type 'application/x-gzip' length 33544 bytes (32 KB)
+==================================================
+downloaded 32 KB
+
+trying URL 'https://cran.rstudio.com/bin/macosx/big-sur-arm64/contrib/4.3/devtools_2.4.5.tgz'
+Content type 'application/x-gzip' length 430872 bytes (420 KB)
+==================================================
+downloaded 420 KB
+
+Downloading GitHub repo jacob-long/dpm@HEAD
+Installing 5 packages: pander, lmerTest, jtools, Formula, panelr
+trying URL 'https://cran.rstudio.com/bin/macosx/big-sur-arm64/contrib/4.3/pander_0.6.5.tgz'
+Content type 'application/x-gzip' length 1178791 bytes (1.1 MB)
+==================================================
+downloaded 1.1 MB
+
+trying URL 'https://cran.rstudio.com/bin/macosx/big-sur-arm64/contrib/4.3/lmerTest_3.1-3.tgz'
+Content type 'application/x-gzip' length 531000 bytes (518 KB)
+==================================================
+downloaded 518 KB
+
+trying URL 'https://cran.rstudio.com/bin/macosx/big-sur-arm64/contrib/4.3/jtools_2.2.2.tgz'
+Content type 'application/x-gzip' length 3070659 bytes (2.9 MB)
+==================================================
+downloaded 2.9 MB
+
+trying URL 'https://cran.rstudio.com/bin/macosx/big-sur-arm64/contrib/4.3/Formula_1.2-5.tgz'
+Content type 'application/x-gzip' length 158382 bytes (154 KB)
+==================================================
+downloaded 154 KB
+
+trying URL 'https://cran.rstudio.com/bin/macosx/big-sur-arm64/contrib/4.3/panelr_0.7.8.tgz'
+Content type 'application/x-gzip' length 900254 bytes (879 KB)
+==================================================
+downloaded 879 KB
+

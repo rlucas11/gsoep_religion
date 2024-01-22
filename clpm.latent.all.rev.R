@@ -1,7 +1,7 @@
 ## This code is for the revision
 ## Runs #clpm.latent.all.rev.R#
 ## Source model files
-source("scripts/originalModelMode.R") ## Lavaan model name: model1_main
+source("scripts/originalModelMod.R") ## Lavaan model name: model1_main
 
 
 
