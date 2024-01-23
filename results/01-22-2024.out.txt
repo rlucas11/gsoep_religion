@@ -17,3 +17,29 @@ dbl (101): pid, sex, gebjahr, psample, cns0501, cns0901, cns1301, cns1701, ext05
 
 ℹ Use `spec()` to retrieve the full column specification for this data.
 ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+Rows: 46316 Columns: 101
+── Column specification ─────────────────────────────────────────────────────────
+Delimiter: ","
+dbl (101): pid, sex, gebjahr, psample, cns0501, cns0901, cns1301, cns1701, ex...
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+Error in chol.default(S) : the leading minor of order 64 is not positive
+In addition: Warning messages:
+1: In computeOmega(Sigma.hat = Sigma.hat, Mu.hat = Mu.hat, lavsamplestats = lavsamplestats,  :
+  lav_model_gradient: Sigma.hat is not positive definite
+
+2: In computeOmega(Sigma.hat = Sigma.hat, Mu.hat = Mu.hat, lavsamplestats = lavsamplestats,  :
+  lav_model_gradient: Sigma.hat is not positive definite
+
+3: In computeOmega(Sigma.hat = Sigma.hat, Mu.hat = Mu.hat, lavsamplestats = lavsamplestats,  :
+  lav_model_gradient: Sigma.hat is not positive definite
+
+4: In computeOmega(Sigma.hat = Sigma.hat, Mu.hat = Mu.hat, lavsamplestats = lavsamplestats,  :
+  lav_model_gradient: Sigma.hat is not positive definite
+
+5: In computeOmega(Sigma.hat = Sigma.hat, Mu.hat = Mu.hat, lavsamplestats = lavsamplestats,  :
+  lav_model_gradient: Sigma.hat is not positive definite
+
+Error in lav_fit_measures(object = object, fit.measures = fit.measures,  : 
+  lavaan ERROR: fit measures not available if model did not converge
