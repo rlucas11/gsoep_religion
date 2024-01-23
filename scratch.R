@@ -899,3 +899,25 @@ oldEst <- read_csv("results/clpm.latent.states.aggregated.estimates.csv")
 
 
 source("scripts/originalModelNoTraitIndicators.R") ## Lavaan model name: model1_mod2
+
+
+################################################################################
+## 
+################################################################################
+
+library(tidyverse)
+
+clpm <- read_csv("results/clpm.latent.states.aggregated.estimates.rev.csv")
+riclpm <- read_csv("results/riclpm.latent.states.aggregated.estimates.rev.csv")
+
+clpmFit <- read_csv("results/clpm.latent.states.aggregated.fit.rev.csv")
+riclpmFit <- read_csv("results/riclpm.latent.states.aggregated.estimates.rev.csv")
+
+
+
+load("results/clpm.errors.rev.RData")
+load("results/riclpm.errors.rev.RData")
+
+load("results/clpm.warnings.rev.RData")
+load("results/riclpm.warnings.rev.RData")
+

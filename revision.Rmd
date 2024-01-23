@@ -56,7 +56,7 @@ linenumbers: no
 documentclass: "apa6"
 classoption: "man"
 output: 
-  papaja::apa6_pdf:
+  papaja::apa6_docx:
   fig_caption: yes
 
 ---
