@@ -752,8 +752,193 @@ apa_table(rosTable[,c(1,5:14)],
 
 ```
 
+## Results from Dynamic Panel Model
 
 
-\newpage 
 
-# References
+
+
+```{r dpmResults, echo=FALSE, message=FALSE, warning=FALSE}
+
+traitLabels <- data.frame(number = 1:5,
+                          trait = c("AGR",
+                                    "CNS",
+                                    "EXT",
+                                    "NEU",
+                                    "OPN"))
+
+
+load("results/single.dpm.obs.results.RData")
+
+aggResults <- function(results, parLabel) {
+    agg <- results %>%
+        filter(label == parLabel) %>%
+        summarize(est = mean(est.std),
+                  cil = mean(ci.lower),
+                  ciu = mean(ci.upper))
+    return(agg)
+    }
+               
+
+for (i in 1:nrow(traitLabels)) {
+    results <- aggResults(single.dpm.obs.results[[i]][[1]], "c")
+    results$trait <- traitLabels[i, "trait"]
+    if (i == 1) {
+        cResults <- results
+    } else {
+        cResults <- rbind(cResults, results)
+    }
+}
+
+
+
+for (i in 1:nrow(traitLabels)) {
+    results <- aggResults(single.dpm.obs.results[[i]][[1]], "d")
+    results$trait <- traitLabels[i, "trait"]
+    if (i == 1) {
+        dResults <- results
+    } else {
+        dResults <- rbind(dResults, results)
+    }
+}
+
+fitTable <- data.frame(
+    trait = character(),
+    chisq = numeric(),
+    df = integer(),
+    pvalue = numeric(),
+    rmsea = numeric(),
+    srmr = numeric(),
+    cfi = numeric()
+)
+for (i in 1:nrow(traitLabels)) {
+    fitTable[i,"trait"] <- traitLabels[i, "trait"]
+    fitTable[i,"chisq"] <- single.dpm.obs.results[[i]][[2]]["chisq"]
+    fitTable[i,"df"] <- single.dpm.obs.results[[i]][[2]]["df"]
+    fitTable[i,"pvalue"] <- single.dpm.obs.results[[i]][[2]]["pvalue"]
+    fitTable[i,"rmsea"] <- single.dpm.obs.results[[i]][[2]]["rmsea.robust"]
+    fitTable[i,"srmr"] <- single.dpm.obs.results[[i]][[2]]["srmr"]
+    fitTable[i,"cfi"] <- single.dpm.obs.results[[i]][[2]]["cfi.robust"]
+}
+
+
+varOrder <- c("trait",
+              "chisq",
+              "df",
+              "pvalue",
+              "cfi",
+              "rmsea",
+              "srmr",
+              "rOnT",
+              "tOnR")
+
+printCl <- function(est, lb, ub) {
+    paste0(
+        formatC(est, format = "f", digits = 2),
+        " (",
+        formatC(lb, format = "f", digits = 2),
+        ", ",
+        formatC(ub, format = "f", digits = 2),
+        ")"
+    )
+}
+
+fitTable$rOnT <- apply(cResults[,c("est", "cil", "ciu")],
+                       1,
+                       function(d)printCl(d["est"],d["cil"],d["ciu"]))
+
+fitTable$tOnR <- apply(dResults[,c("est", "cil", "ciu")],
+                       1,
+                       function(d)printCl(d["est"],d["cil"],d["ciu"]))
+
+apa_table(fitTable[,varOrder],
+          col.names = c("Trait",
+                        "Chi-Square",
+                        "df",
+                        "p-value",
+                        "CFI",
+                        "RMSEA",
+                        "SRMR",
+                        "Trait -> Religion",
+                        "Religion -> Trait"),
+          align = rep("r", 9),
+          placement = "h",
+          caption = "Fit Indices and cross-lagged (with 95% confidence intervals) for paths for the single-variable, observed-variable dynamic panel model.",
+          note = " AGR = Agreeableness; CNS = Conscientiousness; EXT = Extraversion, NEU = Neuroticism, OPN = Openness.")
+
+
+```
+
+```{r dpmLatentResults, echo=FALSE, message=FALSE, warning=FALSE}
+
+load("results/single.dpm.latent.results.RData")
+
+for (i in 1:nrow(traitLabels)) {
+    results <- aggResults(single.dpm.latent.results[[i]][[1]], "cl_t")
+    results$trait <- traitLabels[i, "trait"]
+    if (i == 1) {
+        cResults <- results
+    } else {
+        cResults <- rbind(cResults, results)
+    }
+}
+
+
+
+for (i in 1:nrow(traitLabels)) {
+    results <- aggResults(single.dpm.latent.results[[i]][[1]], "cl_r")
+    results$trait <- traitLabels[i, "trait"]
+    if (i == 1) {
+        dResults <- results
+    } else {
+        dResults <- rbind(dResults, results)
+    }
+}
+
+fitTable <- data.frame(
+    trait = character(),
+    chisq = numeric(),
+    df = integer(),
+    pvalue = numeric(),
+    rmsea = numeric(),
+    srmr = numeric(),
+    cfi = numeric()
+)
+for (i in 1:nrow(traitLabels)) {
+    fitTable[i,"trait"] <- traitLabels[i, "trait"]
+    fitTable[i,"chisq"] <- single.dpm.latent.results[[i]][[2]]["chisq"]
+    fitTable[i,"df"] <- single.dpm.latent.results[[i]][[2]]["df"]
+    fitTable[i,"pvalue"] <- single.dpm.latent.results[[i]][[2]]["pvalue"]
+    fitTable[i,"rmsea"] <- single.dpm.latent.results[[i]][[2]]["rmsea.robust"]
+    fitTable[i,"srmr"] <- single.dpm.latent.results[[i]][[2]]["srmr"]
+    fitTable[i,"cfi"] <- single.dpm.latent.results[[i]][[2]]["cfi.robust"]
+}
+
+fitTable$rOnT <- apply(cResults[,c("est", "cil", "ciu")],
+                       1,
+                       function(d)printCl(d["est"],d["cil"],d["ciu"]))
+
+fitTable$tOnR <- apply(dResults[,c("est", "cil", "ciu")],
+                       1,
+                       function(d)printCl(d["est"],d["cil"],d["ciu"]))
+
+apa_table(fitTable[,varOrder],
+          col.names = c("Trait",
+                        "Chi-Square",
+                        "df",
+                        "p-value",
+                        "CFI",
+                        "RMSEA",
+                        "SRMR",
+                        "Trait -> Religion",
+                        "Religion -> Trait"),
+          align = rep("r", 9),
+          placement = "t",
+          caption = "Fit Indices and cross-lagged (with 95% confidence intervals) for paths for the single-variable, latent-variable dynamic panel model.",
+          note = "AGR = Agreeableness; CNS = Conscientiousness; EXT = Extraversion, NEU = Neuroticism, OPN = Openness.")
+
+
+
+
+```
+
