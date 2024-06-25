@@ -6,7 +6,7 @@ sink(fileName, type="message")
 ## source('cleaning.R')
 
 ## ## Setup (load data and packages); run each time you run analyses
-## source('analysisSetup.R')
+source('analysisSetup.R')
 
 ## Restrict sample to those with at least one item per construct
 ## source('restrictSample.R')
@@ -24,15 +24,20 @@ sink(fileName, type="message")
 
 ## ## Run original model (all traits, latent, state-by-state)
 ## source('clpm.latent.all.R')
+source('clpm.latent.all.rev2.R')
 
 ## ## Run RI-CLPM equivalent of original (all traits, latent, state-by-state)
 ## source('riclpm.latent.all.R')
+source('riclpm.latent.all.rev2.R')
+
 
 ## ## Run original model with observed traits (all traits, observed, state-by-state)
 ## source('clpm.observed.all.R')
+source('clpm.observed.all.rev2.R')
 
 ## ## Run RI-CLPM with observed traits (all traits, observed, state-by-state)
 ## source('riclpm.observed.all.R')
+source('riclpm.observed.all.rev2.R')
 
 ## Run CLPM with latent variables, trait-by-trait (trait-by-trait, latent, state-by-state)
 ## source('clpm.single.R')
@@ -48,6 +53,7 @@ sink(fileName, type="message")
 
 ## Run all models in full sample
 ## source("fullSample.R")
+source('fullSample.rev2.R')
 
 ## Run meta-analysis
 ## source("metaAnalysisSetup.R")
@@ -56,8 +62,8 @@ sink(fileName, type="message")
 ## Revision Analyses
 ## source("revisionAnalyses.R")
 ## source("fullSample.rev.R ")
-source("clpm.latent.all.rev.states.R")
-source("riclpm.latent.all.rev.R")
+## source("clpm.latent.all.rev.states.R")
+## source("riclpm.latent.all.rev.R")
 
 
 ## Rerun manuscript file
