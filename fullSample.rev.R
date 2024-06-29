@@ -47,7 +47,6 @@ save(measurement.results,
 ## Original Model: CLPM, Latent, All Traits
 ################################################################################
 
-
 clpm.latent.all <- sem(model1_mod,
                        missing = "FIML",
                        estimator = "MLR",
@@ -72,7 +71,6 @@ save(clpm.latent.results,
 ################################################################################
 ## RICLPM, Latent, All Traits
 ################################################################################
-
 riclpm.latent.all <- sem(model1_riclpmMod,
                        missing = "FIML",
                        estimator = "MLR",
@@ -94,5 +92,4 @@ riclpm.latent.results <- list(
 save(riclpm.latent.results,
     file = paste0(location, "/riclpm.latent.results.rev.RData")
     )
-
 
