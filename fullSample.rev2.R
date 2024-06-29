@@ -2,8 +2,10 @@
 ## Runs #clpm.latent.all.rev.R#
 ## Source model files
 source("scripts/measurementModelMod.R") ## Lavaan model name: measurement_modelMod
-source("scripts/originalModelMod2.R") ## Lavaan model name: model1_mod
+source("scripts/originalModelMod2.R") ## Lavaan model name: model1_main
 source("scripts/fullRiclpmMod2.R") ## Lavaan model name: model1_riclpmMod
+source("scripts/clpmObservedMod2.R") ## Lavaan model name: clpm_observed
+source("scripts/riclpmObservedMod2.R") ## Lavaan model name: riclpm_observed
 
 ################################################################################
 ## Setup
@@ -17,7 +19,7 @@ data <- read_csv("data/filteredData.csv")
 
 
 ## Set Results Location (comment when testing)
-location <- "results"
+## location <- "results"
 ## location <- "testResults"
 
 ################################################################################
@@ -49,7 +51,7 @@ location <- "results"
 ################################################################################
 
 
-clpm.latent.all <- sem(model1_mod,
+clpm.latent.all <- sem(model1_main,
                        missing = "FIML",
                        estimator = "MLR",
                        data = data)
@@ -96,4 +98,74 @@ save(riclpm.latent.results,
     file = paste0(location, "/riclpm.latent.results.rev2.RData")
     )
 
+
+################################################################################
+## CLPM, Observed, All Traits
+################################################################################
+
+model.all.observed.clpm <- sem(clpm_observed,
+    missing = "FIML",
+    estimator = "MLR",
+    data = data
+    )
+summary(model.all.observed.clpm)
+fit.all.observed.clpm.full <- fitMeasures(model.all.observed.clpm)
+est.all.observed.clpm.full <- standardizedSolution(model.all.observed.clpm,
+                     type = "std.all", se = TRUE, zstat = TRUE,
+                     pvalue = TRUE, ci = TRUE, level = .95, output = "text"
+                     )
+
+## Predicted correlations based on CLPM Model
+cor.all.observed.clpm.full <- as.data.frame(cov2cor(
+    fitted(model.all.observed.clpm)$cov))
+write_csv(
+    cor.all.observed.clpm.full,
+    paste0(location, "/predictCorsClpm.rev2.csv")
+)
+
+
+clpm.observed.results <- list(
+    fit.all.observed.clpm.full,
+    est.all.observed.clpm.full,
+    summary(model.all.observed.clpm)
+)
+
+save(clpm.observed.results,
+    file = paste0(location, "/clpm.observed.results.RData")
+    )
+
+
+################################################################################
+## RICLPM, Observed, All Traits
+################################################################################
+
+model.all.observed.riclpm <- sem(riclpm_observed,
+    missing = "FIML",
+    estimator = "MLR",
+    data = data
+    )
+summary(model.all.observed.riclpm)
+fit.all.observed.riclpm.full <- fitMeasures(model.all.observed.riclpm)
+est.all.observed.riclpm.full <- standardizedSolution(model.all.observed.riclpm,
+    type = "std.all", se = TRUE, zstat = TRUE,
+    pvalue = TRUE, ci = TRUE, level = .95, output = "text"
+)
+
+## Predicted correlations based on RICLPM Model
+cor.all.observed.riclpm.full <- as.data.frame(cov2cor(
+    fitted(model.all.observed.riclpm)$cov
+))
+write_csv(
+    cor.all.observed.riclpm.full,
+    paste0(location, "/predictedCorRiclpm.rev2.csv")
+)
+
+riclpm.observed.results <- list(
+    fit.all.observed.riclpm.full,
+    est.all.observed.riclpm.full,
+    summary(model.all.observed.riclpm)
+)
+save(riclpm.observed.results,
+    file = paste0(location, "/riclpm.observed.results.RData")
+    )
 

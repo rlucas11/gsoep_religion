@@ -1,6 +1,6 @@
 ## Sink messages for later examination
 fileName <- file(paste0("results/", format(Sys.time(), "%m-%d-%Y"), ".out.txt"), open="wt")
-sink(fileName, type="message")
+sink(fileName)
 
 ## Run once
 ## source('cleaning.R')
@@ -11,10 +11,13 @@ source('analysisSetup.R')
 ## Restrict sample to those with at least one item per construct
 ## source('restrictSample.R')
 
+location <- "results"
 ## Testing (comment out when running actual analysis)
 ## This creates random state data and will only run through the first 3
 ## data$first.state <- sample(1:50, nrow(data), replace=TRUE)
 ## bula_neu <- sort(unique(data$first.state))[1:3]
+## location <- "testResults"
+
 
 ## ## Get correlations
 ## source('correlations.R')

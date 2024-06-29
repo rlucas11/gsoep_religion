@@ -1,8 +1,5 @@
-## This code is for the revision
-## Runs #clpm.latent.all.rev.R#
 ## Source model files
 source("scripts/originalModelMod2.R") ## Lavaan model name: model1_main
-
 
 
 ################################################################################
@@ -71,64 +68,151 @@ extract.est.clpm <- function(clpm.labels, results) {
 }
 
 
+## ################################################################################
+## ## Reproduce original with full sample
+## ################################################################################
+## ## This takes a long time to run
+
+## clpm.latent.all <- sem(model1_main, missing = "FIML", estimator = "MLR", data = data)
+## ## Save to file because it takes so long to run
+## sink(file = "info/clpm.latent.all.txt", append = FALSE)
+## summary(clpm.latent.all)
+## z.clpm.latent.all <- standardizedSolution(clpm.latent.all,
+##     type = "std.all", se = TRUE, zstat = TRUE,
+##     pvalue = TRUE, ci = TRUE, level = .95, output = "text"
+##     )
+## z.clpm.latent.all
+## fitMeasures(clpm.latent.all)
+## sink()
+
+## ## Temporarily save model as file
+## save(clpm.latent.all, file = "info/clpm.latent.all.RData")
+## load("info/clpm.latent.all.RData")
+
+## ## Extract all the estimates in a loop
+## rm(clpm.estimates)
+## clpm.estimates <- data.frame(
+##         trait = character(),
+##         r1 = numeric(),
+##         r1.lb = numeric(),
+##         r1.ub = numeric(),
+##         r2 = numeric(),
+##         r2.lb = numeric(),
+##         r2.ub = numeric(),
+##         rt.cl = numeric(),
+##         rt.cl.lb = numeric(),
+##         rt.cl.ub = numeric(),
+##         tr.cl = numeric(),
+##         tr.cl.lb = numeric(),
+##         tr.cl.ub = numeric(),
+##         st = numeric(),
+##         st.lb = numeric(),
+##         st.ub = numeric()
+## )
+## for (i in 1:nrow(clpm.labels)) {
+##     tempResults <- extract.est.clpm(clpm.labels[i, ], z.clpm.latent.all)
+##     clpm.estimates[i, ] <- tempResults
+## }
+## clpm.estimates
+
+## clpm.estimates.w <- clpm.estimates %>%
+##     pivot_longer(cols=-trait) %>%
+##     pivot_wider(names_from = c(trait, name),
+##                 names_sep = ".")
+
+
 ################################################################################
-## Reproduce original with full sample
+## Analysis by state
 ################################################################################
-## This takes a long time to run
 
-clpm.latent.all <- sem(model1_mod, missing = "FIML", estimator = "MLR", data = data)
-## Save to file because it takes so long to run
-sink(file = "info/clpm.latent.all.rev2.txt", append = FALSE)
-summary(clpm.latent.all)
-z.clpm.latent.all <- standardizedSolution(clpm.latent.all,
-    type = "std.all", se = TRUE, zstat = TRUE,
-    pvalue = TRUE, ci = TRUE, level = .95, output = "text"
-    )
-z.clpm.latent.all
-fitMeasures(clpm.latent.all)
-sink()
-
-## Temporarily save model as file
-save(clpm.latent.all, file = "info/clpm.latent.all.rev2.RData")
-load("info/clpm.latent.all.rev2.RData")
-
-## Extract all the estimates in a loop
-rm(clpm.estimates)
-clpm.estimates <- data.frame(
-        trait = character(),
-        r1 = numeric(),
-        r1.lb = numeric(),
-        r1.ub = numeric(),
-        r2 = numeric(),
-        r2.lb = numeric(),
-        r2.ub = numeric(),
-        rt.cl = numeric(),
-        rt.cl.lb = numeric(),
-        rt.cl.ub = numeric(),
-        tr.cl = numeric(),
-        tr.cl.lb = numeric(),
-        tr.cl.ub = numeric(),
-        st = numeric(),
-        st.lb = numeric(),
-        st.ub = numeric()
-)
-for (i in 1:nrow(clpm.labels)) {
-    tempResults <- extract.est.clpm(clpm.labels[i, ], z.clpm.latent.all)
-    clpm.estimates[i, ] <- tempResults
+## Create function for running models in one selected state
+## "data" is the full dataset; "bula" is the number of the state to be selected
+runModels <- function(bula, data) {
+    temp <- subset(data, first.state == bula)
+    fit_bula <- sem(model1_main,
+                    missing="FIML",
+                    estimator="MLR",
+                    data=temp,
+                    em.h1.iter.max=20000)
+    return(fit_bula)
 }
-clpm.estimates
 
-clpm.estimates.w <- clpm.estimates %>%
-    pivot_longer(cols=-trait) %>%
-    pivot_wider(names_from = c(trait, name),
-                names_sep = ".")
+## Get list of states
+bula_neu <- sort(unique(data$first.state))
 
+## ## Temporary for testing
+## data$first.state <- sample(1:100, nrow(data), replace=TRUE)
+## bula_neu <- sort(unique(data$first.state))
+## stateOutput <- map(bula_neu[1:3], quietly(safely(runModels)), data)
 
+## Use purrr to run through states, saving output and errors
+stateOutput <- map(bula_neu, quietly(safely(runModels)), data)
+
+## Extract estimates for each state
+clpm.warnings <- vector(mode="list", length=length(stateOutput))
+clpm.errors <- vector(mode="list",length=length(stateOutput))
+for (j in 1:length(stateOutput)) {
+    bula <- j
+    ## Extract results for one state
+    fit_bula <- stateOutput[[j]]$result$result
+    ## Extract warnings
+    clpm.warnings[j] <- list(stateOutput[[j]]$warnings)
+    ## Extract errors
+    clpm.errors[j] <- list(stateOutput[[j]]$result$error)
+    ## Skip results which had an error
+    if(!is.null(fit_bula)) {
+        estimate <- standardizedSolution(fit_bula)
+
+        ## Initialize df for results
+        clpm.estimates <- data.frame(
+            trait = character(),
+            r1 = numeric(),
+            r1.lb = numeric(),
+            r1.ub = numeric(),
+            r2 = numeric(),
+            r2.lb = numeric(),
+            r2.ub = numeric(),
+            rt.cl = numeric(),
+            rt.cl.lb = numeric(),
+            rt.cl.ub = numeric(),
+            tr.cl = numeric(),
+            tr.cl.lb = numeric(),
+            tr.cl.ub = numeric(),
+            st = numeric(),
+            st.lb = numeric(),
+            st.ub = numeric()
+        )
+        ## Extract results
+        for (i in 1:nrow(clpm.labels)) {
+            tempResults <- extract.est.clpm(clpm.labels[i, ], estimate)
+            clpm.estimates[i, ] <- tempResults
+        }
+        ## Make wide file with one line per state
+        clpm.estimates.w <- clpm.estimates %>%
+            pivot_longer(cols=-trait) %>%
+            pivot_wider(names_from = c(trait, name),
+                        names_sep = ".")
+
+        ## Add additional info (state and samplesize)
+        clpm.estimates.w$state <- bula
+        clpm.estimates.w$samplesize <- as.numeric(summary(fit_bula)$data$nobs)
+
+        ## Aggregate accross states
+        ifelse(j == 1,
+               clpm.aggregated.estimates <- clpm.estimates.w,
+               clpm.aggregated.estimates <- rbind(clpm.aggregated.estimates,
+                                                  clpm.estimates.w)
+               )
+    }
+}
 
 ## Save matrix of results plus errors and warnings
-write_csv(clpm.aggregated.estimates, file="results/clpm.latent.states.aggregated.estimates.rev2.csv")
-save(clpm.warnings, file="results/clpm.warnings.rev2.RData")
-save(clpm.errors, file="results/clpm.errors.rev2.RData")
+write_csv(clpm.aggregated.estimates,
+          file=paste0(location,"/clpm.latent.states.aggregated.estimates.rev2.csv"))
+save(clpm.warnings,
+     file=paste0(location,"/clpm.warnings.rev2.RData"))
+save(clpm.errors,
+     file=paste0(location,"/clpm.errors.rev2.RData"))
 
 ## Get fit info
 
@@ -138,9 +222,10 @@ for (j in 1:length(stateOutput)) {
     fit_bula <- stateOutput[[j]]$result$result
     ## Skip if error in running original model
     if(!is.null(fit_bula)) {
-        cfi <- fitMeasures(fit_bula, fit.measures="cfi.robust")
-        rmsea <- fitMeasures(fit_bula, fit.measures="rmsea.robust")
-        srmr <- fitMeasures(fit_bula, fit.measures="srmr")
+        fitOutput <- fitMeasures(fit_bula)
+        cfi <- fitOutput["cfi.robust"]
+        rmsea <- fitOutput["rmsea.robust"]
+        srmr <- fitOutput["srmr"]
     }
     ## Aggregate results
     ifelse(j == 1,
@@ -148,8 +233,10 @@ for (j in 1:length(stateOutput)) {
            clpm.aggregated.fit <- rbind(clpm.aggregated.fit,
                                         data.frame(bula, cfi, rmsea, srmr)))
 }
+
 ## Save matrix of results
-write_csv(clpm.aggregated.fit, file="results/clpm.latent.states.aggregated.fit.rev2.csv")           
+write_csv(clpm.aggregated.fit,
+          file=paste0(location,"/clpm.latent.states.aggregated.fit.rev2.csv"))           
 
 
 

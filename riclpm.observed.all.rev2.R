@@ -110,7 +110,7 @@ runModels <- function(bula, data) {
 }
 
 ## Get list of states
-## bula_neu <- sort(unique(data$first.state))
+bula_neu <- sort(unique(data$first.state))
 
 ## ## Temporary for testing
 ## data$first.state <- sample(1:100, nrow(data), replace=TRUE)
@@ -182,9 +182,12 @@ for (j in 1:length(stateOutput)) {
 }
 
 ## Save matrix of results
-write_csv(riclpm.aggregated.estimates, file="results/riclpm.observed.states.aggregated.estimates.rev2.csv")
-save(riclpm.warnings, file="results/riclpm.observed.warnings.rev2.RData")
-save(riclpm.errors, file="results/riclpm.observed.errors.rev2.RData")
+write_csv(riclpm.aggregated.estimates,
+          file=paste0(location, "/riclpm.observed.states.aggregated.estimates.rev2.csv"))
+save(riclpm.warnings,
+     file=paste0(location, "/riclpm.observed.warnings.rev2.RData"))
+save(riclpm.errors,
+     file=paste0(location,"/riclpm.observed.errors.rev2.RData"))
 
 
 ## Get fit info
@@ -195,9 +198,10 @@ for (j in 1:length(stateOutput)) {
     fit_bula <- stateOutput[[j]]$result$result
     ## Skip if error in running original model
     if(!is.null(fit_bula)) {
-        cfi <- fitMeasures(fit_bula, fit.measures="cfi.robust")
-        rmsea <- fitMeasures(fit_bula, fit.measures="rmsea.robust")
-        srmr <- fitMeasures(fit_bula, fit.measures="srmr")
+        fitOutput <- fitMeasures(fit_bula)
+        cfi <- fitOutput["cfi.robust"]
+        rmsea <- fitOutput["rmsea.robust"]
+        srmr <- fitOutput["srmr"]
     }
     ## Aggregate results
     ifelse(j == 1,
@@ -207,6 +211,7 @@ for (j in 1:length(stateOutput)) {
 }
 
 ## Save matrix of results
-write_csv(riclpm.aggregated.fit, file="results/riclpm.observed.states.aggregated.fit.rev2.csv")           
+write_csv(riclpm.aggregated.fit,
+          file=paste0(location, "/riclpm.observed.states.aggregated.fit.rev2.csv"))
 
 

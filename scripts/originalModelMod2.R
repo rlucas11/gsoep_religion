@@ -7,7 +7,7 @@
 ## c_r(t) = cross-lag, religion regressed on trait
 ## c_(t)r = cross-lag, trait regressed on religion
 
-model1_mod <- '
+model1_main <- '
 
 #metric invariance (equal loadings)
 a05 =~ a*agr0501r + b*agr0502 + c*agr0503

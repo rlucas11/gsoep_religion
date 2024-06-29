@@ -249,9 +249,12 @@ for (j in 1:length(stateOutput)) {
 }
 
 ## Save matrix of results
-write_csv(riclpm.aggregated.estimates, file="results/riclpm.latent.states.aggregated.estimates.rev2.csv")
-save(riclpm.warnings, file="results/riclpm.warnings.rev2.RData")
-save(riclpm.errors, file="results/riclpm.errors.rev2.RData")
+write_csv(riclpm.aggregated.estimates,
+          file=paste0(location,"/riclpm.latent.states.aggregated.estimates.rev2.csv"))
+save(riclpm.warnings,
+     file=paste0(location,"/riclpm.warnings.rev2.RData"))
+save(riclpm.errors,
+     file=paste0(location,"/riclpm.errors.rev2.RData"))
 
 
 ## Get fit info
@@ -275,5 +278,6 @@ for (j in 1:length(stateOutput)) {
 }
 
 ## Save matrix of results
-write_csv(riclpm.aggregated.fit, file="results/riclpm.latent.states.aggregated.fit.rev2.csv")           
+write_csv(riclpm.aggregated.fit,
+          file=paste0(location,"/riclpm.latent.states.aggregated.fit.rev2.csv"))
 
