@@ -11,39 +11,8 @@ source("scripts/riclpmObservedMod2.R") ## Lavaan model name: riclpm_observed
 ## Setup
 ################################################################################
 
-library(tidyverse)
-library(lavaan)
-
 ## Read cleaned data
 data <- read_csv("data/filteredData.csv")
-
-
-## Set Results Location (comment when testing)
-## location <- "results"
-## location <- "testResults"
-
-################################################################################
-## Measurement Model
-################################################################################
-
-## Commented for revision
-## measurement.model <- sem(measurement_modelMod,
-##     missing = "FIML",
-##     estimator = "MLR",
-##     data = data
-## )
-## summary(measurement.model)
-## fit.measurement <- fitMeasures(measurement.model)
-## est.measurement <- standardizedSolution(measurement.model)
-## measurement.results <- list(
-##     summary(measurement.model),
-##     fit.measurement,
-##     est.measurement
-## )
-
-## save(measurement.results,
-##      file = paste0(location, "/measurement.results.rev.RData")
-##      )
 
 
 ################################################################################
@@ -131,7 +100,7 @@ clpm.observed.results <- list(
 )
 
 save(clpm.observed.results,
-    file = paste0(location, "/clpm.observed.results.RData")
+    file = paste0(location, "/clpm.observed.results.rev2.RData")
     )
 
 
@@ -166,6 +135,6 @@ riclpm.observed.results <- list(
     summary(model.all.observed.riclpm)
 )
 save(riclpm.observed.results,
-    file = paste0(location, "/riclpm.observed.results.RData")
+    file = paste0(location, "/riclpm.observed.results.rev2.RData")
     )
 

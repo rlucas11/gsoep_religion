@@ -1,6 +1,6 @@
 ## Sink messages for later examination
-fileName <- file(paste0("results/", format(Sys.time(), "%m-%d-%Y"), ".out.txt"), open="wt")
-sink(fileName)
+## fileName <- file(paste0("results/", format(Sys.time(), "%m-%d-%Y"), ".out.txt"), open="wt")
+## sink(fileName)
 
 ## Run once
 ## source('cleaning.R')
@@ -15,7 +15,7 @@ location <- "results"
 ## Testing (comment out when running actual analysis)
 ## This creates random state data and will only run through the first 3
 ## data$first.state <- sample(1:50, nrow(data), replace=TRUE)
-## bula_neu <- sort(unique(data$first.state))[1:3]
+## bula_neu <- sort(unique(data$first.state))[1:4]
 ## location <- "testResults"
 
 
@@ -74,4 +74,4 @@ source('fullSample.rev2.R')
 ## rmarkdown::render('supplement.Rmd')
 
 ## Turn off sink
-sink()
+## sink()

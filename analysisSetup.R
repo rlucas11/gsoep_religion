@@ -6,6 +6,7 @@
 library(lavaan)
 library(tidyverse)
 library(purrr)
+library(furrr)
 library(psych)
 
 ## Read Data

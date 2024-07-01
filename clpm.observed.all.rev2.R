@@ -92,7 +92,8 @@ bula_neu <- sort(unique(data$first.state))
 ## stateOutput <- map(bula_neu[1:3], quietly(safely(runModels)), data)
 
 ## Use purrr to run through states, saving output and errors
-stateOutput <- map(bula_neu, quietly(safely(runModels)), data)
+plan(multisession)
+stateOutput <- future_map(bula_neu, quietly(safely(runModels)), data)
 
 ## Extract estimates for each state
 clpm.warnings <- vector(mode="list", length=length(stateOutput))
@@ -158,28 +159,20 @@ write_csv(clpm.aggregated.estimates,
 save(clpm.warnings,
      file=paste0(location, "/clpm.observed.warnings.rev2.RData"))
 save(clpm.errors,
-     file=paste0("/clpm.observed.errors.rev2.RData"))
+     file=paste0(location, "/clpm.observed.errors.rev2.RData"))
 
 ## Get fit info
 
-for (j in 1:length(stateOutput)) {
-    bula <- j
-    ## Extract one state
-    fit_bula <- stateOutput[[j]]$result$result
-    ## Skip if error in running original model
-    if(!is.null(fit_bula)) {
-        fitOutput <- fitMeasures(fit_bula)
-        cfi <- fitOutput["cfi.robust"]
-        rmsea <- fitOutput["rmsea.robust"]
-        srmr <- fitOutput["srmr"]
-    }
-    ## Aggregate results
-    ifelse(j == 1,
-           clpm.aggregated.fit <- data.frame(bula, cfi, rmsea, srmr),
-           clpm.aggregated.fit <- rbind(clpm.aggregated.fit,
-                                        data.frame(bula, cfi, rmsea, srmr)))
+## Parallel version
+
+getFitMeasures <- function(bula, stateOutput) {
+    fitOutput <- fitMeasures(stateOutput[[bula]]$result$result)
 }
+
+stateFit <- future_map(bula_neu, safely(getFitMeasures), stateOutput)
+
 ## Save matrix of results
-write_csv(clpm.aggregated.fit,
-          file=paste0(location, "/clpm.observed.states.aggregated.fit.rev2.csv"))
+
+save(stateFit,
+     file=paste0(location, "/clpm.observed.states.aggregated.fit.rev2.RData"))
 
