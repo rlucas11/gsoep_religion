@@ -265,7 +265,7 @@ fit[2, 7:10] <- c(
         "Latent",
         "All")
 
-load(paste0(location, "/clpm.latent.results.rev.RData"))
+load(paste0(location, "/clpm.latent.results.rev2.RData"))
 fit[3, 1:6] <- clpm.latent.results[[1]][c(
         "chisq",
         "df",
@@ -281,7 +281,7 @@ fit[3, 7:10] <- c(
         "All")
 
 
-load(paste0(location, "/riclpm.latent.results.rev.RData"))
+load(paste0(location, "/riclpm.latent.results.rev2.RData"))
 fit[4, 1:6] <- riclpm.latent.results[[1]][c(
         "chisq",
         "df",
@@ -298,7 +298,7 @@ fit[4, 7:10] <- c(
 )
 
 
-load(paste0(location, "/clpm.observed.results.RData"))
+load(paste0(location, "/clpm.observed.results.rev2.RData"))
 fit[5, 1:6] <- clpm.observed.results[[1]][c(
         "chisq",
         "df",
@@ -314,7 +314,7 @@ fit[5, 7:10] <- c(
     "All"
 )
 
-load(paste0(location, "/riclpm.observed.results.RData"))
+load(paste0(location, "/riclpm.observed.results.rev2.RData"))
 fit[6, 1:6] <- riclpm.observed.results[[1]][c(
         "chisq",
         "df",

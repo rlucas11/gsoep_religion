@@ -88,10 +88,10 @@ wopn17 ~ c_or*wrelig13
 ## Correlations
 
 wrelig05 ~~ r1_ra*wagr05 + r1_rc*wcns05 + r1_re*wext05 + r1_rn*wneu05 + r1_ro*wopn05
-wagr05 ~~ rac*wcns05 + rae*wext05 + ran*wneu05 + rao*wopn05
-wcns05 ~~ rce*wext05 + rcn*wneu05 + rco*wopn05
-wext05 ~~ ren*wneu05 + reo*wopn05
-wneu05 ~~ rno*wopn05
+wagr05 ~~ wcns05 + wext05 + wneu05 + wopn05
+wcns05 ~~ wext05 + wneu05 + wopn05
+wext05 ~~ wneu05 + wopn05
+wneu05 ~~ wopn05
 
 wrelig09 ~~ r2_ra*wagr09 + r2_rc*wcns09 + r2_re*wext09 + r2_rn*wneu09 + r2_ro*wopn09
 wagr09 ~~ rac*wcns09 + rae*wext09 + ran*wneu09 + rao*wopn09

@@ -193,10 +193,10 @@ relig05 ~~ r1_ra*a05 + r1_rc*c05 + r1_re*e05 + r1_rn*n05 + r1_ro*o05
 relig09 ~~ r2_ra*a09 + r2_rc*c09 + r2_re*e09 + r2_rn*n09 + r2_ro*o09
 relig13 ~~ r2_ra*a13 + r2_rc*c13 + r2_re*e13 + r2_rn*n13 + r2_ro*o13
 relig17 ~~ r2_ra*a17 + r2_rc*c17 + r2_re*e17 + r2_rn*n17 + r2_ro*o17
-a05 ~~ rac*c05 + rae*e05 + ran*n05 + rao*o05
-c05 ~~ rce*e05 + rcn*n05 + rco*o05
-e05 ~~ ren*n05 + reo*o05
-n05 ~~ rno*o05
+a05 ~~ c05 + e05 + n05 + o05
+c05 ~~ e05 + n05 + o05
+e05 ~~ n05 + o05
+n05 ~~ o05
 a09 ~~ rac*c09 + rae*e09 + ran*n09 + rao*o09
 c09 ~~ rce*e09 + rcn*n09 + rco*o09
 e09 ~~ ren*n09 + reo*o09
