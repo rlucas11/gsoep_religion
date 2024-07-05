@@ -1,0 +1,920 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+  man,floatsintext]{apa6}
+\usepackage{amsmath,amssymb}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+% Make \paragraph and \subparagraph free-standing
+\ifx\paragraph\undefined\else
+  \let\oldparagraph\paragraph
+  \renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+  \let\oldsubparagraph\subparagraph
+  \renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
+\ifLuaTeX
+\usepackage[bidi=basic]{babel}
+\else
+\usepackage[bidi=default]{babel}
+\fi
+\babelprovide[main,import]{english}
+% get rid of language-specific shorthands (see #6817):
+\let\LanguageShortHands\languageshorthands
+\def\languageshorthands#1{}
+% Manuscript styling
+\usepackage{upgreek}
+\captionsetup{font=singlespacing,justification=justified}
+
+% Table formatting
+\usepackage{longtable}
+\usepackage{lscape}
+% \usepackage[counterclockwise]{rotating}   % Landscape page setup for large tables
+\usepackage{multirow}		% Table styling
+\usepackage{tabularx}		% Control Column width
+\usepackage[flushleft]{threeparttable}	% Allows for three part tables with a specified notes section
+\usepackage{threeparttablex}            % Lets threeparttable work with longtable
+
+% Create new environments so endfloat can handle them
+% \newenvironment{ltable}
+%   {\begin{landscape}\centering\begin{threeparttable}}
+%   {\end{threeparttable}\end{landscape}}
+\newenvironment{lltable}{\begin{landscape}\centering\begin{ThreePartTable}}{\end{ThreePartTable}\end{landscape}}
+
+% Enables adjusting longtable caption width to table width
+% Solution found at http://golatex.de/longtable-mit-caption-so-breit-wie-die-tabelle-t15767.html
+\makeatletter
+\newcommand\LastLTentrywidth{1em}
+\newlength\longtablewidth
+\setlength{\longtablewidth}{1in}
+\newcommand{\getlongtablewidth}{\begingroup \ifcsname LT@\roman{LT@tables}\endcsname \global\longtablewidth=0pt \renewcommand{\LT@entry}[2]{\global\advance\longtablewidth by ##2\relax\gdef\LastLTentrywidth{##2}}\@nameuse{LT@\roman{LT@tables}} \fi \endgroup}
+
+% \setlength{\parindent}{0.5in}
+% \setlength{\parskip}{0pt plus 0pt minus 0pt}
+
+% Overwrite redefinition of paragraph and subparagraph by the default LaTeX template
+% See https://github.com/crsh/papaja/issues/292
+\makeatletter
+\renewcommand{\paragraph}{\@startsection{paragraph}{4}{\parindent}%
+  {0\baselineskip \@plus 0.2ex \@minus 0.2ex}%
+  {-1em}%
+  {\normalfont\normalsize\bfseries\itshape\typesectitle}}
+
+\renewcommand{\subparagraph}[1]{\@startsection{subparagraph}{5}{1em}%
+  {0\baselineskip \@plus 0.2ex \@minus 0.2ex}%
+  {-\z@\relax}%
+  {\normalfont\normalsize\itshape\hspace{\parindent}{#1}\textit{\addperi}}{\relax}}
+\makeatother
+
+% \usepackage{etoolbox}
+\makeatletter
+\patchcmd{\HyOrg@maketitle}
+  {\section{\normalfont\normalsize\abstractname}}
+  {\section*{\normalfont\normalsize\abstractname}}
+  {}{\typeout{Failed to patch abstract.}}
+\patchcmd{\HyOrg@maketitle}
+  {\section{\protect\normalfont{\@title}}}
+  {\section*{\protect\normalfont{\@title}}}
+  {}{\typeout{Failed to patch title.}}
+\makeatother
+
+\usepackage{xpatch}
+\makeatletter
+\xapptocmd\appendix
+  {\xapptocmd\section
+    {\addcontentsline{toc}{section}{\appendixname\ifoneappendix\else~\theappendix\fi\\: #1}}
+    {}{\InnerPatchFailed}%
+  }
+{}{\PatchFailed}
+\usepackage{csquotes}
+\usepackage{todonotes}
+\usepackage{setspace}
+\AtBeginEnvironment{tabular}{\singlespacing}
+\AtBeginEnvironment{lltable}{\singlespacing}
+\AtBeginEnvironment{ThreePartTable}{\singlespacing}
+\AtBeginEnvironment{tablenotes}{\doublespacing}
+\captionsetup[table]{font={stretch=1.5}}
+\captionsetup[figure]{font={stretch=1.5}}
+\raggedbottom
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  pdftitle={Supplement to: On the Robustness of Reciprocal Associations Between Personality and Religiosity in a German Sample},
+  pdfauthor={Richard E. Lucas1 \& Julia Rohrer2},
+  pdflang={en-EN},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\title{Supplement to: On the Robustness of Reciprocal Associations Between Personality and Religiosity in a German Sample}
+\author{Richard E. Lucas\textsuperscript{1} \& Julia Rohrer\textsuperscript{2}}
+\date{}
+
+
+\shorttitle{Personality and Religion}
+
+\authornote{
+
+Correspondence concerning this article should be addressed to Richard E. Lucas, 316 Physics Rd., Michigan State University, East Lansing, MI 48823. E-mail: \href{mailto:lucasri@msu.edu}{\nolinkurl{lucasri@msu.edu}}
+
+}
+
+\affiliation{\vspace{0.5cm}\textsuperscript{1} Department of Psychology, Michigan State University\\\textsuperscript{2} Department of Psychology, University of Leipzig}
+
+\begin{document}
+\maketitle
+
+\section{State Specific Estimates and Convergence Problems}\label{state-specific-estimates-and-convergence-problems}
+
+These tables report the lagged associations from all models separately for each state. In addition, the tables report whether any estimation problems emerged (some of which prevented estimates from being calculated).
+
+\subsection{Traits Predicting Religion}\label{traits-predicting-religion}
+
+\begin{lltable}
+
+\tiny{
+
+\begin{longtable}{rrrrrrrrrrr}\noalign{\getlongtablewidth\global\LTcapwidth=\longtablewidth}
+\caption{\label{tab:cla-table1}Estimates (with 95\% confidence intervals) and convergence and estimation problems in the CLPM with latent traits and all traits modeled simultaneously}\\
+\toprule
+ & \multicolumn{2}{c}{Agreeableness} & \multicolumn{2}{c}{Conscientiousness} & \multicolumn{2}{c}{Extraversion} & \multicolumn{2}{c}{Neuroticism} & \multicolumn{2}{c}{Openness} \\
+\cmidrule(r){2-3} \cmidrule(r){4-5} \cmidrule(r){6-7} \cmidrule(r){8-9} \cmidrule(r){10-11}
+State & Prob. & Estimate & Prob. & Estimate & Prob. & Estimate & Prob. & Estimate & Prob. & Estimate\\
+\midrule
+\endfirsthead
+\caption*{\normalfont{Table \ref{tab:cla-table1} continued}}\\
+\toprule
+ & \multicolumn{2}{c}{Agreeableness} & \multicolumn{2}{c}{Conscientiousness} & \multicolumn{2}{c}{Extraversion} & \multicolumn{2}{c}{Neuroticism} & \multicolumn{2}{c}{Openness} \\
+\cmidrule(r){2-3} \cmidrule(r){4-5} \cmidrule(r){6-7} \cmidrule(r){8-9} \cmidrule(r){10-11}
+State & Prob. & Estimate & Prob. & Estimate & Prob. & Estimate & Prob. & Estimate & Prob. & Estimate\\
+\midrule
+\endhead
+Schleswig-Holstein & No & 0.13 (0.05, 0.21) & No & -0.08 (-0.17, 0.02) & No & 0.11 (0.02, 0.20) & No & 0.10 (0.03, 0.17) & No & -0.09 (-0.19, 0.01)\\
+Hamburg & Yes & 0.06 (-0.04, 0.16) & Yes & 0.05 (-0.06, 0.15) & Yes & 0.05 (-0.09, 0.19) & Yes & 0.03 (-0.04, 0.10) & Yes & -0.12 (-0.29, 0.06)\\
+Lower Saxony & No & 0.03 (-0.00, 0.07) & No & 0.02 (-0.02, 0.06) & No & -0.03 (-0.08, 0.01) & No & 0.01 (-0.02, 0.04) & No & 0.02 (-0.03, 0.07)\\
+Bremen & Yes & NA & Yes & NA & Yes & NA & Yes & NA & Yes & NA\\
+North Rhine-Westphalia & No & 0.05 (0.03, 0.08) & No & -0.00 (-0.03, 0.02) & No & 0.03 (-0.00, 0.05) & No & 0.02 (-0.00, 0.04) & No & -0.05 (-0.08, -0.02)\\
+Hesse & No & 0.04 (-0.00, 0.09) & No & -0.01 (-0.07, 0.04) & No & 0.03 (-0.02, 0.08) & No & 0.02 (-0.01, 0.05) & No & -0.05 (-0.11, -0.00)\\
+Rhineland-Palatinate & No & 0.06 (0.01, 0.12) & No & -0.00 (-0.06, 0.06) & No & -0.04 (-0.10, 0.02) & No & 0.02 (-0.03, 0.06) & No & 0.01 (-0.05, 0.07)\\
+Baden-Wuerttemberg & No & 0.04 (0.01, 0.08) & No & 0.01 (-0.02, 0.04) & No & 0.01 (-0.03, 0.04) & No & -0.00 (-0.03, 0.02) & No & -0.05 (-0.08, -0.01)\\
+Bavaria & No & 0.05 (0.02, 0.07) & No & 0.01 (-0.02, 0.04) & No & -0.02 (-0.05, 0.00) & No & -0.00 (-0.02, 0.02) & No & -0.03 (-0.06, -0.00)\\
+Saarland & Yes & NA & Yes & NA & Yes & NA & Yes & NA & Yes & NA\\
+Berlin & No & 0.02 (-0.04, 0.08) & No & -0.03 (-0.10, 0.03) & No & 0.03 (-0.02, 0.09) & No & 0.03 (-0.01, 0.07) & No & -0.02 (-0.08, 0.05)\\
+Brandenburg & No & 0.09 (0.03, 0.15) & No & -0.05 (-0.12, 0.01) & No & 0.05 (-0.02, 0.12) & No & 0.02 (-0.02, 0.06) & No & -0.03 (-0.09, 0.04)\\
+Mecklenburg-Western Pomerania & No & 0.11 (0.01, 0.22) & No & -0.05 (-0.15, 0.05) & No & -0.02 (-0.13, 0.08) & No & 0.01 (-0.04, 0.07) & No & 0.04 (-0.07, 0.16)\\
+Saxony & No & 0.04 (0.01, 0.07) & No & -0.04 (-0.07, -0.00) & No & -0.01 (-0.04, 0.03) & No & -0.01 (-0.03, 0.02) & No & 0.02 (-0.02, 0.06)\\
+Saxony-Anhalt & No & 0.02 (-0.03, 0.06) & No & -0.01 (-0.05, 0.03) & No & -0.04 (-0.09, 0.01) & No & -0.02 (-0.05, 0.01) & No & 0.05 (-0.01, 0.11)\\
+Thuringia & No & 0.01 (-0.04, 0.06) & No & 0.01 (-0.04, 0.05) & No & -0.07 (-0.13, -0.01) & No & -0.01 (-0.04, 0.02) & No & 0.06 (-0.01, 0.13)\\
+\bottomrule
+\end{longtable}
+
+}
+
+\end{lltable}
+
+\begin{lltable}
+
+\tiny{
+
+\begin{longtable}{rrrrrrrrrrr}\noalign{\getlongtablewidth\global\LTcapwidth=\longtablewidth}
+\caption{\label{tab:rla-table1}Estimates (with 95\% confidence intervals) and convergence and estimation problems in the RI-CLPM with latent traits and all traits modeled simultaneously}\\
+\toprule
+ & \multicolumn{2}{c}{Agreeableness} & \multicolumn{2}{c}{Conscientiousness} & \multicolumn{2}{c}{Extraversion} & \multicolumn{2}{c}{Neuroticism} & \multicolumn{2}{c}{Openness} \\
+\cmidrule(r){2-3} \cmidrule(r){4-5} \cmidrule(r){6-7} \cmidrule(r){8-9} \cmidrule(r){10-11}
+State & Prob. & Estimate & Prob. & Estimate & Prob. & Estimate & Prob. & Estimate & Prob. & Estimate\\
+\midrule
+\endfirsthead
+\caption*{\normalfont{Table \ref{tab:rla-table1} continued}}\\
+\toprule
+ & \multicolumn{2}{c}{Agreeableness} & \multicolumn{2}{c}{Conscientiousness} & \multicolumn{2}{c}{Extraversion} & \multicolumn{2}{c}{Neuroticism} & \multicolumn{2}{c}{Openness} \\
+\cmidrule(r){2-3} \cmidrule(r){4-5} \cmidrule(r){6-7} \cmidrule(r){8-9} \cmidrule(r){10-11}
+State & Prob. & Estimate & Prob. & Estimate & Prob. & Estimate & Prob. & Estimate & Prob. & Estimate\\
+\midrule
+\endhead
+Schleswig-Holstein & Yes & 0.02 (-0.22, 0.26) & Yes & -0.23 (-0.43, -0.03) & Yes & 0.53 (-0.01, 1.07) & Yes & 0.24 (0.09, 0.40) & Yes & -0.38 (-0.74, -0.02)\\
+Hamburg & Yes & -0.21 (-0.66, 0.25) & Yes & -0.10 (-0.67, 0.48) & Yes & 0.06 (-1.34, 1.46) & Yes & 0.17 (-0.47, 0.81) & Yes & 0.26 (-1.50, 2.02)\\
+Lower Saxony & No & 0.03 (-0.17, 0.23) & No & -0.02 (-0.22, 0.18) & No & -0.04 (-0.21, 0.13) & No & 0.06 (-0.06, 0.19) & No & -0.00 (-0.18, 0.18)\\
+Bremen & Yes & NA ( NA,\ \ NA) & Yes & NA ( NA,\ \ NA) & Yes & NA ( NA,\ \ NA) & Yes & -0.11 ( NA,\ \ NA) & Yes & 1.71 ( NA,\ \ NA)\\
+North Rhine-Westphalia & No & 0.11 (-0.02, 0.24) & No & -0.14 (-0.26, -0.01) & No & 0.05 (-0.07, 0.18) & No & 0.09 (0.01, 0.17) & No & -0.05 (-0.18, 0.08)\\
+Hesse & No & 0.03 (-0.84, 0.89) & No & -0.01 (-0.91, 0.88) & No & 0.20 (-1.25, 1.64) & No & 0.17 (-0.38, 0.72) & No & -0.27 (-1.76, 1.22)\\
+Rhineland-Palatinate & No & 0.03 (-0.18, 0.25) & No & 0.06 (-0.14, 0.27) & No & -0.26 (-0.44, -0.08) & No & -0.07 (-0.17, 0.04) & No & 0.31 (0.15, 0.48)\\
+Baden-Wuerttemberg & No & -0.01 (-0.17, 0.16) & No & 0.05 (-0.09, 0.18) & No & -0.09 (-0.26, 0.08) & No & -0.05 (-0.17, 0.08) & No & 0.07 (-0.08, 0.23)\\
+Bavaria & No & 0.12 (-0.07, 0.30) & No & -0.10 (-0.26, 0.07) & No & -0.15 (-0.33, 0.03) & No & -0.03 (-0.16, 0.09) & No & 0.05 (-0.13, 0.22)\\
+Saarland & Yes & NA & Yes & NA & Yes & NA & Yes & NA & Yes & NA\\
+Berlin & Yes & 0.11 (-0.19, 0.42) & Yes & -0.27 (-0.51, -0.03) & Yes & 0.12 (-0.22, 0.46) & Yes & 0.11 (-0.09, 0.31) & Yes & -0.09 (-0.39, 0.21)\\
+Brandenburg & No & 0.16 (-0.30, 0.63) & No & -0.18 (-0.59, 0.23) & No & -0.31 (-0.68, 0.06) & No & -0.17 (-0.40, 0.05) & No & 0.29 (-0.03, 0.62)\\
+Mecklenburg-Western Pomerania & Yes & -0.07 (-0.60, 0.45) & Yes & -0.05 (-0.63, 0.54) & Yes & 0.28 (-0.18, 0.75) & Yes & 0.01 (-0.23, 0.24) & Yes & -0.05 (-0.45, 0.36)\\
+Saxony & No & 0.09 (-0.05, 0.23) & No & -0.12 (-0.27, 0.02) & No & 0.01 (-0.24, 0.25) & No & -0.08 (-0.20, 0.03) & No & 0.01 (-0.22, 0.24)\\
+Saxony-Anhalt & No & 0.17 (-0.08, 0.43) & No & -0.07 (-0.34, 0.20) & No & -0.05 (-0.32, 0.22) & No & 0.07 (-0.10, 0.23) & No & -0.06 (-0.31, 0.18)\\
+Thuringia & No & 0.09 (-0.32, 0.49) & No & -0.14 (-0.45, 0.17) & No & -0.29 (-0.85, 0.26) & No & -0.22 (-0.50, 0.07) & No & 0.41 (-0.28, 1.11)\\
+\bottomrule
+\end{longtable}
+
+}
+
+\end{lltable}
+
+\begin{lltable}
+
+\tiny{
+
+\begin{longtable}{rrrrrrrrrrr}\noalign{\getlongtablewidth\global\LTcapwidth=\longtablewidth}
+\caption{\label{tab:coa-table1}Estimates (with 95\% confidence intervals) and convergence and estimation problems in the CLPM with observed measures and all traits modeled simultaneously}\\
+\toprule
+ & \multicolumn{2}{c}{Agreeableness} & \multicolumn{2}{c}{Conscientiousness} & \multicolumn{2}{c}{Extraversion} & \multicolumn{2}{c}{Neuroticism} & \multicolumn{2}{c}{Openness} \\
+\cmidrule(r){2-3} \cmidrule(r){4-5} \cmidrule(r){6-7} \cmidrule(r){8-9} \cmidrule(r){10-11}
+State & Prob. & Estimate & Prob. & Estimate & Prob. & Estimate & Prob. & Estimate & Prob. & Estimate\\
+\midrule
+\endfirsthead
+\caption*{\normalfont{Table \ref{tab:coa-table1} continued}}\\
+\toprule
+ & \multicolumn{2}{c}{Agreeableness} & \multicolumn{2}{c}{Conscientiousness} & \multicolumn{2}{c}{Extraversion} & \multicolumn{2}{c}{Neuroticism} & \multicolumn{2}{c}{Openness} \\
+\cmidrule(r){2-3} \cmidrule(r){4-5} \cmidrule(r){6-7} \cmidrule(r){8-9} \cmidrule(r){10-11}
+State & Prob. & Estimate & Prob. & Estimate & Prob. & Estimate & Prob. & Estimate & Prob. & Estimate\\
+\midrule
+\endhead
+Schleswig-Holstein & No & 0.10 (0.05, 0.14) & No & -0.00 (-0.06, 0.05) & No & 0.04 (-0.01, 0.09) & No & 0.09 (0.04, 0.15) & No & -0.00 (-0.05, 0.05)\\
+Hamburg & No & 0.02 (-0.04, 0.07) & No & 0.02 (-0.03, 0.08) & No & 0.01 (-0.05, 0.07) & No & 0.03 (-0.02, 0.07) & No & -0.03 (-0.09, 0.03)\\
+Lower Saxony & No & 0.02 (-0.01, 0.04) & No & 0.02 (-0.01, 0.04) & No & -0.03 (-0.05, -0.00) & No & 0.01 (-0.01, 0.04) & No & 0.03 (0.00, 0.05)\\
+Bremen & No & -0.00 (-0.10, 0.10) & No & -0.01 (-0.10, 0.09) & No & -0.03 (-0.14, 0.08) & No & -0.01 (-0.10, 0.08) & No & 0.09 (-0.01, 0.19)\\
+North Rhine-Westphalia & No & 0.03 (0.01, 0.04) & No & 0.01 (-0.00, 0.03) & No & 0.00 (-0.01, 0.02) & No & 0.02 (0.00, 0.03) & No & -0.01 (-0.03, 0.01)\\
+Hesse & No & 0.01 (-0.02, 0.04) & No & 0.02 (-0.01, 0.06) & No & -0.02 (-0.04, 0.01) & No & 0.02 (-0.01, 0.05) & No & -0.01 (-0.04, 0.02)\\
+Rhineland-Palatinate & No & 0.04 (0.01, 0.08) & No & -0.00 (-0.04, 0.04) & No & -0.04 (-0.07, 0.00) & No & 0.01 (-0.02, 0.05) & No & 0.03 (-0.00, 0.07)\\
+Baden-Wuerttemberg & No & 0.02 (0.00, 0.04) & No & 0.02 (0.00, 0.04) & No & -0.01 (-0.03, 0.01) & No & -0.00 (-0.02, 0.02) & No & -0.02 (-0.04, 0.01)\\
+Bavaria & No & 0.02 (0.00, 0.04) & No & 0.02 (0.00, 0.04) & No & -0.03 (-0.05, -0.01) & No & -0.00 (-0.02, 0.01) & No & -0.02 (-0.04, -0.00)\\
+Saarland & No & 0.09 (-0.00, 0.18) & No & 0.07 (-0.03, 0.16) & No & -0.04 (-0.14, 0.05) & No & -0.01 (-0.10, 0.08) & No & 0.06 (-0.02, 0.15)\\
+Berlin & No & 0.01 (-0.02, 0.05) & No & -0.02 (-0.06, 0.01) & No & 0.01 (-0.03, 0.04) & No & 0.03 (-0.00, 0.06) & No & -0.00 (-0.04, 0.03)\\
+Brandenburg & No & 0.05 (0.02, 0.08) & No & -0.02 (-0.06, 0.01) & No & 0.00 (-0.03, 0.04) & No & -0.00 (-0.04, 0.03) & No & 0.03 (-0.01, 0.07)\\
+Mecklenburg-Western Pomerania & No & 0.04 (-0.01, 0.08) & No & 0.02 (-0.03, 0.08) & No & 0.01 (-0.04, 0.06) & No & 0.01 (-0.04, 0.05) & No & 0.02 (-0.03, 0.08)\\
+Saxony & No & 0.01 (-0.01, 0.03) & No & -0.02 (-0.04, 0.00) & No & -0.00 (-0.02, 0.02) & No & -0.01 (-0.03, 0.01) & No & 0.01 (-0.01, 0.03)\\
+Saxony-Anhalt & No & 0.02 (-0.01, 0.04) & No & -0.01 (-0.03, 0.02) & No & -0.02 (-0.04, 0.00) & No & -0.01 (-0.03, 0.02) & No & 0.04 (0.01, 0.07)\\
+Thuringia & No & -0.01 (-0.04, 0.02) & No & 0.01 (-0.01, 0.04) & No & -0.03 (-0.06, -0.01) & No & -0.01 (-0.03, 0.02) & No & 0.03 (0.00, 0.06)\\
+\bottomrule
+\end{longtable}
+
+}
+
+\end{lltable}
+
+\begin{lltable}
+
+\tiny{
+
+\begin{longtable}{rrrrrrrrrrr}\noalign{\getlongtablewidth\global\LTcapwidth=\longtablewidth}
+\caption{\label{tab:roa-table1}Estimates (with 95\% confidence intervals) and convergence and estimation problems in the RI-CLPM with observed measures and all traits modeled simultaneously}\\
+\toprule
+ & \multicolumn{2}{c}{Agreeableness} & \multicolumn{2}{c}{Conscientiousness} & \multicolumn{2}{c}{Extraversion} & \multicolumn{2}{c}{Neuroticism} & \multicolumn{2}{c}{Openness} \\
+\cmidrule(r){2-3} \cmidrule(r){4-5} \cmidrule(r){6-7} \cmidrule(r){8-9} \cmidrule(r){10-11}
+State & Prob. & Estimate & Prob. & Estimate & Prob. & Estimate & Prob. & Estimate & Prob. & Estimate\\
+\midrule
+\endfirsthead
+\caption*{\normalfont{Table \ref{tab:roa-table1} continued}}\\
+\toprule
+ & \multicolumn{2}{c}{Agreeableness} & \multicolumn{2}{c}{Conscientiousness} & \multicolumn{2}{c}{Extraversion} & \multicolumn{2}{c}{Neuroticism} & \multicolumn{2}{c}{Openness} \\
+\cmidrule(r){2-3} \cmidrule(r){4-5} \cmidrule(r){6-7} \cmidrule(r){8-9} \cmidrule(r){10-11}
+State & Prob. & Estimate & Prob. & Estimate & Prob. & Estimate & Prob. & Estimate & Prob. & Estimate\\
+\midrule
+\endhead
+Schleswig-Holstein & No & 0.08 (-0.01, 0.18) & No & -0.09 (-0.19, 0.02) & No & 0.04 (-0.07, 0.15) & No & 0.20 (0.10, 0.30) & No & -0.04 (-0.14, 0.06)\\
+Hamburg & No & -0.23 (-0.51, 0.04) & No & 0.06 (-0.08, 0.20) & No & 0.08 (-0.14, 0.30) & No & 0.11 (-0.07, 0.28) & No & 0.01 (-0.13, 0.15)\\
+Lower Saxony & No & 0.02 (-0.04, 0.08) & No & -0.01 (-0.08, 0.05) & No & -0.01 (-0.07, 0.05) & No & 0.05 (-0.02, 0.11) & No & -0.00 (-0.07, 0.06)\\
+Bremen & No & -0.02 (-0.30, 0.26) & No & 0.01 (-0.25, 0.27) & No & -0.28 (-0.63, 0.07) & No & 0.06 (-0.18, 0.30) & No & 0.30 (0.04, 0.55)\\
+North Rhine-Westphalia & No & 0.01 (-0.03, 0.06) & No & -0.03 (-0.08, 0.02) & No & 0.01 (-0.03, 0.05) & No & 0.05 (0.00, 0.09) & No & -0.01 (-0.05, 0.04)\\
+Hesse & No & -0.02 (-0.10, 0.05) & No & 0.05 (-0.03, 0.13) & No & -0.03 (-0.11, 0.04) & No & 0.08 (0.01, 0.15) & No & -0.05 (-0.14, 0.03)\\
+Rhineland-Palatinate & No & -0.00 (-0.08, 0.08) & No & 0.04 (-0.05, 0.13) & No & -0.07 (-0.15, 0.01) & No & -0.05 (-0.12, 0.03) & No & 0.12 (0.05, 0.20)\\
+Baden-Wuerttemberg & No & 0.02 (-0.04, 0.07) & No & 0.01 (-0.05, 0.06) & No & -0.02 (-0.08, 0.05) & No & -0.02 (-0.08, 0.04) & No & 0.03 (-0.04, 0.09)\\
+Bavaria & No & -0.01 (-0.06, 0.04) & No & -0.00 (-0.05, 0.05) & No & -0.07 (-0.13, -0.02) & No & -0.03 (-0.09, 0.02) & No & -0.01 (-0.06, 0.05)\\
+Saarland & No & -0.05 (-0.34, 0.24) & No & 0.17 (-0.04, 0.37) & No & -0.02 (-0.23, 0.20) & No & 0.04 (-0.17, 0.24) & No & 0.12 (-0.13, 0.37)\\
+Berlin & No & 0.03 (-0.06, 0.13) & No & -0.10 (-0.20, -0.01) & No & 0.01 (-0.08, 0.11) & No & 0.07 (-0.02, 0.16) & No & -0.00 (-0.08, 0.08)\\
+Brandenburg & No & -0.01 (-0.11, 0.09) & No & -0.01 (-0.12, 0.10) & No & -0.08 (-0.20, 0.05) & No & -0.10 (-0.19, -0.00) & No & 0.09 (-0.01, 0.19)\\
+Mecklenburg-Western Pomerania & No & -0.01 (-0.11, 0.08) & No & -0.02 (-0.15, 0.11) & No & 0.10 (-0.01, 0.22) & No & -0.03 (-0.14, 0.08) & No & -0.00 (-0.10, 0.10)\\
+Saxony & No & 0.05 (-0.00, 0.09) & No & -0.05 (-0.11, 0.01) & No & 0.02 (-0.04, 0.07) & No & -0.04 (-0.10, 0.02) & No & -0.01 (-0.07, 0.05)\\
+Saxony-Anhalt & No & 0.09 (0.01, 0.16) & No & -0.03 (-0.10, 0.05) & No & -0.04 (-0.13, 0.05) & No & 0.03 (-0.05, 0.12) & No & 0.01 (-0.07, 0.09)\\
+Thuringia & No & 0.00 (-0.07, 0.07) & No & -0.03 (-0.12, 0.06) & No & -0.02 (-0.10, 0.06) & No & -0.01 (-0.10, 0.07) & No & 0.01 (-0.09, 0.11)\\
+\bottomrule
+\end{longtable}
+
+}
+
+\end{lltable}
+
+\begin{lltable}
+
+\tiny{
+
+\begin{longtable}{rrrrrrrrrrr}\noalign{\getlongtablewidth\global\LTcapwidth=\longtablewidth}
+\caption{\label{tab:cls-table1}Estimates (with 95\% confidence intervals) and convergence and estimation problems in the CLPM with latent traits and individual traits modeled separately}\\
+\toprule
+ & \multicolumn{2}{c}{Agreeableness} & \multicolumn{2}{c}{Conscientiousness} & \multicolumn{2}{c}{Extraversion} & \multicolumn{2}{c}{Neuroticism} & \multicolumn{2}{c}{Openness} \\
+\cmidrule(r){2-3} \cmidrule(r){4-5} \cmidrule(r){6-7} \cmidrule(r){8-9} \cmidrule(r){10-11}
+State & Prob. & Estimate & Prob. & Estimate & Prob. & Estimate & Prob. & Estimate & Prob. & Estimate\\
+\midrule
+\endfirsthead
+\caption*{\normalfont{Table \ref{tab:cls-table1} continued}}\\
+\toprule
+ & \multicolumn{2}{c}{Agreeableness} & \multicolumn{2}{c}{Conscientiousness} & \multicolumn{2}{c}{Extraversion} & \multicolumn{2}{c}{Neuroticism} & \multicolumn{2}{c}{Openness} \\
+\cmidrule(r){2-3} \cmidrule(r){4-5} \cmidrule(r){6-7} \cmidrule(r){8-9} \cmidrule(r){10-11}
+State & Prob. & Estimate & Prob. & Estimate & Prob. & Estimate & Prob. & Estimate & Prob. & Estimate\\
+\midrule
+\endhead
+Schleswig-Holstein & No & 0.09 (0.03, 0.15) & No & -0.01 (-0.07, 0.06) & No & 0.07 (0.02, 0.12) & No & 0.08 (0.02, 0.14) & No & 0.02 (-0.04, 0.07)\\
+Hamburg & Yes & 0.05 (-0.03, 0.13) & No & 0.02 (-0.04, 0.09) & No & -0.01 (-0.08, 0.05) & No & 0.01 (-0.05, 0.07) & Yes & -0.06 (-0.13, 0.02)\\
+Lower Saxony & No & 0.03 (-0.00, 0.05) & No & 0.02 (-0.01, 0.05) & No & -0.00 (-0.03, 0.02) & No & 0.01 (-0.02, 0.03) & No & 0.02 (-0.01, 0.04)\\
+Bremen & Yes & 0.00 (-0.07, 0.07) & No & -0.03 (-0.11, 0.05) & No & -0.00 (-0.12, 0.11) & Yes & 0.01 (-0.12, 0.15) & No & 0.09 (-0.01, 0.20)\\
+North Rhine-Westphalia & No & 0.04 (0.02, 0.06) & No & 0.02 (0.00, 0.04) & No & 0.01 (-0.00, 0.03) & No & 0.01 (-0.01, 0.03) & No & -0.01 (-0.02, 0.01)\\
+Hesse & No & 0.02 (-0.01, 0.06) & No & 0.01 (-0.03, 0.04) & No & 0.01 (-0.02, 0.03) & No & 0.01 (-0.02, 0.04) & No & -0.02 (-0.05, 0.02)\\
+Rhineland-Palatinate & No & 0.04 (-0.00, 0.08) & No & 0.00 (-0.04, 0.04) & No & -0.02 (-0.06, 0.02) & No & 0.01 (-0.03, 0.06) & No & 0.00 (-0.03, 0.04)\\
+Baden-Wuerttemberg & No & 0.03 (0.01, 0.06) & No & 0.02 (-0.00, 0.04) & No & -0.00 (-0.02, 0.02) & No & -0.00 (-0.03, 0.02) & No & -0.02 (-0.05, 0.00)\\
+Bavaria & No & 0.03 (0.01, 0.05) & No & 0.01 (-0.01, 0.03) & No & -0.03 (-0.04, -0.01) & No & 0.00 (-0.02, 0.02) & No & -0.03 (-0.05, -0.01)\\
+Saarland & No & 0.17 (0.06, 0.28) & No & 0.10 (0.01, 0.20) & No & 0.03 (-0.05, 0.12) & No & -0.01 (-0.11, 0.09) & No & 0.10 (-0.00, 0.19)\\
+Berlin & No & -0.00 (-0.05, 0.04) & No & -0.02 (-0.06, 0.03) & No & 0.01 (-0.03, 0.05) & No & 0.02 (-0.02, 0.06) & No & 0.01 (-0.03, 0.05)\\
+Brandenburg & No & 0.06 (0.03, 0.10) & No & -0.00 (-0.04, 0.04) & No & 0.03 (-0.00, 0.07) & No & -0.00 (-0.04, 0.04) & No & 0.03 (-0.01, 0.08)\\
+Mecklenburg-Western Pomerania & No & 0.07 (0.01, 0.13) & No & 0.04 (-0.01, 0.09) & No & 0.03 (-0.02, 0.08) & No & 0.00 (-0.05, 0.05) & No & 0.04 (-0.02, 0.10)\\
+Saxony & No & 0.03 (0.01, 0.05) & No & -0.01 (-0.03, 0.01) & No & 0.01 (-0.01, 0.03) & No & -0.01 (-0.03, 0.02) & No & 0.01 (-0.01, 0.04)\\
+Saxony-Anhalt & No & 0.01 (-0.02, 0.04) & No & -0.00 (-0.03, 0.03) & No & -0.01 (-0.03, 0.02) & No & -0.01 (-0.04, 0.02) & No & 0.02 (-0.01, 0.06)\\
+Thuringia & No & 0.00 (-0.03, 0.03) & No & 0.01 (-0.02, 0.04) & No & -0.02 (-0.05, 0.01) & Yes & -0.01 (-0.03, 0.02) & No & 0.02 (-0.01, 0.05)\\
+\bottomrule
+\end{longtable}
+
+}
+
+\end{lltable}
+
+\begin{lltable}
+
+\tiny{
+
+\begin{longtable}{rrrrrrrrrrr}\noalign{\getlongtablewidth\global\LTcapwidth=\longtablewidth}
+\caption{\label{tab:rls-table1}Estimates (with 95\% confidence intervals) and convergence and estimation problems in the RI-CLPM with latent traits and individual traits modeled separately}\\
+\toprule
+ & \multicolumn{2}{c}{Agreeableness} & \multicolumn{2}{c}{Conscientiousness} & \multicolumn{2}{c}{Extraversion} & \multicolumn{2}{c}{Neuroticism} & \multicolumn{2}{c}{Openness} \\
+\cmidrule(r){2-3} \cmidrule(r){4-5} \cmidrule(r){6-7} \cmidrule(r){8-9} \cmidrule(r){10-11}
+State & Prob. & Estimate & Prob. & Estimate & Prob. & Estimate & Prob. & Estimate & Prob. & Estimate\\
+\midrule
+\endfirsthead
+\caption*{\normalfont{Table \ref{tab:rls-table1} continued}}\\
+\toprule
+ & \multicolumn{2}{c}{Agreeableness} & \multicolumn{2}{c}{Conscientiousness} & \multicolumn{2}{c}{Extraversion} & \multicolumn{2}{c}{Neuroticism} & \multicolumn{2}{c}{Openness} \\
+\cmidrule(r){2-3} \cmidrule(r){4-5} \cmidrule(r){6-7} \cmidrule(r){8-9} \cmidrule(r){10-11}
+State & Prob. & Estimate & Prob. & Estimate & Prob. & Estimate & Prob. & Estimate & Prob. & Estimate\\
+\midrule
+\endhead
+Schleswig-Holstein & Yes & NA ( NA,\ \ NA) & No & -0.19 (-0.30, -0.07) & No & 0.11 (-0.11, 0.33) & No & 0.27 (0.14, 0.39) & No & -0.10 (-0.28, 0.08)\\
+Hamburg & Yes & -0.11 (-0.41, 0.20) & No & 0.03 (-0.20, 0.26) & No & 0.11 (-0.25, 0.48) & No & 0.15 (-0.23, 0.54) & Yes & NA ( NA,\ \ NA)\\
+Lower Saxony & No & 0.03 (-0.07, 0.12) & No & -0.02 (-0.11, 0.07) & No & -0.03 (-0.13, 0.06) & No & 0.07 (-0.04, 0.18) & No & -0.03 (-0.13, 0.08)\\
+Bremen & Yes & 0.14 (-0.13, 0.41) & Yes & -0.20 (-0.73, 0.33) & No & -0.51 (-1.12, 0.10) & Yes & -0.12 (-0.50, 0.25) & No & 0.95 (0.65, 1.25)\\
+North Rhine-Westphalia & No & 0.02 (-0.05, 0.10) & No & -0.05 (-0.12, 0.02) & No & -0.00 (-0.06, 0.06) & No & 0.07 (0.00, 0.14) & No & -0.02 (-0.10, 0.06)\\
+Hesse & No & -0.07 (-0.22, 0.08) & No & 0.02 (-0.10, 0.14) & No & -0.03 (-0.14, 0.09) & No & 0.11 (0.01, 0.21) & No & -0.10 (-0.32, 0.11)\\
+Rhineland-Palatinate & No & 0.07 (-0.06, 0.20) & No & 0.09 (-0.03, 0.21) & No & -0.04 (-0.15, 0.08) & No & -0.07 (-0.18, 0.04) & No & 0.17 (0.05, 0.29)\\
+Baden-Wuerttemberg & No & 0.02 (-0.08, 0.12) & No & 0.03 (-0.05, 0.12) & No & -0.02 (-0.12, 0.07) & No & -0.03 (-0.15, 0.09) & No & 0.05 (-0.06, 0.16)\\
+Bavaria & No & -0.00 (-0.08, 0.08) & No & -0.06 (-0.15, 0.02) & No & -0.09 (-0.19, 0.01) & No & -0.04 (-0.16, 0.08) & No & -0.04 (-0.12, 0.04)\\
+Saarland & Yes & 0.86 (-0.28, 2.00) & No & 0.14 (-0.14, 0.42) & Yes & 0.45 (-0.38, 1.27) & No & 0.00 (-0.27, 0.28) & Yes & 0.45 (-0.22, 1.12)\\
+Berlin & No & -0.08 (-0.26, 0.10) & No & -0.17 (-0.34, 0.01) & No & 0.02 (-0.31, 0.35) & No & 0.09 (-0.12, 0.30) & No & -0.02 (-0.22, 0.19)\\
+Brandenburg & No & 0.02 (-0.14, 0.19) & No & -0.05 (-0.20, 0.10) & No & -0.07 (-0.22, 0.07) & No & -0.15 (-0.33, 0.03) & No & 0.12 (-0.02, 0.25)\\
+Mecklenburg-Western Pomerania & No & 0.00 (-0.15, 0.15) & No & 0.02 (-0.14, 0.19) & No & 0.22 (-0.00, 0.44) & No & -0.08 (-0.32, 0.16) & No & 0.05 (-0.14, 0.24)\\
+Saxony & Yes & 0.05 (-0.03, 0.13) & No & -0.06 (-0.14, 0.02) & No & 0.00 (-0.10, 0.10) & No & -0.08 (-0.17, 0.01) & No & -0.00 (-0.08, 0.08)\\
+Saxony-Anhalt & No & 0.06 (-0.04, 0.15) & No & -0.00 (-0.09, 0.09) & No & -0.02 (-0.14, 0.10) & No & 0.04 (-0.09, 0.17) & No & -0.01 (-0.12, 0.10)\\
+Thuringia & No & 0.02 (-0.12, 0.16) & No & -0.04 (-0.17, 0.09) & No & -0.02 (-0.15, 0.11) & Yes & -0.08 (-0.24, 0.07) & No & -0.01 (-0.41, 0.40)\\
+\bottomrule
+\end{longtable}
+
+}
+
+\end{lltable}
+
+\begin{lltable}
+
+\tiny{
+
+\begin{longtable}{rrrrrrrrrrr}\noalign{\getlongtablewidth\global\LTcapwidth=\longtablewidth}
+\caption{\label{tab:cos-table1}Estimates (with 95\% confidence intervals) and convergence and estimation problems in the CLPM with observed measures and individual traits modeled separately}\\
+\toprule
+ & \multicolumn{2}{c}{Agreeableness} & \multicolumn{2}{c}{Conscientiousness} & \multicolumn{2}{c}{Extraversion} & \multicolumn{2}{c}{Neuroticism} & \multicolumn{2}{c}{Openness} \\
+\cmidrule(r){2-3} \cmidrule(r){4-5} \cmidrule(r){6-7} \cmidrule(r){8-9} \cmidrule(r){10-11}
+State & Prob. & Estimate & Prob. & Estimate & Prob. & Estimate & Prob. & Estimate & Prob. & Estimate\\
+\midrule
+\endfirsthead
+\caption*{\normalfont{Table \ref{tab:cos-table1} continued}}\\
+\toprule
+ & \multicolumn{2}{c}{Agreeableness} & \multicolumn{2}{c}{Conscientiousness} & \multicolumn{2}{c}{Extraversion} & \multicolumn{2}{c}{Neuroticism} & \multicolumn{2}{c}{Openness} \\
+\cmidrule(r){2-3} \cmidrule(r){4-5} \cmidrule(r){6-7} \cmidrule(r){8-9} \cmidrule(r){10-11}
+State & Prob. & Estimate & Prob. & Estimate & Prob. & Estimate & Prob. & Estimate & Prob. & Estimate\\
+\midrule
+\endhead
+Schleswig-Holstein & No & 0.09 (0.04, 0.13) & No & 0.02 (-0.03, 0.08) & No & 0.04 (-0.01, 0.08) & No & 0.07 (0.02, 0.12) & No & 0.02 (-0.03, 0.07)\\
+Hamburg & No & 0.01 (-0.04, 0.07) & No & 0.03 (-0.03, 0.08) & No & -0.00 (-0.06, 0.06) & No & 0.02 (-0.03, 0.07) & No & -0.03 (-0.09, 0.03)\\
+Lower Saxony & No & 0.02 (-0.00, 0.04) & No & 0.02 (0.00, 0.04) & No & -0.01 (-0.03, 0.01) & No & 0.01 (-0.01, 0.03) & No & 0.03 (0.00, 0.05)\\
+Bremen & No & 0.02 (-0.06, 0.11) & No & -0.00 (-0.08, 0.08) & No & 0.00 (-0.10, 0.10) & No & -0.02 (-0.11, 0.06) & No & 0.08 (0.00, 0.17)\\
+North Rhine-Westphalia & No & 0.03 (0.02, 0.05) & No & 0.02 (0.01, 0.04) & No & 0.01 (-0.01, 0.02) & No & 0.01 (-0.00, 0.03) & No & -0.00 (-0.01, 0.01)\\
+Hesse & No & 0.02 (-0.01, 0.04) & No & 0.03 (-0.00, 0.05) & No & -0.01 (-0.04, 0.01) & No & 0.02 (-0.01, 0.04) & No & -0.01 (-0.04, 0.02)\\
+Rhineland-Palatinate & No & 0.04 (0.01, 0.08) & No & 0.01 (-0.03, 0.04) & No & -0.02 (-0.05, 0.01) & No & 0.01 (-0.03, 0.04) & No & 0.02 (-0.01, 0.06)\\
+Baden-Wuerttemberg & No & 0.03 (0.01, 0.05) & No & 0.03 (0.01, 0.05) & No & -0.01 (-0.03, 0.01) & No & -0.01 (-0.02, 0.01) & No & -0.01 (-0.03, 0.01)\\
+Bavaria & No & 0.02 (0.00, 0.04) & No & 0.02 (0.00, 0.03) & No & -0.03 (-0.04, -0.01) & No & -0.00 (-0.02, 0.01) & No & -0.02 (-0.04, -0.00)\\
+Saarland & No & 0.13 (0.04, 0.21) & No & 0.08 (-0.00, 0.17) & No & 0.01 (-0.07, 0.10) & No & -0.01 (-0.10, 0.07) & No & 0.10 (0.02, 0.18)\\
+Berlin & No & 0.01 (-0.03, 0.04) & No & -0.01 (-0.05, 0.02) & No & 0.00 (-0.03, 0.03) & No & 0.02 (-0.01, 0.06) & No & 0.00 (-0.03, 0.03)\\
+Brandenburg & No & 0.05 (0.02, 0.07) & No & -0.00 (-0.03, 0.03) & No & 0.02 (-0.02, 0.05) & No & -0.01 (-0.05, 0.02) & No & 0.03 (-0.01, 0.06)\\
+Mecklenburg-Western Pomerania & No & 0.05 (0.00, 0.10) & No & 0.04 (-0.01, 0.09) & No & 0.03 (-0.02, 0.07) & No & -0.00 (-0.04, 0.04) & No & 0.03 (-0.02, 0.08)\\
+Saxony & No & 0.01 (-0.01, 0.03) & No & -0.01 (-0.03, 0.01) & No & 0.01 (-0.01, 0.02) & No & -0.01 (-0.03, 0.01) & No & 0.01 (-0.01, 0.03)\\
+Saxony-Anhalt & No & 0.02 (-0.00, 0.04) & No & 0.00 (-0.02, 0.03) & No & -0.01 (-0.03, 0.01) & No & -0.01 (-0.03, 0.02) & No & 0.03 (-0.00, 0.06)\\
+Thuringia & No & 0.00 (-0.03, 0.03) & No & 0.01 (-0.01, 0.04) & No & -0.02 (-0.04, 0.01) & No & -0.00 (-0.03, 0.02) & No & 0.02 (-0.00, 0.05)\\
+\bottomrule
+\end{longtable}
+
+}
+
+\end{lltable}
+
+\begin{lltable}
+
+\tiny{
+
+\begin{longtable}{rrrrrrrrrrr}\noalign{\getlongtablewidth\global\LTcapwidth=\longtablewidth}
+\caption{\label{tab:ros-table1}Estimates (with 95\% confidence intervals) and convergence and estimation problems in the RI-CLPM with observed measures and individual traits modeled separately}\\
+\toprule
+ & \multicolumn{2}{c}{Agreeableness} & \multicolumn{2}{c}{Conscientiousness} & \multicolumn{2}{c}{Extraversion} & \multicolumn{2}{c}{Neuroticism} & \multicolumn{2}{c}{Openness} \\
+\cmidrule(r){2-3} \cmidrule(r){4-5} \cmidrule(r){6-7} \cmidrule(r){8-9} \cmidrule(r){10-11}
+State & Prob. & Estimate & Prob. & Estimate & Prob. & Estimate & Prob. & Estimate & Prob. & Estimate\\
+\midrule
+\endfirsthead
+\caption*{\normalfont{Table \ref{tab:ros-table1} continued}}\\
+\toprule
+ & \multicolumn{2}{c}{Agreeableness} & \multicolumn{2}{c}{Conscientiousness} & \multicolumn{2}{c}{Extraversion} & \multicolumn{2}{c}{Neuroticism} & \multicolumn{2}{c}{Openness} \\
+\cmidrule(r){2-3} \cmidrule(r){4-5} \cmidrule(r){6-7} \cmidrule(r){8-9} \cmidrule(r){10-11}
+State & Prob. & Estimate & Prob. & Estimate & Prob. & Estimate & Prob. & Estimate & Prob. & Estimate\\
+\midrule
+\endhead
+Schleswig-Holstein & No & 0.04 (-0.06, 0.14) & No & -0.14 (-0.24, -0.04) & No & -0.04 (-0.16, 0.08) & No & 0.21 (0.11, 0.31) & No & -0.06 (-0.17, 0.06)\\
+Hamburg & No & -0.29 (-0.65, 0.07) & No & 0.03 (-0.11, 0.16) & No & 0.09 (-0.15, 0.32) & No & 0.11 (-0.06, 0.28) & No & 0.03 (-0.11, 0.17)\\
+Lower Saxony & No & 0.01 (-0.06, 0.07) & No & -0.01 (-0.08, 0.05) & No & -0.01 (-0.07, 0.05) & No & 0.05 (-0.01, 0.11) & No & -0.00 (-0.07, 0.06)\\
+Bremen & No & 0.01 (-0.29, 0.32) & No & -0.07 (-0.42, 0.29) & No & -0.24 (-0.61, 0.14) & No & 0.07 (-0.16, 0.31) & No & 0.19 (-0.06, 0.44)\\
+North Rhine-Westphalia & No & -0.00 (-0.04, 0.04) & No & -0.02 (-0.07, 0.02) & No & 0.00 (-0.04, 0.04) & No & 0.05 (0.00, 0.09) & No & -0.01 (-0.05, 0.04)\\
+Hesse & No & -0.03 (-0.10, 0.03) & No & 0.03 (-0.05, 0.10) & No & -0.05 (-0.12, 0.02) & No & 0.09 (0.02, 0.16) & No & -0.06 (-0.14, 0.03)\\
+Rhineland-Palatinate & No & 0.03 (-0.05, 0.10) & No & 0.06 (-0.03, 0.15) & No & -0.03 (-0.11, 0.05) & No & -0.06 (-0.14, 0.03) & No & 0.10 (0.03, 0.18)\\
+Baden-Wuerttemberg & No & 0.02 (-0.04, 0.07) & No & 0.02 (-0.04, 0.07) & No & -0.00 (-0.06, 0.06) & No & -0.02 (-0.08, 0.03) & No & 0.03 (-0.04, 0.09)\\
+Bavaria & No & -0.02 (-0.07, 0.03) & No & -0.01 (-0.06, 0.04) & No & -0.06 (-0.12, -0.01) & No & -0.03 (-0.08, 0.02) & No & -0.03 (-0.08, 0.03)\\
+Saarland & No & 0.07 (-0.22, 0.37) & No & 0.20 (0.01, 0.38) & No & 0.08 (-0.18, 0.33) & No & -0.01 (-0.25, 0.23) & No & 0.17 (-0.12, 0.45)\\
+Berlin & No & 0.01 (-0.08, 0.11) & No & -0.10 (-0.19, -0.01) & No & 0.00 (-0.11, 0.12) & No & 0.07 (-0.03, 0.17) & No & -0.01 (-0.10, 0.07)\\
+Brandenburg & No & -0.00 (-0.09, 0.09) & No & -0.01 (-0.11, 0.09) & No & -0.04 (-0.15, 0.06) & No & -0.08 (-0.18, 0.02) & No & 0.07 (-0.03, 0.17)\\
+Mecklenburg-Western Pomerania & No & -0.00 (-0.10, 0.10) & No & 0.02 (-0.13, 0.16) & No & 0.10 (-0.00, 0.20) & No & -0.03 (-0.14, 0.08) & No & 0.02 (-0.08, 0.12)\\
+Saxony & No & 0.04 (-0.01, 0.08) & No & -0.03 (-0.09, 0.03) & No & 0.01 (-0.04, 0.07) & No & -0.04 (-0.10, 0.02) & No & -0.00 (-0.06, 0.05)\\
+Saxony-Anhalt & No & 0.06 (-0.01, 0.14) & No & -0.00 (-0.07, 0.06) & No & -0.03 (-0.11, 0.05) & No & 0.02 (-0.06, 0.10) & No & 0.00 (-0.07, 0.08)\\
+Thuringia & No & -0.00 (-0.07, 0.07) & No & -0.03 (-0.12, 0.06) & No & -0.03 (-0.11, 0.05) & No & -0.01 (-0.10, 0.08) & No & -0.00 (-0.10, 0.09)\\
+\bottomrule
+\end{longtable}
+
+}
+
+\end{lltable}
+
+\subsection{Religion Predicting Traits}\label{religion-predicting-traits}
+
+\begin{lltable}
+
+\tiny{
+
+\begin{longtable}{rrrrrrrrrrr}\noalign{\getlongtablewidth\global\LTcapwidth=\longtablewidth}
+\caption{\label{tab:cla-table}Estimates (with 95\% confidence intervals) and convergence and estimation problems in the CLPM with latent traits and all traits modeled simultaneously}\\
+\toprule
+ & \multicolumn{2}{c}{Agreeableness} & \multicolumn{2}{c}{Conscientiousness} & \multicolumn{2}{c}{Extraversion} & \multicolumn{2}{c}{Neuroticism} & \multicolumn{2}{c}{Openness} \\
+\cmidrule(r){2-3} \cmidrule(r){4-5} \cmidrule(r){6-7} \cmidrule(r){8-9} \cmidrule(r){10-11}
+State & Prob. & Estimate & Prob. & Estimate & Prob. & Estimate & Prob. & Estimate & Prob. & Estimate\\
+\midrule
+\endfirsthead
+\caption*{\normalfont{Table \ref{tab:cla-table} continued}}\\
+\toprule
+ & \multicolumn{2}{c}{Agreeableness} & \multicolumn{2}{c}{Conscientiousness} & \multicolumn{2}{c}{Extraversion} & \multicolumn{2}{c}{Neuroticism} & \multicolumn{2}{c}{Openness} \\
+\cmidrule(r){2-3} \cmidrule(r){4-5} \cmidrule(r){6-7} \cmidrule(r){8-9} \cmidrule(r){10-11}
+State & Prob. & Estimate & Prob. & Estimate & Prob. & Estimate & Prob. & Estimate & Prob. & Estimate\\
+\midrule
+\endhead
+Schleswig-Holstein & No & 0.04 (-0.01, 0.09) & No & -0.00 (-0.05, 0.05) & No & 0.02 (-0.03, 0.07) & No & 0.04 (-0.02, 0.10) & No & -0.02 (-0.07, 0.04)\\
+Hamburg & Yes & 0.04 (-0.02, 0.11) & Yes & 0.02 (-0.06, 0.10) & Yes & 0.03 (-0.03, 0.08) & Yes & -0.00 (-0.05, 0.05) & Yes & -0.03 (-0.10, 0.05)\\
+Lower Saxony & No & 0.02 (-0.01, 0.04) & No & -0.01 (-0.03, 0.02) & No & 0.00 (-0.02, 0.03) & No & -0.00 (-0.03, 0.03) & No & -0.03 (-0.06, -0.00)\\
+Bremen & Yes & NA & Yes & NA & Yes & NA & Yes & NA & Yes & NA\\
+North Rhine-Westphalia & No & 0.03 (0.02, 0.05) & No & 0.01 (-0.01, 0.03) & No & 0.01 (-0.01, 0.03) & No & 0.00 (-0.01, 0.02) & No & 0.02 (-0.00, 0.03)\\
+Hesse & No & 0.05 (0.01, 0.08) & No & 0.02 (-0.01, 0.05) & No & 0.02 (-0.01, 0.04) & No & -0.02 (-0.05, 0.01) & No & -0.04 (-0.07, -0.01)\\
+Rhineland-Palatinate & No & -0.01 (-0.05, 0.03) & No & -0.03 (-0.07, 0.01) & No & -0.01 (-0.04, 0.03) & No & 0.01 (-0.03, 0.05) & No & -0.06 (-0.10, -0.02)\\
+Baden-Wuerttemberg & No & 0.02 (-0.00, 0.05) & No & -0.02 (-0.05, 0.00) & No & -0.00 (-0.02, 0.02) & No & -0.00 (-0.03, 0.02) & No & -0.02 (-0.05, -0.00)\\
+Bavaria & No & 0.00 (-0.02, 0.02) & No & -0.01 (-0.03, 0.01) & No & -0.00 (-0.02, 0.01) & No & 0.01 (-0.01, 0.02) & No & -0.02 (-0.04, -0.00)\\
+Saarland & Yes & NA & Yes & NA & Yes & NA & Yes & NA & Yes & NA\\
+Berlin & No & 0.01 (-0.03, 0.05) & No & 0.01 (-0.02, 0.04) & No & 0.00 (-0.03, 0.03) & No & 0.00 (-0.04, 0.04) & No & 0.02 (-0.02, 0.05)\\
+Brandenburg & No & 0.02 (-0.02, 0.06) & No & -0.03 (-0.07, 0.01) & No & 0.01 (-0.02, 0.05) & No & 0.02 (-0.02, 0.05) & No & 0.01 (-0.04, 0.05)\\
+Mecklenburg-Western Pomerania & No & 0.04 (-0.02, 0.09) & No & -0.03 (-0.08, 0.02) & No & 0.00 (-0.04, 0.05) & No & -0.02 (-0.07, 0.03) & No & 0.01 (-0.05, 0.07)\\
+Saxony & No & 0.00 (-0.03, 0.03) & No & -0.00 (-0.03, 0.02) & No & -0.00 (-0.02, 0.02) & No & -0.00 (-0.03, 0.03) & No & 0.03 (0.00, 0.06)\\
+Saxony-Anhalt & No & 0.03 (-0.00, 0.07) & No & 0.01 (-0.02, 0.05) & No & -0.00 (-0.04, 0.03) & No & 0.01 (-0.03, 0.05) & No & 0.05 (0.01, 0.08)\\
+Thuringia & No & 0.01 (-0.03, 0.04) & No & 0.01 (-0.02, 0.04) & No & -0.01 (-0.04, 0.02) & No & -0.03 (-0.06, 0.01) & No & -0.02 (-0.05, 0.02)\\
+\bottomrule
+\end{longtable}
+
+}
+
+\end{lltable}
+
+\begin{lltable}
+
+\tiny{
+
+\begin{longtable}{rrrrrrrrrrr}\noalign{\getlongtablewidth\global\LTcapwidth=\longtablewidth}
+\caption{\label{tab:rla-table}Estimates (with 95\% confidence intervals) and convergence and estimation problems in the RI-CLPM with latent traits and all traits modeled simultaneously}\\
+\toprule
+ & \multicolumn{2}{c}{Agreeableness} & \multicolumn{2}{c}{Conscientiousness} & \multicolumn{2}{c}{Extraversion} & \multicolumn{2}{c}{Neuroticism} & \multicolumn{2}{c}{Openness} \\
+\cmidrule(r){2-3} \cmidrule(r){4-5} \cmidrule(r){6-7} \cmidrule(r){8-9} \cmidrule(r){10-11}
+State & Prob. & Estimate & Prob. & Estimate & Prob. & Estimate & Prob. & Estimate & Prob. & Estimate\\
+\midrule
+\endfirsthead
+\caption*{\normalfont{Table \ref{tab:rla-table} continued}}\\
+\toprule
+ & \multicolumn{2}{c}{Agreeableness} & \multicolumn{2}{c}{Conscientiousness} & \multicolumn{2}{c}{Extraversion} & \multicolumn{2}{c}{Neuroticism} & \multicolumn{2}{c}{Openness} \\
+\cmidrule(r){2-3} \cmidrule(r){4-5} \cmidrule(r){6-7} \cmidrule(r){8-9} \cmidrule(r){10-11}
+State & Prob. & Estimate & Prob. & Estimate & Prob. & Estimate & Prob. & Estimate & Prob. & Estimate\\
+\midrule
+\endhead
+Schleswig-Holstein & Yes & -0.03 (-0.24, 0.19) & Yes & -0.09 (-0.25, 0.07) & Yes & -0.05 (-0.22, 0.12) & Yes & 0.11 (-0.10, 0.33) & Yes & -0.12 (-0.35, 0.11)\\
+Hamburg & Yes & 0.02 (-0.28, 0.32) & Yes & 0.08 (-0.16, 0.32) & Yes & 0.18 (-0.11, 0.46) & Yes & 0.02 (-0.24, 0.29) & Yes & -0.04 (-0.31, 0.23)\\
+Lower Saxony & No & -0.06 (-0.16, 0.04) & No & -0.06 (-0.15, 0.03) & No & -0.01 (-0.11, 0.10) & No & 0.06 (-0.06, 0.18) & No & -0.10 (-0.21, 0.01)\\
+Bremen & Yes & NA ( NA,\ \ NA) & Yes & NA ( NA,\ \ NA) & Yes & NA ( NA,\ \ NA) & Yes & -0.04 ( NA,\ \ NA) & Yes & -0.09 ( NA,\ \ NA)\\
+North Rhine-Westphalia & No & 0.03 (-0.02, 0.09) & No & -0.02 (-0.07, 0.04) & No & 0.02 (-0.03, 0.08) & No & 0.04 (-0.02, 0.10) & No & 0.06 (0.01, 0.12)\\
+Hesse & No & -0.04 (-0.32, 0.23) & No & 0.04 (-0.10, 0.17) & No & 0.02 (-0.27, 0.32) & No & 0.05 (-0.13, 0.22) & No & -0.11 (-0.45, 0.23)\\
+Rhineland-Palatinate & No & 0.04 (-0.08, 0.16) & No & 0.08 (-0.03, 0.20) & No & 0.00 (-0.10, 0.10) & No & -0.07 (-0.20, 0.05) & No & 0.11 (-0.01, 0.23)\\
+Baden-Wuerttemberg & No & 0.03 (-0.07, 0.13) & No & 0.01 (-0.08, 0.11) & No & 0.05 (-0.04, 0.14) & No & -0.01 (-0.08, 0.07) & No & 0.02 (-0.07, 0.11)\\
+Bavaria & No & -0.04 (-0.12, 0.05) & No & -0.07 (-0.15, 0.01) & No & -0.03 (-0.12, 0.06) & No & 0.02 (-0.06, 0.10) & No & -0.02 (-0.10, 0.06)\\
+Saarland & Yes & NA & Yes & NA & Yes & NA & Yes & NA & Yes & NA\\
+Berlin & Yes & 0.04 (-0.20, 0.28) & Yes & -0.25 (-0.50, -0.01) & Yes & 0.01 (-0.26, 0.28) & Yes & 0.02 (-0.21, 0.26) & Yes & 0.10 (-0.10, 0.30)\\
+Brandenburg & No & -0.04 (-0.17, 0.09) & No & -0.03 (-0.16, 0.09) & No & -0.04 (-0.17, 0.09) & No & 0.08 (-0.06, 0.21) & No & 0.08 (-0.07, 0.22)\\
+Mecklenburg-Western Pomerania & Yes & -0.15 (-0.30, 0.00) & Yes & -0.10 (-0.25, 0.04) & Yes & 0.06 (-0.15, 0.28) & Yes & -0.08 (-0.27, 0.11) & Yes & 0.03 (-0.13, 0.20)\\
+Saxony & No & -0.06 (-0.17, 0.04) & No & -0.07 (-0.18, 0.04) & No & 0.03 (-0.09, 0.15) & No & -0.01 (-0.12, 0.11) & No & 0.05 (-0.06, 0.15)\\
+Saxony-Anhalt & No & -0.04 (-0.17, 0.10) & No & -0.02 (-0.13, 0.09) & No & 0.02 (-0.14, 0.18) & No & -0.01 (-0.16, 0.14) & No & 0.02 (-0.10, 0.14)\\
+Thuringia & No & 0.06 (-0.07, 0.18) & No & -0.02 (-0.16, 0.12) & No & -0.05 (-0.17, 0.07) & No & -0.17 (-0.30, -0.05) & No & 0.03 (-0.13, 0.19)\\
+\bottomrule
+\end{longtable}
+
+}
+
+\end{lltable}
+
+\begin{lltable}
+
+\tiny{
+
+\begin{longtable}{rrrrrrrrrrr}\noalign{\getlongtablewidth\global\LTcapwidth=\longtablewidth}
+\caption{\label{tab:coa-table}Estimates (with 95\% confidence intervals) and convergence and estimation problems in the CLPM with observed measures and all traits modeled simultaneously}\\
+\toprule
+ & \multicolumn{2}{c}{Agreeableness} & \multicolumn{2}{c}{Conscientiousness} & \multicolumn{2}{c}{Extraversion} & \multicolumn{2}{c}{Neuroticism} & \multicolumn{2}{c}{Openness} \\
+\cmidrule(r){2-3} \cmidrule(r){4-5} \cmidrule(r){6-7} \cmidrule(r){8-9} \cmidrule(r){10-11}
+State & Prob. & Estimate & Prob. & Estimate & Prob. & Estimate & Prob. & Estimate & Prob. & Estimate\\
+\midrule
+\endfirsthead
+\caption*{\normalfont{Table \ref{tab:coa-table} continued}}\\
+\toprule
+ & \multicolumn{2}{c}{Agreeableness} & \multicolumn{2}{c}{Conscientiousness} & \multicolumn{2}{c}{Extraversion} & \multicolumn{2}{c}{Neuroticism} & \multicolumn{2}{c}{Openness} \\
+\cmidrule(r){2-3} \cmidrule(r){4-5} \cmidrule(r){6-7} \cmidrule(r){8-9} \cmidrule(r){10-11}
+State & Prob. & Estimate & Prob. & Estimate & Prob. & Estimate & Prob. & Estimate & Prob. & Estimate\\
+\midrule
+\endhead
+Schleswig-Holstein & No & 0.05 (0.00, 0.10) & No & 0.03 (-0.02, 0.07) & No & -0.02 (-0.06, 0.03) & No & 0.04 (-0.01, 0.08) & No & 0.01 (-0.04, 0.05)\\
+Hamburg & No & 0.05 (-0.01, 0.11) & No & 0.02 (-0.04, 0.08) & No & 0.02 (-0.04, 0.08) & No & -0.00 (-0.05, 0.04) & No & 0.00 (-0.05, 0.06)\\
+Lower Saxony & No & 0.05 (0.02, 0.07) & No & 0.01 (-0.01, 0.04) & No & 0.00 (-0.02, 0.03) & No & 0.00 (-0.02, 0.03) & No & -0.01 (-0.03, 0.02)\\
+Bremen & No & -0.01 (-0.11, 0.08) & No & -0.03 (-0.13, 0.06) & No & 0.01 (-0.08, 0.10) & No & -0.02 (-0.10, 0.06) & No & -0.01 (-0.09, 0.06)\\
+North Rhine-Westphalia & No & 0.06 (0.05, 0.08) & No & 0.03 (0.02, 0.05) & No & 0.00 (-0.01, 0.02) & No & -0.00 (-0.02, 0.01) & No & 0.03 (0.02, 0.05)\\
+Hesse & No & 0.07 (0.05, 0.10) & No & 0.05 (0.02, 0.08) & No & 0.02 (-0.01, 0.04) & No & -0.01 (-0.03, 0.02) & No & -0.01 (-0.04, 0.02)\\
+Rhineland-Palatinate & No & 0.03 (-0.00, 0.07) & No & 0.01 (-0.03, 0.05) & No & -0.02 (-0.05, 0.01) & No & 0.01 (-0.03, 0.04) & No & -0.02 (-0.05, 0.01)\\
+Baden-Wuerttemberg & No & 0.06 (0.03, 0.08) & No & 0.01 (-0.01, 0.03) & No & -0.00 (-0.02, 0.02) & No & 0.01 (-0.01, 0.03) & No & -0.00 (-0.02, 0.02)\\
+Bavaria & No & 0.03 (0.01, 0.05) & No & 0.01 (-0.01, 0.03) & No & -0.00 (-0.02, 0.01) & No & 0.01 (-0.01, 0.02) & No & -0.01 (-0.03, 0.01)\\
+Saarland & No & -0.05 (-0.16, 0.05) & No & 0.01 (-0.09, 0.12) & No & 0.05 (-0.03, 0.13) & No & -0.00 (-0.10, 0.09) & No & 0.02 (-0.08, 0.12)\\
+Berlin & No & 0.03 (-0.00, 0.07) & No & 0.03 (-0.00, 0.06) & No & 0.01 (-0.02, 0.04) & No & -0.01 (-0.04, 0.03) & No & 0.03 (-0.01, 0.06)\\
+Brandenburg & No & 0.02 (-0.01, 0.05) & No & -0.01 (-0.05, 0.03) & No & 0.01 (-0.02, 0.05) & No & 0.01 (-0.02, 0.04) & No & 0.03 (-0.01, 0.07)\\
+Mecklenburg-Western Pomerania & No & 0.04 (-0.01, 0.09) & No & 0.02 (-0.03, 0.07) & No & 0.00 (-0.04, 0.05) & No & -0.02 (-0.06, 0.03) & No & 0.04 (-0.01, 0.09)\\
+Saxony & No & 0.01 (-0.01, 0.04) & No & 0.01 (-0.02, 0.03) & No & -0.01 (-0.03, 0.01) & No & 0.01 (-0.01, 0.03) & No & 0.05 (0.02, 0.07)\\
+Saxony-Anhalt & No & 0.04 (0.01, 0.08) & No & 0.02 (-0.01, 0.06) & No & 0.00 (-0.03, 0.03) & No & 0.00 (-0.03, 0.04) & No & 0.07 (0.04, 0.10)\\
+Thuringia & No & 0.02 (-0.01, 0.05) & No & 0.01 (-0.02, 0.04) & No & -0.01 (-0.04, 0.02) & No & -0.01 (-0.04, 0.02) & No & 0.01 (-0.02, 0.04)\\
+\bottomrule
+\end{longtable}
+
+}
+
+\end{lltable}
+
+\begin{lltable}
+
+\tiny{
+
+\begin{longtable}{rrrrrrrrrrr}\noalign{\getlongtablewidth\global\LTcapwidth=\longtablewidth}
+\caption{\label{tab:roa-table}Estimates (with 95\% confidence intervals) and convergence and estimation problems in the RI-CLPM with observed measures and all traits modeled simultaneously}\\
+\toprule
+ & \multicolumn{2}{c}{Agreeableness} & \multicolumn{2}{c}{Conscientiousness} & \multicolumn{2}{c}{Extraversion} & \multicolumn{2}{c}{Neuroticism} & \multicolumn{2}{c}{Openness} \\
+\cmidrule(r){2-3} \cmidrule(r){4-5} \cmidrule(r){6-7} \cmidrule(r){8-9} \cmidrule(r){10-11}
+State & Prob. & Estimate & Prob. & Estimate & Prob. & Estimate & Prob. & Estimate & Prob. & Estimate\\
+\midrule
+\endfirsthead
+\caption*{\normalfont{Table \ref{tab:roa-table} continued}}\\
+\toprule
+ & \multicolumn{2}{c}{Agreeableness} & \multicolumn{2}{c}{Conscientiousness} & \multicolumn{2}{c}{Extraversion} & \multicolumn{2}{c}{Neuroticism} & \multicolumn{2}{c}{Openness} \\
+\cmidrule(r){2-3} \cmidrule(r){4-5} \cmidrule(r){6-7} \cmidrule(r){8-9} \cmidrule(r){10-11}
+State & Prob. & Estimate & Prob. & Estimate & Prob. & Estimate & Prob. & Estimate & Prob. & Estimate\\
+\midrule
+\endhead
+Schleswig-Holstein & No & -0.06 (-0.20, 0.08) & No & -0.13 (-0.27, 0.00) & No & -0.11 (-0.28, 0.05) & No & 0.21 (0.05, 0.36) & No & -0.08 (-0.27, 0.12)\\
+Hamburg & No & -0.05 (-0.29, 0.19) & No & 0.07 (-0.10, 0.23) & No & 0.12 (-0.02, 0.26) & No & 0.02 (-0.14, 0.17) & No & -0.00 (-0.13, 0.12)\\
+Lower Saxony & No & -0.01 (-0.08, 0.06) & No & -0.04 (-0.11, 0.04) & No & 0.02 (-0.05, 0.10) & No & 0.06 (-0.01, 0.13) & No & -0.06 (-0.13, 0.01)\\
+Bremen & No & -0.09 (-0.28, 0.10) & No & -0.16 (-0.40, 0.08) & No & -0.10 (-0.46, 0.27) & No & 0.26 (-0.04, 0.57) & No & 0.28 (-0.06, 0.62)\\
+North Rhine-Westphalia & No & 0.01 (-0.03, 0.05) & No & -0.01 (-0.06, 0.03) & No & 0.01 (-0.03, 0.05) & No & 0.02 (-0.02, 0.07) & No & 0.05 (0.00, 0.09)\\
+Hesse & No & -0.02 (-0.10, 0.06) & No & 0.00 (-0.08, 0.09) & No & -0.01 (-0.10, 0.08) & No & 0.05 (-0.04, 0.13) & No & -0.06 (-0.15, 0.04)\\
+Rhineland-Palatinate & No & 0.01 (-0.08, 0.09) & No & 0.09 (-0.01, 0.18) & No & -0.03 (-0.10, 0.05) & No & -0.07 (-0.16, 0.01) & No & 0.08 (-0.01, 0.16)\\
+Baden-Wuerttemberg & No & 0.03 (-0.04, 0.09) & No & -0.01 (-0.07, 0.06) & No & 0.04 (-0.03, 0.10) & No & 0.00 (-0.06, 0.06) & No & 0.02 (-0.05, 0.09)\\
+Bavaria & No & -0.02 (-0.08, 0.03) & No & -0.03 (-0.09, 0.03) & No & -0.01 (-0.08, 0.05) & No & -0.01 (-0.07, 0.06) & No & -0.00 (-0.07, 0.06)\\
+Saarland & No & -0.23 (-0.50, 0.04) & No & 0.33 (0.02, 0.63) & No & 0.23 (-0.07, 0.52) & No & 0.05 (-0.28, 0.37) & No & 0.11 (-0.19, 0.40)\\
+Berlin & No & 0.06 (-0.09, 0.21) & No & -0.12 (-0.27, 0.03) & No & 0.01 (-0.14, 0.16) & No & 0.03 (-0.13, 0.19) & No & 0.08 (-0.06, 0.21)\\
+Brandenburg & No & -0.05 (-0.14, 0.04) & No & -0.01 (-0.12, 0.09) & No & -0.02 (-0.13, 0.09) & No & 0.01 (-0.08, 0.11) & No & 0.04 (-0.05, 0.13)\\
+Mecklenburg-Western Pomerania & No & -0.13 (-0.24, -0.02) & No & -0.07 (-0.19, 0.05) & No & 0.07 (-0.05, 0.19) & No & -0.06 (-0.18, 0.06) & No & 0.03 (-0.09, 0.15)\\
+Saxony & No & -0.01 (-0.09, 0.07) & No & -0.03 (-0.13, 0.07) & No & 0.02 (-0.07, 0.11) & No & 0.00 (-0.10, 0.11) & No & 0.03 (-0.05, 0.11)\\
+Saxony-Anhalt & No & -0.01 (-0.11, 0.08) & No & -0.03 (-0.11, 0.05) & No & 0.01 (-0.09, 0.12) & No & -0.00 (-0.10, 0.10) & No & -0.01 (-0.10, 0.09)\\
+Thuringia & No & 0.04 (-0.05, 0.12) & No & -0.01 (-0.10, 0.07) & No & -0.03 (-0.11, 0.05) & No & -0.11 (-0.20, -0.02) & No & -0.06 (-0.17, 0.05)\\
+\bottomrule
+\end{longtable}
+
+}
+
+\end{lltable}
+
+\begin{lltable}
+
+\tiny{
+
+\begin{longtable}{rrrrrrrrrrr}\noalign{\getlongtablewidth\global\LTcapwidth=\longtablewidth}
+\caption{\label{tab:cls-table}Estimates (with 95\% confidence intervals) and convergence and estimation problems in the CLPM with latent traits and individual traits modeled separately}\\
+\toprule
+ & \multicolumn{2}{c}{Agreeableness} & \multicolumn{2}{c}{Conscientiousness} & \multicolumn{2}{c}{Extraversion} & \multicolumn{2}{c}{Neuroticism} & \multicolumn{2}{c}{Openness} \\
+\cmidrule(r){2-3} \cmidrule(r){4-5} \cmidrule(r){6-7} \cmidrule(r){8-9} \cmidrule(r){10-11}
+State & Prob. & Estimate & Prob. & Estimate & Prob. & Estimate & Prob. & Estimate & Prob. & Estimate\\
+\midrule
+\endfirsthead
+\caption*{\normalfont{Table \ref{tab:cls-table} continued}}\\
+\toprule
+ & \multicolumn{2}{c}{Agreeableness} & \multicolumn{2}{c}{Conscientiousness} & \multicolumn{2}{c}{Extraversion} & \multicolumn{2}{c}{Neuroticism} & \multicolumn{2}{c}{Openness} \\
+\cmidrule(r){2-3} \cmidrule(r){4-5} \cmidrule(r){6-7} \cmidrule(r){8-9} \cmidrule(r){10-11}
+State & Prob. & Estimate & Prob. & Estimate & Prob. & Estimate & Prob. & Estimate & Prob. & Estimate\\
+\midrule
+\endhead
+Schleswig-Holstein & No & 0.02 (-0.04, 0.07) & No & -0.01 (-0.06, 0.05) & No & 0.03 (-0.02, 0.08) & No & 0.04 (-0.02, 0.10) & No & -0.01 (-0.07, 0.05)\\
+Hamburg & Yes & 0.02 (-0.07, 0.10) & No & -0.01 (-0.08, 0.06) & No & 0.02 (-0.04, 0.08) & No & -0.00 (-0.06, 0.05) & Yes & 0.02 (-0.05, 0.09)\\
+Lower Saxony & No & 0.02 (-0.01, 0.04) & No & -0.01 (-0.03, 0.02) & No & 0.00 (-0.02, 0.03) & No & 0.00 (-0.02, 0.03) & No & -0.02 (-0.05, 0.01)\\
+Bremen & Yes & -0.02 (-0.11, 0.06) & No & -0.07 (-0.18, 0.04) & No & 0.02 (-0.07, 0.11) & Yes & -0.07 (-0.17, 0.04) & No & -0.05 (-0.13, 0.03)\\
+North Rhine-Westphalia & No & 0.02 (0.00, 0.04) & No & 0.00 (-0.01, 0.02) & No & 0.01 (-0.01, 0.02) & No & -0.00 (-0.02, 0.02) & No & 0.02 (0.01, 0.04)\\
+Hesse & No & 0.05 (0.02, 0.08) & No & 0.02 (-0.01, 0.05) & No & 0.02 (-0.01, 0.04) & No & -0.02 (-0.05, 0.01) & No & -0.03 (-0.07, -0.00)\\
+Rhineland-Palatinate & No & -0.02 (-0.07, 0.02) & No & -0.02 (-0.06, 0.02) & No & -0.01 (-0.04, 0.03) & No & 0.02 (-0.02, 0.06) & No & -0.05 (-0.08, -0.01)\\
+Baden-Wuerttemberg & No & 0.02 (-0.00, 0.05) & No & -0.01 (-0.04, 0.01) & No & -0.00 (-0.02, 0.02) & No & 0.00 (-0.02, 0.03) & No & -0.02 (-0.04, 0.01)\\
+Bavaria & No & 0.00 (-0.02, 0.02) & No & -0.01 (-0.03, 0.01) & No & -0.00 (-0.02, 0.02) & No & 0.01 (-0.01, 0.03) & No & -0.02 (-0.04, 0.00)\\
+Saarland & No & -0.12 (-0.21, -0.02) & No & -0.04 (-0.14, 0.05) & No & 0.00 (-0.09, 0.09) & No & -0.02 (-0.13, 0.09) & No & -0.02 (-0.11, 0.08)\\
+Berlin & No & -0.00 (-0.04, 0.04) & No & 0.01 (-0.02, 0.04) & No & 0.01 (-0.02, 0.04) & No & 0.00 (-0.04, 0.04) & No & 0.01 (-0.03, 0.04)\\
+Brandenburg & No & 0.01 (-0.02, 0.05) & No & -0.03 (-0.07, 0.02) & No & 0.02 (-0.02, 0.05) & No & 0.02 (-0.02, 0.05) & No & -0.00 (-0.05, 0.04)\\
+Mecklenburg-Western Pomerania & No & 0.03 (-0.03, 0.09) & No & -0.01 (-0.07, 0.04) & No & 0.01 (-0.04, 0.05) & No & -0.02 (-0.07, 0.03) & No & 0.02 (-0.04, 0.08)\\
+Saxony & No & -0.02 (-0.04, 0.01) & No & 0.00 (-0.03, 0.03) & No & 0.00 (-0.02, 0.02) & No & -0.00 (-0.03, 0.02) & No & 0.03 (0.00, 0.06)\\
+Saxony-Anhalt & No & 0.03 (-0.00, 0.07) & No & 0.02 (-0.02, 0.05) & No & -0.00 (-0.04, 0.03) & No & 0.00 (-0.04, 0.04) & No & 0.05 (0.01, 0.09)\\
+Thuringia & No & 0.01 (-0.02, 0.05) & No & 0.01 (-0.02, 0.05) & No & -0.01 (-0.04, 0.02) & Yes & -0.02 (-0.05, 0.01) & No & -0.02 (-0.06, 0.01)\\
+\bottomrule
+\end{longtable}
+
+}
+
+\end{lltable}
+
+\begin{lltable}
+
+\tiny{
+
+\begin{longtable}{rrrrrrrrrrr}\noalign{\getlongtablewidth\global\LTcapwidth=\longtablewidth}
+\caption{\label{tab:rls-table}Estimates (with 95\% confidence intervals) and convergence and estimation problems in the RI-CLPM with latent traits and individual traits modeled separately}\\
+\toprule
+ & \multicolumn{2}{c}{Agreeableness} & \multicolumn{2}{c}{Conscientiousness} & \multicolumn{2}{c}{Extraversion} & \multicolumn{2}{c}{Neuroticism} & \multicolumn{2}{c}{Openness} \\
+\cmidrule(r){2-3} \cmidrule(r){4-5} \cmidrule(r){6-7} \cmidrule(r){8-9} \cmidrule(r){10-11}
+State & Prob. & Estimate & Prob. & Estimate & Prob. & Estimate & Prob. & Estimate & Prob. & Estimate\\
+\midrule
+\endfirsthead
+\caption*{\normalfont{Table \ref{tab:rls-table} continued}}\\
+\toprule
+ & \multicolumn{2}{c}{Agreeableness} & \multicolumn{2}{c}{Conscientiousness} & \multicolumn{2}{c}{Extraversion} & \multicolumn{2}{c}{Neuroticism} & \multicolumn{2}{c}{Openness} \\
+\cmidrule(r){2-3} \cmidrule(r){4-5} \cmidrule(r){6-7} \cmidrule(r){8-9} \cmidrule(r){10-11}
+State & Prob. & Estimate & Prob. & Estimate & Prob. & Estimate & Prob. & Estimate & Prob. & Estimate\\
+\midrule
+\endhead
+Schleswig-Holstein & Yes & NA ( NA,\ \ NA) & No & -0.23 (-0.40, -0.05) & No & 0.03 (-0.20, 0.26) & No & 0.30 (0.08, 0.52) & No & -0.26 (-0.61, 0.10)\\
+Hamburg & Yes & 0.01 (-0.16, 0.18) & No & 0.06 (-0.16, 0.27) & No & 0.15 (-0.02, 0.32) & No & -0.04 (-0.24, 0.16) & Yes & NA ( NA,\ \ NA)\\
+Lower Saxony & No & -0.02 (-0.13, 0.09) & No & -0.04 (-0.13, 0.04) & No & -0.01 (-0.11, 0.09) & No & 0.07 (-0.05, 0.20) & No & -0.10 (-0.23, 0.02)\\
+Bremen & Yes & 0.15 (-0.18, 0.47) & Yes & -0.30 (-0.93, 0.33) & No & -0.16 (-0.47, 0.16) & Yes & 0.22 (-0.15, 0.59) & No & 0.49 (0.11, 0.86)\\
+North Rhine-Westphalia & No & 0.01 (-0.05, 0.07) & No & -0.03 (-0.08, 0.03) & No & 0.03 (-0.03, 0.08) & No & 0.04 (-0.02, 0.10) & No & 0.05 (-0.00, 0.10)\\
+Hesse & No & -0.04 (-0.16, 0.08) & No & 0.04 (-0.08, 0.16) & No & -0.00 (-0.12, 0.11) & No & 0.06 (-0.08, 0.19) & No & -0.12 (-0.30, 0.07)\\
+Rhineland-Palatinate & No & 0.01 (-0.14, 0.16) & No & 0.09 (-0.03, 0.20) & No & -0.00 (-0.11, 0.10) & No & -0.11 (-0.23, 0.02) & No & 0.11 (-0.02, 0.24)\\
+Baden-Wuerttemberg & No & 0.03 (-0.07, 0.13) & No & 0.02 (-0.08, 0.12) & No & 0.04 (-0.04, 0.13) & No & -0.00 (-0.08, 0.07) & No & 0.02 (-0.07, 0.11)\\
+Bavaria & No & -0.04 (-0.14, 0.05) & No & -0.07 (-0.15, 0.01) & No & -0.01 (-0.08, 0.05) & No & 0.00 (-0.10, 0.11) & No & -0.03 (-0.12, 0.06)\\
+Saarland & Yes & -0.12 (-0.65, 0.41) & No & 0.25 (-0.18, 0.67) & Yes & 0.31 (-0.11, 0.73) & No & -0.12 (-0.73, 0.49) & Yes & 0.06 (-0.29, 0.41)\\
+Berlin & No & -0.02 (-0.28, 0.24) & No & -0.22 (-0.49, 0.04) & No & 0.06 (-0.39, 0.51) & No & 0.04 (-0.19, 0.28) & No & 0.14 (-0.13, 0.40)\\
+Brandenburg & No & -0.07 (-0.21, 0.07) & No & -0.06 (-0.18, 0.07) & No & -0.06 (-0.21, 0.08) & No & 0.04 (-0.12, 0.20) & No & 0.09 (-0.07, 0.25)\\
+Mecklenburg-Western Pomerania & No & -0.15 (-0.38, 0.08) & No & -0.10 (-0.24, 0.04) & No & 0.09 (-0.15, 0.33) & No & -0.09 (-0.31, 0.14) & No & 0.02 (-0.17, 0.21)\\
+Saxony & Yes & -0.11 (-0.25, 0.03) & No & -0.05 (-0.16, 0.06) & No & 0.04 (-0.07, 0.14) & No & -0.00 (-0.11, 0.11) & No & 0.05 (-0.06, 0.17)\\
+Saxony-Anhalt & No & -0.05 (-0.17, 0.08) & No & -0.03 (-0.13, 0.08) & No & 0.04 (-0.12, 0.19) & No & -0.00 (-0.17, 0.16) & No & -0.00 (-0.14, 0.13)\\
+Thuringia & No & 0.03 (-0.10, 0.16) & No & -0.04 (-0.15, 0.08) & No & -0.08 (-0.19, 0.04) & Yes & -0.18 (-0.31, -0.04) & No & -0.05 (-0.17, 0.08)\\
+\bottomrule
+\end{longtable}
+
+}
+
+\end{lltable}
+
+\begin{lltable}
+
+\tiny{
+
+\begin{longtable}{rrrrrrrrrrr}\noalign{\getlongtablewidth\global\LTcapwidth=\longtablewidth}
+\caption{\label{tab:cos-table}Estimates (with 95\% confidence intervals) and convergence and estimation problems in the CLPM with observed measures and individual traits modeled separately}\\
+\toprule
+ & \multicolumn{2}{c}{Agreeableness} & \multicolumn{2}{c}{Conscientiousness} & \multicolumn{2}{c}{Extraversion} & \multicolumn{2}{c}{Neuroticism} & \multicolumn{2}{c}{Openness} \\
+\cmidrule(r){2-3} \cmidrule(r){4-5} \cmidrule(r){6-7} \cmidrule(r){8-9} \cmidrule(r){10-11}
+State & Prob. & Estimate & Prob. & Estimate & Prob. & Estimate & Prob. & Estimate & Prob. & Estimate\\
+\midrule
+\endfirsthead
+\caption*{\normalfont{Table \ref{tab:cos-table} continued}}\\
+\toprule
+ & \multicolumn{2}{c}{Agreeableness} & \multicolumn{2}{c}{Conscientiousness} & \multicolumn{2}{c}{Extraversion} & \multicolumn{2}{c}{Neuroticism} & \multicolumn{2}{c}{Openness} \\
+\cmidrule(r){2-3} \cmidrule(r){4-5} \cmidrule(r){6-7} \cmidrule(r){8-9} \cmidrule(r){10-11}
+State & Prob. & Estimate & Prob. & Estimate & Prob. & Estimate & Prob. & Estimate & Prob. & Estimate\\
+\midrule
+\endhead
+Schleswig-Holstein & No & 0.04 (-0.00, 0.09) & No & 0.02 (-0.03, 0.06) & No & -0.01 (-0.06, 0.03) & No & 0.04 (-0.01, 0.08) & No & 0.01 (-0.04, 0.05)\\
+Hamburg & No & 0.04 (-0.01, 0.10) & No & 0.01 (-0.04, 0.07) & No & 0.02 (-0.04, 0.08) & No & -0.00 (-0.04, 0.04) & No & -0.00 (-0.05, 0.05)\\
+Lower Saxony & No & 0.04 (0.02, 0.07) & No & 0.01 (-0.01, 0.03) & No & 0.00 (-0.02, 0.02) & No & 0.00 (-0.02, 0.03) & No & -0.01 (-0.03, 0.02)\\
+Bremen & No & -0.02 (-0.11, 0.07) & No & -0.03 (-0.12, 0.05) & No & 0.01 (-0.07, 0.10) & No & -0.02 (-0.10, 0.07) & No & -0.01 (-0.08, 0.06)\\
+North Rhine-Westphalia & No & 0.05 (0.04, 0.07) & No & 0.03 (0.01, 0.04) & No & 0.00 (-0.01, 0.02) & No & 0.00 (-0.02, 0.02) & No & 0.03 (0.01, 0.04)\\
+Hesse & No & 0.07 (0.04, 0.10) & No & 0.04 (0.02, 0.07) & No & 0.01 (-0.01, 0.04) & No & -0.00 (-0.03, 0.02) & No & -0.01 (-0.04, 0.01)\\
+Rhineland-Palatinate & No & 0.03 (-0.00, 0.06) & No & 0.01 (-0.03, 0.05) & No & -0.02 (-0.05, 0.01) & No & 0.01 (-0.03, 0.04) & No & -0.02 (-0.05, 0.01)\\
+Baden-Wuerttemberg & No & 0.05 (0.03, 0.07) & No & 0.01 (-0.01, 0.03) & No & -0.01 (-0.02, 0.01) & No & 0.01 (-0.01, 0.03) & No & -0.00 (-0.02, 0.02)\\
+Bavaria & No & 0.03 (0.01, 0.05) & No & 0.01 (-0.01, 0.03) & No & -0.00 (-0.02, 0.01) & No & 0.01 (-0.01, 0.02) & No & -0.01 (-0.03, 0.01)\\
+Saarland & No & -0.06 (-0.14, 0.02) & No & 0.02 (-0.07, 0.10) & No & 0.05 (-0.03, 0.13) & No & -0.01 (-0.10, 0.09) & No & 0.02 (-0.06, 0.11)\\
+Berlin & No & 0.03 (-0.01, 0.06) & No & 0.03 (-0.00, 0.06) & No & 0.01 (-0.02, 0.03) & No & -0.00 (-0.04, 0.03) & No & 0.02 (-0.01, 0.05)\\
+Brandenburg & No & 0.02 (-0.01, 0.05) & No & -0.01 (-0.05, 0.02) & No & 0.01 (-0.02, 0.04) & No & 0.01 (-0.02, 0.04) & No & 0.03 (-0.01, 0.06)\\
+Mecklenburg-Western Pomerania & No & 0.03 (-0.02, 0.08) & No & 0.00 (-0.04, 0.05) & No & -0.00 (-0.05, 0.04) & No & -0.02 (-0.06, 0.03) & No & 0.04 (-0.01, 0.09)\\
+Saxony & No & 0.01 (-0.01, 0.03) & No & 0.01 (-0.02, 0.03) & No & -0.01 (-0.03, 0.01) & No & 0.01 (-0.01, 0.03) & No & 0.04 (0.02, 0.06)\\
+Saxony-Anhalt & No & 0.04 (0.01, 0.08) & No & 0.02 (-0.01, 0.06) & No & 0.00 (-0.03, 0.03) & No & 0.00 (-0.03, 0.03) & No & 0.07 (0.04, 0.10)\\
+Thuringia & No & 0.02 (-0.01, 0.05) & No & 0.01 (-0.02, 0.04) & No & -0.01 (-0.04, 0.02) & No & -0.01 (-0.04, 0.02) & No & 0.00 (-0.03, 0.03)\\
+\bottomrule
+\end{longtable}
+
+}
+
+\end{lltable}
+
+\begin{lltable}
+
+\tiny{
+
+\begin{longtable}{rrrrrrrrrrr}\noalign{\getlongtablewidth\global\LTcapwidth=\longtablewidth}
+\caption{\label{tab:ros-table}Estimates (with 95\% confidence intervals) and convergence and estimation problems in the RI-CLPM with observed measures and individual traits modeled separately}\\
+\toprule
+ & \multicolumn{2}{c}{Agreeableness} & \multicolumn{2}{c}{Conscientiousness} & \multicolumn{2}{c}{Extraversion} & \multicolumn{2}{c}{Neuroticism} & \multicolumn{2}{c}{Openness} \\
+\cmidrule(r){2-3} \cmidrule(r){4-5} \cmidrule(r){6-7} \cmidrule(r){8-9} \cmidrule(r){10-11}
+State & Prob. & Estimate & Prob. & Estimate & Prob. & Estimate & Prob. & Estimate & Prob. & Estimate\\
+\midrule
+\endfirsthead
+\caption*{\normalfont{Table \ref{tab:ros-table} continued}}\\
+\toprule
+ & \multicolumn{2}{c}{Agreeableness} & \multicolumn{2}{c}{Conscientiousness} & \multicolumn{2}{c}{Extraversion} & \multicolumn{2}{c}{Neuroticism} & \multicolumn{2}{c}{Openness} \\
+\cmidrule(r){2-3} \cmidrule(r){4-5} \cmidrule(r){6-7} \cmidrule(r){8-9} \cmidrule(r){10-11}
+State & Prob. & Estimate & Prob. & Estimate & Prob. & Estimate & Prob. & Estimate & Prob. & Estimate\\
+\midrule
+\endhead
+Schleswig-Holstein & No & -0.09 (-0.25, 0.06) & No & -0.18 (-0.32, -0.05) & No & -0.16 (-0.36, 0.04) & No & 0.23 (0.07, 0.39) & No & -0.14 (-0.35, 0.08)\\
+Hamburg & No & -0.07 (-0.34, 0.19) & No & 0.08 (-0.06, 0.22) & No & 0.13 (-0.01, 0.26) & No & -0.02 (-0.12, 0.09) & No & -0.01 (-0.13, 0.10)\\
+Lower Saxony & No & -0.01 (-0.08, 0.06) & No & -0.04 (-0.11, 0.03) & No & 0.02 (-0.06, 0.09) & No & 0.06 (-0.01, 0.13) & No & -0.06 (-0.13, 0.01)\\
+Bremen & No & -0.05 (-0.23, 0.14) & No & -0.17 (-0.40, 0.06) & No & -0.05 (-0.34, 0.24) & No & 0.19 (-0.04, 0.42) & No & 0.25 (-0.03, 0.52)\\
+North Rhine-Westphalia & No & 0.01 (-0.03, 0.05) & No & -0.01 (-0.06, 0.03) & No & 0.01 (-0.03, 0.05) & No & 0.02 (-0.02, 0.07) & No & 0.04 (0.00, 0.09)\\
+Hesse & No & -0.02 (-0.10, 0.06) & No & 0.00 (-0.08, 0.09) & No & -0.00 (-0.09, 0.08) & No & 0.05 (-0.03, 0.13) & No & -0.05 (-0.15, 0.04)\\
+Rhineland-Palatinate & No & 0.02 (-0.07, 0.10) & No & 0.09 (-0.01, 0.18) & No & -0.03 (-0.11, 0.05) & No & -0.07 (-0.16, 0.01) & No & 0.07 (-0.02, 0.16)\\
+Baden-Wuerttemberg & No & 0.02 (-0.04, 0.08) & No & -0.01 (-0.07, 0.06) & No & 0.04 (-0.02, 0.11) & No & -0.00 (-0.06, 0.06) & No & 0.03 (-0.04, 0.09)\\
+Bavaria & No & -0.02 (-0.08, 0.03) & No & -0.03 (-0.09, 0.03) & No & -0.00 (-0.06, 0.06) & No & -0.01 (-0.07, 0.06) & No & -0.01 (-0.07, 0.06)\\
+Saarland & No & -0.16 (-0.49, 0.17) & No & 0.29 (0.02, 0.55) & No & 0.24 (-0.11, 0.60) & No & -0.08 (-0.52, 0.36) & No & 0.17 (-0.18, 0.52)\\
+Berlin & No & 0.05 (-0.11, 0.22) & No & -0.12 (-0.27, 0.02) & No & 0.04 (-0.13, 0.21) & No & 0.04 (-0.12, 0.20) & No & 0.08 (-0.06, 0.22)\\
+Brandenburg & No & -0.05 (-0.14, 0.04) & No & -0.02 (-0.13, 0.08) & No & -0.02 (-0.13, 0.08) & No & 0.02 (-0.08, 0.12) & No & 0.04 (-0.05, 0.14)\\
+Mecklenburg-Western Pomerania & No & -0.13 (-0.24, -0.02) & No & -0.04 (-0.18, 0.09) & No & 0.09 (-0.04, 0.21) & No & -0.05 (-0.17, 0.07) & No & 0.03 (-0.09, 0.15)\\
+Saxony & No & -0.01 (-0.09, 0.07) & No & -0.02 (-0.12, 0.08) & No & 0.02 (-0.07, 0.11) & No & 0.01 (-0.09, 0.11) & No & 0.03 (-0.05, 0.11)\\
+Saxony-Anhalt & No & -0.02 (-0.10, 0.07) & No & -0.03 (-0.10, 0.04) & No & 0.02 (-0.08, 0.12) & No & -0.01 (-0.11, 0.08) & No & -0.00 (-0.10, 0.09)\\
+Thuringia & No & 0.02 (-0.07, 0.10) & No & -0.01 (-0.10, 0.07) & No & -0.05 (-0.12, 0.03) & No & -0.11 (-0.20, -0.02) & No & -0.07 (-0.17, 0.03)\\
+\bottomrule
+\end{longtable}
+
+}
+
+\end{lltable}
+
+\subsection{Results from Dynamic Panel Model}\label{results-from-dynamic-panel-model}
+
+\begin{table}[h]
+
+\begin{center}
+\begin{threeparttable}
+
+\caption{\label{tab:dpmResults}Fit Indices and cross-lagged (with 95\% confidence intervals) for paths for the single-variable, observed-variable dynamic panel model.}
+
+\begin{tabular}{rrrrrrrrr}
+\toprule
+Trait & Chi-Square & df & p-value & CFI & RMSEA & SRMR & Trait -> Religion & Religion -> Trait\\
+\midrule
+AGR & 35.16 & 13.00 & 0.00 & 1.00 & 0.01 & 0.01 & 0.00 (-0.01, 0.02) & -0.01 (-0.04, 0.02)\\
+CNS & 54.22 & 13.00 & 0.00 & 1.00 & 0.02 & 0.01 & -0.02 (-0.03, -0.00) & -0.02 (-0.04, 0.01)\\
+EXT & 52.90 & 13.00 & 0.00 & 1.00 & 0.02 & 0.01 & -0.02 (-0.04, -0.00) & 0.00 (-0.02, 0.03)\\
+NEU & 38.32 & 13.00 & 0.00 & 1.00 & 0.01 & 0.01 & 0.02 (0.00, 0.04) & 0.02 (-0.01, 0.04)\\
+OPN & 35.20 & 13.00 & 0.00 & 1.00 & 0.01 & 0.01 & -0.01 (-0.03, 0.01) & 0.01 (-0.02, 0.03)\\
+\bottomrule
+\addlinespace
+\end{tabular}
+
+\begin{tablenotes}[para]
+\normalsize{\textit{Note.}  AGR = Agreeableness; CNS = Conscientiousness; EXT = Extraversion, NEU = Neuroticism, OPN = Openness.}
+\end{tablenotes}
+
+\end{threeparttable}
+\end{center}
+
+\end{table}
+
+\begin{table}[t]
+
+\begin{center}
+\begin{threeparttable}
+
+\caption{\label{tab:dpmLatentResults}Fit Indices and cross-lagged (with 95\% confidence intervals) for paths for the single-variable, latent-variable dynamic panel model.}
+
+\begin{tabular}{rrrrrrrrr}
+\toprule
+Trait & Chi-Square & df & p-value & CFI & RMSEA & SRMR & Trait -> Religion & Religion -> Trait\\
+\midrule
+AGR & 708.40 & 83.00 & 0.00 & 0.99 & 0.02 & 0.02 & 0.01 (-0.02, 0.04) & -0.02 (-0.05, 0.02)\\
+CNS & 878.22 & 83.00 & 0.00 & 0.99 & 0.02 & 0.03 & -0.02 (-0.05, 0.00) & -0.01 (-0.04, 0.03)\\
+EXT & 564.72 & 83.00 & 0.00 & 1.00 & 0.02 & 0.02 & -0.03 (-0.06, -0.00) & 0.01 (-0.02, 0.03)\\
+NEU & 267.86 & 83.00 & 0.00 & 1.00 & 0.01 & 0.01 & 0.02 (-0.01, 0.05) & 0.02 (-0.02, 0.05)\\
+OPN & 883.26 & 83.00 & 0.00 & 1.00 & 0.02 & 0.03 & -0.00 (-0.03, 0.03) & 0.01 (-0.03, 0.04)\\
+\bottomrule
+\addlinespace
+\end{tabular}
+
+\begin{tablenotes}[para]
+\normalsize{\textit{Note.} AGR = Agreeableness; CNS = Conscientiousness; EXT = Extraversion, NEU = Neuroticism, OPN = Openness.}
+\end{tablenotes}
+
+\end{threeparttable}
+\end{center}
+
+\end{table}
+
+
+\end{document}

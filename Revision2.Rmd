@@ -789,7 +789,7 @@ orig <- extractParameterEstimates(
 )
 
 ## Load results for each set of models
-load(paste0(location, "/clpm.latent.results.rev.RData"))
+load(paste0(location, "/clpm.latent.results.rev2.RData"))
 results.c.l.a <- clpm.latent.results[2][[1]]
 c.l.a <- extractParameterEstimates(
     results.c.l.a,
@@ -799,7 +799,7 @@ c.l.a <- extractParameterEstimates(
     "yes"
 )
 
-load(paste0(location, "/riclpm.latent.results.rev.RData"))
+load(paste0(location, "/riclpm.latent.results.rev2.RData"))
 results.r.l.a <- riclpm.latent.results[2][[1]]
 r.l.a <- extractParameterEstimates(
     results.r.l.a,
@@ -809,7 +809,7 @@ r.l.a <- extractParameterEstimates(
     "yes"
 )
 
-load(paste0(location, "/clpm.observed.results.RData"))
+load(paste0(location, "/clpm.observed.results.rev2.RData"))
 results.c.o.a <- clpm.observed.results[2][[1]]
 c.o.a <- extractParameterEstimates(
     results.c.o.a,
@@ -819,7 +819,7 @@ c.o.a <- extractParameterEstimates(
     "yes"
 )
 
-load(paste0(location, "/riclpm.observed.results.RData"))
+load(paste0(location, "/riclpm.observed.results.rev2.RData"))
 results.r.o.a <- riclpm.observed.results[2][[1]]
 r.o.a <- extractParameterEstimates(
     results.r.o.a,

@@ -100,6 +100,7 @@ wext09 ~~ ren*wneu09 + reo*wopn09
 wneu09 ~~ rno*wopn09
 
 wrelig13 ~~ r2_ra*wagr13 + r2_rc*wcns13 + r2_re*wext13 + r2_rn*wneu13 + r2_ro*wopn13
+wagr13 ~~ rac*wcns13 + rae*wext13 + ran*wneu13 + rao*wopn13
 wcns13 ~~ rce*wext13 + rcn*wneu13 + rco*wopn13
 wext13 ~~ ren*wneu13 + reo*wopn13
 wneu13 ~~ rno*wopn13
