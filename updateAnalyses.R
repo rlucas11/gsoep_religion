@@ -27,20 +27,20 @@ location <- "results"
 
 ## ## Run original model (all traits, latent, state-by-state)
 ## source('clpm.latent.all.R')
-source('clpm.latent.all.rev2.R')
+## source('clpm.latent.all.rev2.R')
 
 ## ## Run RI-CLPM equivalent of original (all traits, latent, state-by-state)
 ## source('riclpm.latent.all.R')
-source('riclpm.latent.all.rev2.R')
+## source('riclpm.latent.all.rev2.R')
 
 
 ## ## Run original model with observed traits (all traits, observed, state-by-state)
 ## source('clpm.observed.all.R')
-source('clpm.observed.all.rev2.R')
+## source('clpm.observed.all.rev2.R')
 
 ## ## Run RI-CLPM with observed traits (all traits, observed, state-by-state)
 ## source('riclpm.observed.all.R')
-source('riclpm.observed.all.rev2.R')
+## source('riclpm.observed.all.rev2.R')
 
 ## Run CLPM with latent variables, trait-by-trait (trait-by-trait, latent, state-by-state)
 ## source('clpm.single.R')
@@ -56,7 +56,8 @@ source('riclpm.observed.all.rev2.R')
 
 ## Run all models in full sample
 ## source("fullSample.R")
-source('fullSample.rev2.R')
+## source('fullSample.rev2.R')
+source('fixedClpm.R')
 
 ## Run meta-analysis
 ## source("metaAnalysisSetup.R")
