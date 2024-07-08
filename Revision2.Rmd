@@ -56,7 +56,7 @@ linenumbers: no
 documentclass: "apa6"
 classoption: "man"
 output: 
-  papaja::apa6_docx:
+  papaja::apa6_pdf:
   fig_caption: yes
 
 ---
@@ -999,7 +999,7 @@ Because of these estimation problems, we rely only on the four observed-variable
 ```{r moderator-meta, echo=FALSE, message=FALSE, warning=FALSE, fig.cap = "Meta-analytic results for state-level religiosity as a moderator of the lagged effect of traits on religiosity"}
 
 ## Load Results
-metaModResults <- read_csv("results/metaModResults.csv")
+metaModResults <- read_csv("results/metaModResults.rev2.csv")
 
 ## Update names and labels for final figure
 names(metaModResults) <- c("Trait",
@@ -1262,7 +1262,7 @@ extractParameterEstimatesSingleDpm <- function(results,
 location <- "results"
 
 ## Load results for each set of models
-load(paste0(location, "/clpm.latent.results.rev.RData"))
+load(paste0(location, "/clpm.latent.results.rev2.RData"))
 results.c.l.a <- clpm.latent.results[2][[1]]
 c.l.a <- extractParameterEstimates(
     results.c.l.a,
